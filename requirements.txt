@@ -2,3 +2,4 @@ Django
 gunicorn
 razorpay
 Pillow
+whitenoise
