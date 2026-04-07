@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Messages — Students</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #090c10;
+      --surface:   #101520;
+      --card:      #161c26;
+      --border:    #252d3a;
+      --blue:      #4a7fa5;
+      --blue-dim:  #2d5470;
+      --teal:      #3aadab;
+      --cream:     #e8eef4;
+      --muted:     #586475;
+      --accent:    #7c4a8e;
+      --gold:      #b8943f;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse 70% 50% at 90% -5%, #0a2a4a44 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 10% 110%, #0d2d2d33 0%, transparent 55%);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(9,12,16,.9);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--teal);
+      letter-spacing: .06em;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: .85rem;
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--cream); }
+
+    .hero {
+      padding: 64px 40px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: .75rem; letter-spacing: .2em;
+      color: var(--blue); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600; line-height: 1.1;
+    }
+    .hero h1 em { font-style: italic; color: var(--teal); }
+    .hero-sub { margin-top: 12px; color: var(--muted); font-size: .9rem; }
+
+    /* Stats row */
+    .stats-row {
+      max-width: 960px;
+      margin: 0 auto 36px;
+      padding: 0 40px;
+      display: flex;
+      gap: 16px;
+    }
+    .stat-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+    .stat-pill strong { color: var(--cream); font-size: 1.1rem; }
+    .stat-pill .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 6px var(--teal);
+    }
+
+    .search-wrap {
+      max-width: 960px;
+      margin: 0 auto 28px;
+      padding: 0 40px;
+    }
+    .search-inner { position: relative; }
+    .search-inner svg {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); width: 18px; height: 18px;
+    }
+    .search-inner input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px 14px 46px;
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; outline: none;
+      transition: border-color .2s;
+    }
+    .search-inner input::placeholder { color: var(--muted); }
+    .search-inner input:focus { border-color: var(--blue); }
+
+    /* Table-style list */
+    .student-list {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 40px 80px;
+    }
+
+    .list-header {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1fr 1fr 120px;
+      gap: 12px;
+      padding: 10px 20px;
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .student-row {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1fr 1fr 120px;
+      gap: 12px;
+      padding: 16px 20px;
+      align-items: center;
+      text-decoration: none;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: var(--card);
+      margin-bottom: 8px;
+      transition: border-color .2s, transform .2s, background .2s;
+      animation: fadeUp .4s ease both;
+      position: relative;
+    }
+    .student-row:hover {
+      border-color: var(--blue-dim);
+      background: #1c2535;
+      transform: translateX(4px);
+    }
+
+    .student-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      background: var(--surface);
+    }
+    .avatar-fallback {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--blue-dim));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--cream);
+      flex-shrink: 0;
+    }
+    .s-name {
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--cream);
+    }
+    .s-email {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .s-batch, .s-course, .s-age {
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    /* Unread badge */
+    .unread-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--teal);
+      color: #090c10;
+      font-size: .7rem;
+      font-weight: 700;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      margin-left: 8px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .chat-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: rgba(74,127,165,.15);
+      border: 1px solid var(--blue-dim);
+      border-radius: 8px;
+      color: var(--blue);
+      font-size: .8rem;
+      font-weight: 500;
+      transition: background .2s, color .2s;
+    }
+    .student-row:hover .chat-action {
+      background: var(--blue);
+      color: var(--bg);
+      border-color: var(--blue);
+    }
+    .chat-action svg { width: 14px; height: 14px; }
+
+    .empty {
+      text-align: center;
+      padding: 80px 40px;
+    }
+    .empty-icon { font-size: 3rem; opacity: .3; margin-bottom: 20px; }
+    .empty h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; margin-bottom: 10px;
+    }
+    .empty p { color: var(--muted); font-size: .9rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .student-row:nth-child(2) { animation-delay: .06s; }
+    .student-row:nth-child(3) { animation-delay: .12s; }
+    .student-row:nth-child(4) { animation-delay: .18s; }
+    .student-row:nth-child(5) { animation-delay: .24s; }
+
+    @media (max-width: 700px) {
+      nav { padding: 14px 20px; }
+      .hero, .search-wrap, .student-list, .stats-row { padding-left: 20px; padding-right: 20px; }
+      .list-header { display: none; }
+      .student-row {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+      }
+      .s-batch, .s-course, .s-age { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    
+    <a href="/trainerhome/" class="nav-back">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      Dashboard
+    </a>
+    <span class="nav-logo">Nrityagana</span>
+  </nav>
+
+  <div class="hero">
+    <p class="hero-eyebrow">Inbox</p>
+    <h1>Your <em>Students</em></h1>
+    <p class="hero-sub">Select a student to open a conversation.</p>
+  </div>
+
+  {% if students %}
+  <div class="stats-row">
+    <div class="stat-pill">
+      <div class="dot"></div>
+      <div><strong>{{ students|length }}</strong> students enrolled</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="search-wrap">
+    <div class="search-inner">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Search by name, email or batch…" oninput="filterRows()"/>
+    </div>
+  </div>
+
+  <div class="student-list">
+    {% if students %}
+    <div class="list-header">
+      <span>Student</span>
+      <span>Batch</span>
+      <span>Course</span>
+      <span>Age</span>
+      <span></span>
+    </div>
+
+    {% for student in students %}
+    <a class="student-row" href="/chat/trainer/room/{{ student.id }}/"
+       data-name="{{ student.name|lower }} {{ student.email|lower }}">
+
+      <div class="student-info">
+        {% if student.image %}
+          <img class="avatar" src="{{ student.image.url }}" alt="{{ student.name }}"/>
+        {% else %}
+          <div class="avatar-fallback">{{ student.name|slice:":1"|upper }}</div>
+        {% endif %}
+        <div>
+          <div class="s-name">
+            {{ student.name }}
+            {% if student.unread_count > 0 %}
+              <span class="unread-badge">{{ student.unread_count }}</span>
+            {% endif %}
+          </div>
+          <div class="s-email">{{ student.email }}</div>
+        </div>
+      </div>
+
+      <div class="s-batch">{{ student.batch_time|default:"—" }}</div>
+      <div class="s-course">{{ student.course.course_name|default:"—" }}</div>
+      <div class="s-age">{{ student.age|default:"—" }}</div>
+
+      <div class="chat-action">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        Chat
+      </div>
+    </a>
+    {% endfor %}
+
+    {% else %}
+    <div class="empty">
+      <div class="empty-icon">🎓</div>
+      <h3>No Students Yet</h3>
+      <p>Students enrolled in your course and institution will appear here.</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function filterRows() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      document.querySelectorAll('.student-row').forEach(row => {
+        row.style.display = row.dataset.name.includes(q) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

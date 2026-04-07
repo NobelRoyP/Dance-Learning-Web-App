@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Costume | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #f5f3ef;
+            --surface:      #ffffff;
+            --surface-2:    #faf9f6;
+            --border:       #e4ddd3;
+            --border-soft:  #ede8e0;
+            --border-focus: #1a6b42;
+            --green:        #1a6b42;
+            --green-mid:    #22894f;
+            --green-light:  #edf7f1;
+            --sidebar:      #13211a;
+            --gold:         #b8841f;
+            --text:         #18160f;
+            --text-mid:     #45403a;
+            --text-muted:   #9a9188;
+            --red:          #c0392b;
+            --red-light:    #fdf2f2;
+            --copper:       #a8521e;
+            --copper-light: #fdf1e8;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image: radial-gradient(circle, rgba(0,0,0,.034) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: var(--sidebar);
+            height: 60px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 16px rgba(0,0,0,.22);
+        }
+        .tb-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: #fff; text-decoration: none;
+        }
+        .tb-brand em { font-style: italic; color: var(--gold); }
+        .tb-back {
+            display: flex; align-items: center; gap: 7px;
+            font-size: .78rem; font-weight: 500;
+            color: rgba(255,255,255,.52); text-decoration: none;
+            padding: 7px 14px;
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 8px;
+            transition: color .16s, border-color .16s, background .16s;
+        }
+        .tb-back:hover { color: #fff; border-color: rgba(255,255,255,.26); background: rgba(255,255,255,.06); }
+        .tb-back svg { width: 14px; height: 14px; }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 44px 20px 80px;
+        }
+
+        /* Eyebrow */
+        .eyebrow {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 26px;
+        }
+        .eyebrow span {
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--text-muted); white-space: nowrap;
+        }
+        .eyebrow-line { flex: 1; height: 1px; background: var(--border); }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            animation: rise .45s ease both;
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner */
+        .banner {
+            height: 72px;
+            background: linear-gradient(135deg, #0e1c15 0%, var(--green) 60%, var(--green-mid) 100%);
+            position: relative; overflow: hidden;
+        }
+        .banner::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #7a5010, var(--gold), #e8c060, var(--gold), #7a5010);
+            background-size: 200% 100%;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+        .banner::after {
+            content: '';
+            position: absolute; right: -50px; top: -50px;
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.07);
+        }
+
+        /* Card head */
+        .card-head {
+            padding: 20px 26px 0;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .head-icon {
+            width: 44px; height: 44px; border-radius: 11px;
+            background: var(--copper-light);
+            border: 1px solid rgba(168,82,30,.18);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.15rem; flex-shrink: 0;
+        }
+        .head-title { font-size: 1.05rem; font-weight: 800; color: var(--text); letter-spacing: -.03em; }
+        .head-sub { font-size: .72rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* Product name pill in head */
+        .head-product-name {
+            margin-left: auto;
+            font-size: .72rem; font-weight: 600;
+            color: var(--copper);
+            background: var(--copper-light);
+            border: 1px solid rgba(168,82,30,.18);
+            padding: 4px 12px; border-radius: 99px;
+            white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis; max-width: 160px;
+        }
+
+        .card-rule { height: 1px; background: var(--border-soft); margin: 18px 26px 0; }
+
+        /* ── FORM ── */
+        form { padding: 22px 26px 26px; }
+
+        .fsec {
+            font-size: .6rem; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--text-muted);
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-soft);
+            margin-bottom: 18px;
+            margin-top: 24px;
+        }
+        form > .fsec:first-child { margin-top: 0; }
+
+        .field-group { margin-bottom: 16px; }
+        .field-row {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 14px; margin-bottom: 16px;
+        }
+        .field-row .field-group { margin-bottom: 0; }
+
+        label {
+            display: block;
+            font-size: .67rem; font-weight: 700;
+            letter-spacing: .12em; text-transform: uppercase;
+            color: var(--text-muted); margin-bottom: 7px;
+        }
+        label .req { color: var(--red); margin-left: 2px; }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 13px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: .86rem; font-weight: 500;
+            color: var(--text); outline: none;
+            transition: border-color .18s, box-shadow .18s, background .18s;
+            appearance: none; -webkit-appearance: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--border-focus);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px rgba(26,107,66,.09);
+        }
+        input::placeholder, textarea::placeholder { color: var(--text-muted); font-weight: 400; }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%239a9188' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px; cursor: pointer;
+        }
+
+        textarea { height: 90px; resize: vertical; line-height: 1.6; }
+
+        input[type="file"] {
+            padding: 8px 11px; cursor: pointer;
+            font-weight: 400; color: var(--text-mid);
+        }
+        input[type="file"]::-webkit-file-upload-button {
+            background: var(--green-light);
+            border: 1px solid rgba(26,107,66,.22);
+            color: var(--green);
+            font-family: 'Inter', sans-serif;
+            font-size: .73rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 7px;
+            cursor: pointer; margin-right: 10px;
+            transition: background .16s;
+        }
+        input[type="file"]::-webkit-file-upload-button:hover { background: #d5eee0; }
+
+        /* ₹ prefix */
+        .input-prefix-wrap { position: relative; }
+        .input-prefix {
+            position: absolute; left: 13px; top: 50%;
+            transform: translateY(-50%);
+            font-size: .84rem; font-weight: 700; color: var(--green);
+            pointer-events: none;
+        }
+        .input-prefix-wrap input { padding-left: 26px; }
+
+        /* Current image preview */
+        .img-preview {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .img-preview img {
+            width: 56px; height: 56px;
+            border-radius: 10px; object-fit: cover;
+            border: 2px solid var(--border);
+        }
+        .img-preview-text { font-size: .76rem; color: var(--text-muted); line-height: 1.5; }
+        .img-preview-text strong { color: var(--text); font-weight: 600; }
+
+        /* Checkbox */
+        .check-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 13px 15px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px; cursor: pointer;
+            transition: background .16s, border-color .16s;
+        }
+        .check-row:hover { background: var(--green-light); border-color: rgba(26,107,66,.22); }
+        .check-row input[type="checkbox"] {
+            width: 17px; height: 17px;
+            accent-color: var(--green);
+            cursor: pointer; flex-shrink: 0;
+            padding: 0; margin: 0;
+        }
+        .check-row .check-label {
+            font-size: .84rem; font-weight: 600;
+            color: var(--text-mid); cursor: pointer;
+        }
+        .check-row .check-label small {
+            display: block; font-size: .7rem; font-weight: 400;
+            color: var(--text-muted); margin-top: 1px;
+        }
+
+        /* ── ACTIONS ── */
+        .form-actions {
+            display: flex; gap: 12px; margin-top: 22px;
+        }
+        .btn {
+            flex: 1; display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+            padding: 13px 16px; border-radius: 11px;
+            font-family: 'Inter', sans-serif;
+            font-size: .81rem; font-weight: 700;
+            text-decoration: none; letter-spacing: -.01em;
+            cursor: pointer; border: none;
+            transition: transform .18s, box-shadow .18s, background .18s;
+        }
+        .btn:active { transform: scale(.97) !important; }
+        .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        .btn-primary {
+            background: var(--green); color: #fff;
+            box-shadow: 0 4px 14px rgba(26,107,66,.24);
+        }
+        .btn-primary:hover {
+            background: var(--green-mid); color: #fff;
+            box-shadow: 0 8px 22px rgba(26,107,66,.3);
+            transform: translateY(-2px);
+        }
+        .btn-ghost {
+            background: var(--surface); color: var(--text-mid);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            background: var(--surface-2); color: var(--text);
+            border-color: #bbb; transform: translateY(-2px);
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 540px) {
+            .topbar { padding: 0 16px; }
+            .page { padding: 28px 14px 60px; }
+            form { padding: 18px 18px 22px; }
+            .card-head { padding: 18px 18px 0; flex-wrap: wrap; }
+            .card-rule { margin: 16px 18px 0; }
+            .field-row { grid-template-columns: 1fr; gap: 16px; }
+            .form-actions { flex-direction: column; }
+            .head-product-name { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="topbar">
+    <a href="/institutiondashboard/" class="tb-brand">Nritya<em>ngana</em></a>
+    <a href="/productlist/" class="tb-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Costumes
+    </a>
+</nav>
+
+<div class="page">
+
+    <div class="eyebrow">
+        <span>Institution Portal</span>
+        <div class="eyebrow-line"></div>
+    </div>
+
+    <div class="form-card">
+        <div class="banner"></div>
+
+        <div class="card-head">
+            <div class="head-icon">✏️</div>
+            <div>
+                <div class="head-title">Edit Costume</div>
+                <div class="head-sub">Update the details for this rental item</div>
+            </div>
+            {% if product.product_name %}
+            <div class="head-product-name">{{ product.product_name }}</div>
+            {% endif %}
+        </div>
+        <div class="card-rule"></div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Basic Info -->
+            <div class="fsec">Basic Information</div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label>Product Name <span class="req">*</span></label>
+                    <input type="text" name="product_name"
+                           value="{{ product.product_name }}" required>
+                </div>
+                <div class="field-group">
+                    <label>Product Code <span class="req">*</span></label>
+                    <input type="text" name="product_code"
+                           value="{{ product.product_code }}" required>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label>Category</label>
+                    <input type="text" name="category"
+                           value="{{ product.category }}" placeholder="e.g. Dress">
+                </div>
+                <div class="field-group">
+                    <label>Dance Form</label>
+                    <input type="text" name="dance_form"
+                           value="{{ product.dance_form }}" placeholder="e.g. Bharatanatyam">
+                </div>
+            </div>
+
+            <!-- Specifications -->
+            <div class="fsec">Specifications</div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label>Size</label>
+                    <input type="text" name="size"
+                           value="{{ product.size }}" placeholder="e.g. M / Free size">
+                </div>
+                <div class="field-group">
+                    <label>Color</label>
+                    <input type="text" name="color"
+                           value="{{ product.color }}" placeholder="e.g. Red & Gold">
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label>Material</label>
+                <input type="text" name="material"
+                       value="{{ product.material }}" placeholder="e.g. Silk, Zari">
+            </div>
+
+            <!-- Pricing -->
+            <div class="fsec">Rental Pricing</div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label>Rental Price / Day</label>
+                    <div class="input-prefix-wrap">
+                        <span class="input-prefix">₹</span>
+                        <input type="number" name="rental_price_per_day"
+                               value="{{ product.rental_price_per_day }}" min="0" step="0.01">
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="fsec">Quantity</div>
+            <div class="field-row">
+            <div class="field-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" value="{{ product.quantity }}" min="0">
+            </div>
+            </div>
+
+            <!-- Description -->
+            <div class="fsec">Description</div>
+
+            <div class="field-group">
+                <label>Description</label>
+                <textarea name="descripition"
+                          placeholder="Describe the costume, condition, notes…">{{ product.description }}</textarea>
+            </div>
+
+            <!-- Image -->
+            <div class="fsec">Product Image</div>
+
+            <div class="field-group">
+                <label>Upload New Image</label>
+                <input type="file" name="product_image" accept="image/*">
+            </div>
+
+            {% if product.product_image %}
+            <div class="img-preview">
+                <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
+                <div class="img-preview-text">
+                    <strong>Current image</strong><br>
+                    Upload a new image above to replace it.
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Availability -->
+            <div class="fsec">Availability</div>
+
+            <label class="check-row">
+                <input type="checkbox" name="is_available"
+                       {% if product.is_available %}checked{% endif %}>
+                <div class="check-label">
+                    Available for Rent
+                    <small>Students can browse and book this item</small>
+                </div>
+            </label>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Save Changes
+                </button>
+                <button type="button" class="btn btn-ghost"
+                        onclick="window.location.href='/productlist/'">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 5l-7 7 7 7"/>
+                    </svg>
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

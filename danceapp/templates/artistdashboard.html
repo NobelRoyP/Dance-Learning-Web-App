@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Artist Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Sidebar + Content Wrapper -->
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold text-pink-600">Makeup Artist</h2>
+                <p class="text-gray-500">Dashboard</p>
+            </div>
+
+            <nav class="mt-6 space-y-3 px-4">
+
+                <a href="#" class="flex items-center text-pink-600 font-semibold bg-pink-50 px-4 py-2 rounded-md">
+                    💄 Dashboard
+                </a>
+
+                <a href="/artistprofile/" class="block text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md">
+                    👤 Artist Profile
+                </a>
+
+                <a href="/addphotos/" class="block text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md">
+                    📸 Portfolio
+                </a>
+
+                <a href="#" class="block text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md">
+                    ⭐ Reviews
+                </a>
+
+                <a href="/logout/" onclick="return confirm('Are you sure?');" 
+                    class="block text-red-500 hover:bg-red-100 px-4 py-2 rounded-md">
+                    🚪 Logout
+                </a>
+
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Welcome, {{ artist.name }}!</h1>
+
+                <img src="{{ artist.profile_photo.url }}" alt="Artist" 
+                     class="w-14 h-14 rounded-full shadow-md border">
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+                <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+                    <h2 class="text-gray-500">Today's Bookings</h2>
+                    <p class="text-3xl font-bold text-pink-600">05</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+                    <h2 class="text-gray-500">Total Clients</h2>
+                    <p class="text-3xl font-bold text-purple-600">128</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+                    <h2 class="text-gray-500">Experience</h2>
+                    <p class="text-3xl font-bold text-blue-600">
+                        {{ artist.experience }} Years
+                    </p>
+                </div>
+
+            </div>
+
+           
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

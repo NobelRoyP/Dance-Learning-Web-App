@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ shop.shop_name }} - Products</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 15px;
+        }
+
+        .product-details h3 {
+            margin: 0;
+            color: #222;
+        }
+
+        .category {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            color: #27ae60;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .deposit {
+            color: #c0392b;
+            font-size: 14px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .available {
+            color: green;
+        }
+
+        .not-available {
+            color: red;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .no-products {
+            text-align: center;
+            font-size: 18px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>{{ shop.shop_name }} - Products</h1>
+
+{% if products %}
+<div class="product-container">
+    {% for p in products %}
+    <div class="product-card">
+        {% if p.product_image %}
+            <img src="{{ p.product_image.url }}" class="product-image">
+        {% else %}
+            <img src="https://via.placeholder.com/300x250" class="product-image">
+        {% endif %}
+
+        <div class="product-details">
+            <h3>{{ p.product_name }}</h3>
+            <div class="category">{{ p.category }} | {{ p.dance_form }}</div>
+
+            <div class="price">
+                ₹{{ p.rental_price_per_day }} / day
+            </div>
+
+            <div class="deposit">
+                Security Deposit: ₹{{ p.security_deposit }}
+            </div>
+
+            <div class="status">
+                {% if p.is_available %}
+                    <span class="available">Available</span>
+                {% else %}
+                    <span class="not-available">Not Available</span>
+                {% endif %}
+            </div>
+
+            <div class="description">
+                {{ p.description|truncatewords:20 }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <div class="no-products">No products available in this shop.</div>
+{% endif %}
+
+</body>
+</html>

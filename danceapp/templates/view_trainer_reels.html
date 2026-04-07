@@ -1,0 +1,329 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ trainer.name }}'s Reels | Nrityangana</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --primary-purple: #8b5cf6;
+            --secondary-pink: #ec4899;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover { color: var(--primary-purple); }
+
+        /* Trainer Profile Header */
+        .profile-header {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+        }
+
+        .profile-info h1 {
+            margin: 0 0 5px 0;
+            font-size: 24px;
+            color: var(--text-main);
+        }
+
+        .profile-info p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .course-badge {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        /* Video Grid */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .reels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .grid-item {
+            position: relative;
+            aspect-ratio: 9 / 16;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .grid-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: 0.3s;
+        }
+
+        .grid-item:hover video { opacity: 0.6; transform: scale(1.02); }
+
+        .play-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 45px;
+            color: white;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 5;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .grid-item:hover .play-indicator { opacity: 1; }
+
+        .reel-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 10px 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .reel-info p {
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .empty-state i { font-size: 50px; color: #cbd5e1; margin-bottom: 10px; }
+        .empty-state h3 { margin: 0 0 10px 0; color: var(--text-main); }
+        .empty-state p { margin: 0; color: var(--text-muted); font-size: 14px; }
+
+        /* Modal Styles */
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-content video {
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            outline: none;
+        }
+
+        .modal-title {
+            color: white;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 35px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover { color: var(--secondary-pink); transform: scale(1.1); }
+
+        @media (max-width: 600px) {
+            .reels-grid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
+            .grid-item { border-radius: 0; }
+            .profile-header { flex-direction: column; text-align: center; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="javascript:history.back()" class="btn-back">
+            <i class='bx bx-arrow-back'></i> Back to Trainers
+        </a>
+    </nav>
+
+    <div class="profile-header">
+        {% if trainer.image %}
+            <img src="{{ trainer.image.url }}" alt="{{ trainer.name }}" class="profile-img">
+        {% else %}
+            <img src="{% static 'images/default-user.png' %}" alt="Default" class="profile-img">
+        {% endif %}
+        
+        <div class="profile-info">
+            <h1>{{ trainer.name }}</h1>
+            <p><i class='bx bx-briefcase-alt-2'></i> {{ trainer.experiance }} Years Experience</p>
+            <span class="course-badge">{{ trainer.course.course_name }}</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="reels-grid">
+            
+            {% for reel in reels %}
+            <div class="grid-item" onclick="openVideoModal('{{ reel.video.url }}', '{{ reel.title|escapejs }}')">
+                <i class='bx bx-play-circle play-indicator'></i>
+                <video preload="metadata">
+                    <source src="{{ reel.video.url }}#t=0.1" type="video/mp4">
+                </video>
+                
+                <div class="reel-info">
+                    <p>{{ reel.title }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class='bx bx-video-off'></i>
+                <h3>No Reels Yet</h3>
+                <p>{{ trainer.name }} hasn't uploaded any dance routines yet.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <div id="videoModal" class="video-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideoModal()">&times;</span>
+            <video id="modalPlayer" controls autoplay>
+                <source src="" type="video/mp4">
+            </video>
+            <div id="modalTitle" class="modal-title"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("videoModal");
+        const modalPlayer = document.getElementById("modalPlayer");
+        const modalTitle = document.getElementById("modalTitle");
+
+        function openVideoModal(videoUrl, title) {
+            modal.style.display = "flex";
+            modalPlayer.src = videoUrl.split('#')[0]; // Remove thumbnail hack
+            modalTitle.innerText = title; // Display title under the video
+            modalPlayer.play();
+        }
+
+        function closeVideoModal() {
+            modal.style.display = "none";
+            modalPlayer.pause();
+            modalPlayer.src = ""; 
+        }
+
+        // Close when clicking the black background
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeVideoModal();
+            }
+        }
+    </script>
+
+</body>
+</html>

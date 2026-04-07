@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Trainers | Institution Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background: #fff !important;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover { color: #1e293b; }
+
+        /* Action Buttons */
+        .btn-add-trainer {
+            background: #4f46e5;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-add-trainer:hover {
+            background: #4338ca;
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Main Table Card */
+        .main-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .card-header-custom {
+            padding: 25px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Table Design */
+        .table thead th {
+            background-color: #f8fafc;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            padding: 15px;
+        }
+
+        .trainer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .status-pill {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .btn-delete {
+            color: #ef4444;
+            background: #fef2f2;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="/institutiondashboard/" class="btn-back">
+            <span class="material-icons-round">arrow_back</span>
+            Back to Dashboard
+        </a>
+        <div class="fw-bold text-dark">
+            <span class="text-muted">Institution:</span> {{ institution.name }}
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    
+    <div class="d-md-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Staff Directory</h2>
+            <p class="text-muted mb-0">Manage and oversee all dance trainers in your institution.</p>
+        </div>
+        <a href="/add_trainer_institution/" class="btn-add-trainer mt-3 mt-md-0">
+            <span class="material-icons-round">add_circle</span>
+            Add New Trainer
+        </a>
+    </div>
+
+    <div class="main-card">
+        <div class="card-header-custom">
+            <h5 class="mb-0 fw-bold">Active Trainers</h5>
+            <span class="badge bg-light text-dark border">{{ users|length }} Total</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Trainer</th>
+                        <th>Contact Info</th>
+                        <th>Experience</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in users %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                {% if t.trainer.image %}
+                                    <img src="{{ t.trainer.image.url }}" class="trainer-avatar me-3">
+                                {% else %}
+                                    <div class="trainer-avatar me-3 bg-light d-flex align-items-center justify-content-center">
+                                        <span class="material-icons-round text-muted">person</span>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <div class="fw-bold">{{ t.trainer.name }}</div>
+                                    <small class="text-muted">Age: {{ t.trainer.age }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small fw-medium">{{ t.trainer.email }}</div>
+                            <div class="small text-muted">{{ t.trainer.phone }}</div>
+                        </td>
+                        <td>
+                            <div class="fw-600">{{ t.trainer.experiance }} Years</div>
+                        </td>
+                        <td>
+                            <span class="badge bg-label-primary" style="background: #eef2ff; color: #4f46e5;">{{ t.trainer.course.course_name }}</span>
+                        </td>
+                        <td>
+                            <span class="status-pill">Active</span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <a href="{% url 'delete_trainer_institution' t.id %}" 
+                               class="btn-delete" 
+                               onclick="return confirm('Remove trainer from your institution?');">
+                                <span class="material-icons-round">delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="80" class="opacity-25 mb-3">
+                            <p class="text-muted">No trainers found. Start by adding your first trainer!</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | {{ trainer.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        :root {
+            --trainer-teal: #0d9488;
+            --trainer-indigo: #4338ca;
+            --text-main: #1e293b;
+            --error-red: #ef4444;
+            --valid-green: #22c55e;
+            --bg-gray: #f8fafc;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, var(--trainer-teal) 0%, var(--trainer-indigo) 100%);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 { text-align: center; color: var(--text-main); margin-bottom: 30px; font-weight: 600; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: span 2; }
+
+        label {
+            font-weight: 600;
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .input-group { position: relative; }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--trainer-teal);
+        }
+
+        /* Password Toggle Styling */
+        .pass-wrapper { position: relative; }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        /* Current File Previews */
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            padding: 8px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .file-preview img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; }
+
+        .error-msg {
+            color: var(--error-red);
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .btn-update {
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            background: linear-gradient(to right, var(--trainer-teal), var(--trainer-indigo));
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-update:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Update Your Profile</h2>
+
+    <form method="POST" enctype="multipart/form-data" id="updateForm">
+        {% csrf_token %}
+
+        <div class="form-grid">
+            <div class="full-width">
+                <label>Full Name</label>
+                <input type="text" name="name" value="{{ trainer.name }}" required>
+            </div>
+
+            <div class="full-width">
+                <label>Email Address</label>
+                <input type="email" name="email" id="email" value="{{ trainer.email }}" required>
+                <small class="error-msg" id="emailError">Please enter a valid email.</small>
+            </div>
+
+            <div class="full-width">
+                <label>Password</label>
+                <div class="pass-wrapper">
+                    <input type="password" name="password" id="password" value="{{ trainer.password }}" required>
+                    <i class='bx bx-hide toggle-password' id="toggleIcon"></i>
+                </div>
+                <small class="error-msg" id="passError">Must be 8+ chars, with Upper, Lower, Number & Symbol.</small>
+            </div>
+
+            <div>
+                <label>Age</label>
+                <input type="number" name="age" id="age" value="{{ trainer.age }}" min="18" max="65">
+                <small class="error-msg" id="ageError">Age must be 18-65.</small>
+            </div>
+
+            <div>
+                <label>Gender</label>
+                <select name="Gender">
+                    <option value="M" {% if trainer.Gender == 'M' %}selected{% endif %}>Male</option>
+                    <option value="F" {% if trainer.Gender == 'F' %}selected{% endif %}>Female</option>
+                    <option value="O" {% if trainer.Gender == 'O' %}selected{% endif %}>Others</option>
+                </select>
+            </div>
+
+            <div class="full-width">
+                <label>Course Expertise</label>
+                <select name="category" required>
+                    <option value="" disabled>Select a Course</option>
+                    {% for course in courses %}
+                        <option value="{{ course.course_name }}" {% if trainer.category == course.course_name %}selected{% endif %}>
+                            {{ course.course_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Phone Number</label>
+                <input type="number" name="phone" id="phone" value="{{ trainer.phone }}">
+            </div>
+
+            <div>
+                <label>Experience (Years)</label>
+                <input type="number" name="experiance" value="{{ trainer.experiance }}">
+            </div>
+
+            <div class="full-width">
+                <label>Profile Image</label>
+                <input type="file" name="image" accept="image/*">
+                {% if trainer.image %}
+                    <div class="file-preview"><img src="{{ trainer.image.url }}"> <span>Current Avatar</span></div>
+                {% endif %}
+            </div>
+
+            <div class="full-width">
+                <label>Certification</label>
+                <input type="file" name="certificate" accept=".pdf,.jpg,.jpeg">
+                {% if trainer.certificate %}
+                    <div class="file-preview"><i class='bx bxs-file-blank' style="font-size: 20px;"></i> <span><a href="{{ trainer.certificate.url }}" target="_blank">Certificate on file</a></span></div>
+                {% endif %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn-update">Save Changes</button>
+        <a href="/trainerprofile/" style="display: block; text-align: center; margin-top: 15px; color: var(--text-main); font-size: 14px;">Cancel</a>
+    </form>
+</div>
+
+<script>
+    // Password Visibility Toggle
+    const togglePass = document.getElementById('toggleIcon');
+    const passwordInput = document.getElementById('password');
+
+    togglePass.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        togglePass.classList.toggle('bx-show');
+        togglePass.classList.toggle('bx-hide');
+    });
+
+    // Validations
+    const form = document.getElementById('updateForm');
+    const password = document.getElementById('password');
+    const email = document.getElementById('email');
+
+    const validate = (input, errorId, regex) => {
+        const error = document.getElementById(errorId);
+        if (regex.test(input.value)) {
+            error.style.display = 'none';
+            input.style.borderColor = '#e2e8f0';
+        } else {
+            error.style.display = 'block';
+            input.style.borderColor = 'var(--error-red)';
+        }
+    };
+
+    password.addEventListener('input', () => 
+        validate(password, 'passError', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/));
+
+    email.addEventListener('input', () => 
+        validate(email, 'emailError', /^[^\s@]+@[^\s@]+\.[^\s@]+$/));
+
+    form.addEventListener('submit', (e) => {
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!strongRegex.test(password.value)) {
+            e.preventDefault();
+            alert("Password does not meet security requirements.");
+        }
+    });
+</script>
+
+</body>
+</html>

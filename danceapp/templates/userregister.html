@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #1e4bb8;
+            --light-blue: #4a90e2;
+            --bg-gradient: linear-gradient(135deg, #6cb8ff, #4a90e2);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --input-bg: #f7fbff;
+            --error-red: #ff4d4d;
+            --error-text: #0b326b; /* Darker blue for readability on glass */
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .registration-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        label {
+            font-weight: 600;
+            color: #0b326b;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            background: var(--input-bg);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        /* Real-time Validation Styles */
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-blue);
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 12px rgba(30, 75, 184, 0.2);
+        }
+
+        input.is-invalid, select.is-invalid, textarea.is-invalid {
+            border-color: var(--error-red) !important;
+            background: #fffafa;
+        }
+
+        .error-msg {
+            color: white;
+            background: var(--error-red);
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            display: none; /* Hidden by default */
+            font-weight: 400;
+        }
+
+        textarea {
+            height: 70px;
+            resize: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-blue);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, background 0.3s;
+            box-shadow: 0 4px 15px rgba(30, 75, 184, 0.3);
+        }
+
+        button:hover {
+            background: #163c97;
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #0b326b;
+        }
+
+        .login-link a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="registration-container">
+        <form id="regForm" action="" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <h2>Create Account</h2>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="Enter your name">
+                <div class="error-msg">Please enter at least 3 letters (A-Z only).</div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="example@mail.com">
+                <div class="error-msg">Please enter a valid email address.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Min. 8 characters">
+                <div class="error-msg">Must be 8+ chars with 1 Uppercase, 1 Lowercase, and 1 Number.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Residential Address</label>
+                <textarea name="address" placeholder="Street, City, Zip Code"></textarea>
+                <div class="error-msg">Address must be at least 10 characters long.</div>
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Age</label>
+                    <input type="number" name="age" placeholder="18+">
+                    <div class="error-msg">Age 18-100 only.</div>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Gender</label>
+                    <select name="gender">
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="others">Others</option>
+                    </select>
+                    <div class="error-msg">Required.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dance Course</label>
+                <select name="course">
+                    <option value="">-- Select Dance Course --</option>
+                    {% for c in courses %}
+                        <option value="{{ c.id }}">{{ c.course_name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="error-msg">Please select a course.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Preferred Batch Time</label>
+                <select name="batch_time">
+                    <option value="">-- Select Batch Timing --</option>
+                    <option value="6am-7am">6:00 AM - 7:00 AM</option>
+                    <option value="8am-9am">8:00 AM - 9:00 AM</option>
+                    <option value="4pm-5pm">4:00 PM - 5:00 PM</option>
+                    <option value="6pm-7pm">6:00 PM - 7:00 PM</option>
+                </select>
+                <div class="error-msg">Please select a timing.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Profile Image</label>
+                <input type="file" name="image" accept="image/*">
+                <div class="error-msg">Please upload a valid image (Max 2MB).</div>
+            </div>
+
+            <button type="submit">Register Now</button>
+
+            <p class="login-link">
+                Already have an account? <a href="/userlogin">Login</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('regForm');
+
+        // Validation Rules
+        const validate = {
+            name: (val) => /^[a-zA-Z\s]{3,50}$/.test(val),
+            email: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+            password: (val) => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(val),
+            address: (val) => val.trim().length >= 10,
+            age: (val) => val >= 18 && val <= 100,
+            gender: (val) => val !== "",
+            course: (val) => val !== "",
+            batch_time: (val) => val !== "",
+            image: (input) => {
+                if (!input.files || input.files.length === 0) return false;
+                const size = input.files[0].size / 1024 / 1024;
+                return size <= 2; // Max 2MB
+            }
+        };
+
+        const showUI = (input, isValid) => {
+            const errorDiv = input.parentElement.querySelector('.error-msg');
+            if (isValid) {
+                input.classList.remove('is-invalid');
+                if (errorDiv) errorDiv.style.display = 'none';
+            } else {
+                input.classList.add('is-invalid');
+                if (errorDiv) errorDiv.style.display = 'block';
+            }
+        };
+
+        // Real-time listeners
+        form.querySelectorAll('input, select, textarea').forEach(field => {
+            ['input', 'blur', 'change'].forEach(evt => {
+                field.addEventListener(evt, () => {
+                    let isValid;
+                    if (field.type === 'file') {
+                        isValid = validate.image(field);
+                    } else {
+                        isValid = validate[field.name] ? validate[field.name](field.value) : true;
+                    }
+                    showUI(field, isValid);
+                });
+            });
+        });
+
+        // Block submission if errors exist
+        form.addEventListener('submit', (e) => {
+            let formIsValid = true;
+            form.querySelectorAll('input, select, textarea').forEach(field => {
+                const isValid = (field.type === 'file') ? validate.image(field) : (validate[field.name] ? validate[field.name](field.value) : true);
+                showUI(field, isValid);
+                if (!isValid) formIsValid = false;
+            });
+
+            if (!formIsValid) {
+                e.preventDefault();
+                alert("Please correct the errors in the form.");
+            }
+        });
+    </script>
+</body>
+</html>

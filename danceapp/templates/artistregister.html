@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Artist Registration</title>
+
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #6cb8ff, #4a90e2);
+            height: auto;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+        }
+
+        .register-box {
+            width: 430px;
+            background: rgba(255, 255, 255, 0.20);
+            padding: 35px;
+            border-radius: 18px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1e4bb8;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0b326b;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            border: 1px solid #bcd8ff;
+            outline: none;
+            background: #f7fbff;
+            color: #333;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #8faac7;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #4a90e2;
+            background: #fff;
+            box-shadow: 0 0 7px rgba(74,144,226,0.45);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1e4bb8;
+            color: white;
+            font-size: 17px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #163c97;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="register-box">
+        <h2>Makeup Artist Registration</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Name</label>
+            <input type="text" name="name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Phone</label>
+            <input type="text" name="phone" required>
+
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Others</option>
+            </select>
+
+            <label>Age</label>
+            <input type="number" name="age">
+
+            <label>Experience (years)</label>
+            <input type="number" name="experience">
+
+            <label>Specialization</label>
+            <input type="text" name="specialization" placeholder="Example: Classical Dance Makeup">
+
+            <label>Location</label>
+            <input type="text" name="location">
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <label>Profile Photo</label>
+            <input type="file" name="profile_photo">
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+</body>
+</html>

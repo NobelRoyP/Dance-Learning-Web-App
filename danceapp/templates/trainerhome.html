@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Portal | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --trainer-teal: #0d9488;
+            --trainer-indigo: #4338ca;
+            --bg-light: #f1f5f9;
+            --sidebar-dark: #1e1e2d;
+            --text-main: #1e293b;
+            --glass-white: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: var(--bg-light);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Sidebar Redesign --- */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, var(--sidebar-dark) 0%, #11111d 100%);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            color: #00f2fe; /* Accent color */
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #94a3b8;
+            padding: 14px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a i { font-size: 20px; }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .nav-links a.logout {
+            margin-top: auto;
+            color: #f87171;
+        }
+
+        .nav-links a.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* --- Main Content Redesign --- */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        header {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .welcome-text {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* --- Stats Grid --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        /* Card Variations */
+        .blue { background: #e0e7ff; color: #4338ca; }
+        .teal { background: #ccfbf1; color: #0d9488; }
+        .purple { background: #f3e8ff; color: #7e22ce; }
+        .orange { background: #ffedd5; color: #ea580c; }
+
+        .stat-info h3 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--text-main);
+        }
+
+        .stat-info p {
+            margin: 0;
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 80px; padding: 30px 10px; }
+            .sidebar h2, .sidebar span { display: none; }
+            .nav-links a { justify-content: center; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>DanceTrainer</h2>
+        <nav class="nav-links">
+            <a href="#" class="active"><i class='bx bxs-dashboard'></i> <span>Overview</span></a>
+            <a href="/trainer_student_list/"><i class='bx bxs-group'></i> <span>Students</span></a>
+            <a href="/trainerprofile/"><i class='bx bxs-user-circle'></i> <span>Profile</span></a>
+            <a href="/reel_list/"><i class='bx bxs-video'></i> <span>My Reels/Classes</span></a>
+            <a href="/chat/trainer/list/"><i class='bx bxs-chat'></i> <span>Chat</span></a>
+            
+            <a href="/logout/" class="logout" onclick="return confirm('Are you sure you want to logout?');">
+                <i class='bx bxs-log-out'></i> <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-wrapper">
+        <header>
+            <div>
+                <h1>Dashboard Overview</h1>
+                <p class="welcome-text">Welcome back, Trainer! Here is what's happening today.</p>
+            </div>
+            </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon-box blue"><i class='bx bxs-graduation'></i></div>
+                <div class="stat-info">
+                    <h3>{{ total_students }}</h3>
+                    <p>Total Students</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box teal"><i class='bx bxs-calendar'></i></div>
+                <div class="stat-info">
+                    <h3>{{ today|date:"d M Y" }}</h3>
+                    <p>Today's Date</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box purple"><i class='bx bxs-check-shield'></i></div>
+                <div class="stat-info">
+                    <h3>{{ attendance_percentage }}%</h3>
+                    <p class="stat-sub">{{ present_today }} present · {{ absent_today }} absent</p>
+                    <p>Attendance Rate</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box orange"><i class='bx bxs-dollar-circle'></i></div>
+                <div class="stat-info">
+                    <h3>Rs.{{ trainer_earnings }}</h3>
+                    <p>Earnings</p>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+</body>
+</html>

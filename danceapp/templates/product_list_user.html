@@ -1,0 +1,538 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costume Rentals | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:          #0c0a07;
+            --surface:     #141109;
+            --card:        #1a1610;
+            --card-h:      #201c12;
+            --border:      #302820;
+            --border-hi:   rgba(201,168,76,.4);
+            --gold:        #c9a84c;
+            --gold-dim:    #8a6f2e;
+            --gold-light:  rgba(201,168,76,.1);
+            --amber:       #d97a36;
+            --cream:       #f0e6ce;
+            --muted:       #7a6e5a;
+            --green:       #3a9e6e;
+            --green-light: rgba(58,158,110,.12);
+            --red:         #c05a5a;
+            --red-light:   rgba(192,90,90,.12);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse 70% 40% at 10% 0%, rgba(42,26,8,.5) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 35% at 90% 100%, rgba(48,14,14,.3) 0%, transparent 55%);
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(12,10,7,.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            height: 62px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+        }
+        .nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--gold); text-decoration: none;
+            letter-spacing: .04em;
+        }
+        .nav-brand span { color: var(--cream); }
+        .nav-back {
+            display: flex; align-items: center; gap: 7px;
+            color: var(--muted); font-size: .86rem;
+            text-decoration: none;
+            padding: 7px 14px;
+            border: 1px solid var(--border); border-radius: 8px;
+            transition: color .18s, border-color .18s, background .18s;
+        }
+        .nav-back:hover { color: var(--cream); border-color: var(--border-hi); background: var(--gold-light); }
+        .nav-back svg { width: 14px; height: 14px; }
+
+        /* ── HERO ── */
+        .hero {
+            max-width: 1140px; margin: 0 auto;
+            padding: 60px 24px 40px;
+        }
+        .hero-eyebrow {
+            font-size: .68rem; letter-spacing: .24em;
+            text-transform: uppercase; color: var(--gold-dim);
+            margin-bottom: 10px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700; line-height: 1.1; letter-spacing: .02em;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero-sub {
+            margin-top: 12px; font-size: .95rem;
+            color: var(--muted); font-weight: 300;
+            max-width: 480px; line-height: 1.7;
+        }
+
+        /* ── CONTROLS ── */
+        .controls {
+            max-width: 1140px; margin: 0 auto 28px;
+            padding: 0 24px;
+            display: flex; align-items: center;
+            gap: 12px; flex-wrap: wrap;
+        }
+        .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 360px; }
+        .search-wrap svg {
+            position: absolute; left: 13px; top: 50%;
+            transform: translateY(-50%);
+            width: 15px; height: 15px; color: var(--muted); pointer-events: none;
+        }
+        .search-input {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 10px 13px 10px 38px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .86rem; color: var(--cream); outline: none;
+            transition: border-color .18s, box-shadow .18s;
+        }
+        .search-input::placeholder { color: var(--muted); }
+        .search-input:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 3px rgba(201,168,76,.08); }
+
+        /* Filter select */
+        .filter-sel {
+            background: var(--card);
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 10px 32px 10px 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .84rem; color: var(--cream); outline: none;
+            appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%237a6e5a' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            transition: border-color .18s;
+        }
+        .filter-sel:focus { border-color: var(--gold-dim); }
+        .filter-sel option { background: var(--card); }
+
+        /* Filter tabs */
+        .ftabs { display: flex; gap: 6px; flex-wrap: wrap; }
+        .ftab {
+            padding: 8px 14px; border-radius: 9px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            font-size: .72rem; font-weight: 500;
+            color: var(--muted); cursor: pointer;
+            transition: background .16s, color .16s, border-color .16s;
+            white-space: nowrap;
+        }
+        .ftab:hover { background: var(--gold-light); color: var(--cream); border-color: var(--border-hi); }
+        .ftab.active { background: var(--gold); color: #0c0a07; border-color: var(--gold); font-weight: 600; }
+
+        /* Divider */
+        .section-divider {
+            max-width: 1140px; margin: 0 auto 22px;
+            padding: 0 24px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .sd-label {
+            font-size: .62rem; font-weight: 600;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted); white-space: nowrap;
+        }
+        .sd-line { flex: 1; height: 1px; background: var(--border); }
+        .sd-count {
+            font-size: .65rem; font-weight: 600;
+            color: var(--gold);
+            background: rgba(201,168,76,.1);
+            border: 1px solid rgba(201,168,76,.2);
+            padding: 2px 10px; border-radius: 99px;
+        }
+
+        /* ── GRID ── */
+        .product-grid {
+            max-width: 1140px; margin: 0 auto;
+            padding: 0 24px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* ── CARD ── */
+        .product-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: border-color .25s, transform .25s, box-shadow .25s;
+            animation: rise .45s ease both;
+        }
+        .product-card:hover {
+            border-color: var(--border-hi);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 56px rgba(0,0,0,.5);
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .product-card:nth-child(2) { animation-delay: .06s; }
+        .product-card:nth-child(3) { animation-delay: .12s; }
+        .product-card:nth-child(4) { animation-delay: .18s; }
+        .product-card:nth-child(5) { animation-delay: .24s; }
+        .product-card:nth-child(6) { animation-delay: .30s; }
+
+        /* Image */
+        .card-img {
+            position: relative; height: 220px; overflow: hidden;
+        }
+        .card-img img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform .5s ease, filter .3s;
+            filter: brightness(.88) saturate(.9);
+        }
+        .product-card:hover .card-img img {
+            transform: scale(1.06); filter: brightness(1) saturate(1);
+        }
+        .card-img::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 45%, rgba(12,10,7,.75) 100%);
+        }
+
+        /* Availability badge */
+        .avail-badge {
+            position: absolute; top: 12px; left: 12px; z-index: 2;
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 11px; border-radius: 99px;
+            font-size: .62rem; font-weight: 700; letter-spacing: .07em;
+            text-transform: uppercase; backdrop-filter: blur(8px);
+        }
+        .avail-badge::before { content: '●'; font-size: .38rem; }
+        .avail-badge.yes { background: rgba(58,158,110,.2); color: #5de8a8; border: 1px solid rgba(58,158,110,.3); }
+        .avail-badge.no  { background: rgba(192,90,90,.2);  color: #f0a0a0; border: 1px solid rgba(192,90,90,.3); }
+
+        /* Dance form tag */
+        .dance-tag {
+            position: absolute; bottom: 10px; right: 10px; z-index: 2;
+            background: rgba(12,10,7,.65); backdrop-filter: blur(8px);
+            color: var(--gold); font-size: .62rem; font-weight: 600;
+            letter-spacing: .07em; padding: 3px 9px; border-radius: 6px;
+            border: 1px solid rgba(201,168,76,.2);
+        }
+
+        /* Body */
+        .card-body { padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+        .product-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem; font-weight: 600;
+            color: var(--cream); letter-spacing: .01em; line-height: 1.3;
+        }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            display: inline-flex; align-items: center;
+            padding: 3px 10px; border-radius: 99px;
+            font-size: .64rem; font-weight: 500;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.03); color: var(--muted);
+        }
+        .chip.cat { border-color: rgba(201,168,76,.22); color: var(--gold); background: var(--gold-light); }
+        .chip.col { border-color: var(--border); color: var(--muted); }
+
+        /* Price */
+        .price-row { display: flex; align-items: baseline; gap: 5px; }
+        .price-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem; font-weight: 700;
+            color: var(--gold); letter-spacing: -.01em;
+        }
+        .price-unit { font-size: .72rem; color: var(--muted); }
+        .deposit-note { font-size: .68rem; color: var(--muted); margin-top: -4px; }
+        .deposit-note strong { color: var(--cream); }
+
+        /* Description snippet */
+        .card-desc {
+            font-size: .78rem; color: var(--muted); line-height: 1.6;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* Card footer */
+        .card-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+        .btn-book {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 11px;
+            background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+            color: #0c0a07;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .8rem; font-weight: 700;
+            letter-spacing: .06em; text-transform: uppercase;
+            border-radius: 10px; text-decoration: none; border: none; cursor: pointer;
+            transition: opacity .18s, transform .15s, box-shadow .18s;
+            box-shadow: 0 4px 14px rgba(201,168,76,.22);
+        }
+        .btn-book:hover {
+            opacity: .88; transform: translateY(-1px);
+            box-shadow: 0 8px 22px rgba(201,168,76,.32);
+            color: #0c0a07;
+        }
+        .btn-book svg { width: 14px; height: 14px; }
+        .btn-book-disabled {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 11px;
+            background: rgba(255,255,255,.04);
+            color: var(--muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .8rem; font-weight: 600;
+            letter-spacing: .06em; text-transform: uppercase;
+            border-radius: 10px; border: 1px solid var(--border);
+            cursor: not-allowed;
+        }
+
+        /* ── EMPTY ── */
+        .empty {
+            grid-column: 1/-1; text-align: center; padding: 80px 24px;
+        }
+        .empty-icon { font-size: 3.5rem; opacity: .15; margin-bottom: 20px; }
+        .empty h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; margin-bottom: 10px;
+        }
+        .empty p { color: var(--muted); font-style: italic; }
+
+        /* ── MY BOOKINGS STRIP ── */
+        .bookings-strip {
+            max-width: 1140px; margin: 0 auto 0;
+            padding: 0 24px 32px;
+        }
+        .strip-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 18px;
+            background: var(--card);
+            border: 1px solid var(--border); border-radius: 10px;
+            color: var(--muted); font-size: .82rem; font-weight: 500;
+            text-decoration: none;
+            transition: color .18s, border-color .18s, background .18s;
+        }
+        .strip-link:hover { color: var(--cream); border-color: var(--border-hi); background: var(--gold-light); }
+        .strip-link svg { width: 15px; height: 15px; }
+        .strip-link .badge {
+            background: var(--gold); color: #0c0a07;
+            font-size: .62rem; font-weight: 700;
+            padding: 1px 7px; border-radius: 99px;
+        }
+
+        @media (max-width: 600px) {
+            nav { padding: 0 16px; }
+            .hero, .controls, .section-divider, .product-grid, .bookings-strip { padding-left: 16px; padding-right: 16px; }
+            .hero { padding-top: 36px; padding-bottom: 28px; }
+            .filter-sel { width: 100%; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .search-wrap { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/userhome/" class="nav-brand">🪷 Nritya<span>ngana</span></a>
+    <a href="/userhome/" class="nav-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Home
+    </a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+    <p class="hero-eyebrow">Costume Rentals</p>
+    <h1>Dress for the <em>Stage</em></h1>
+    <p class="hero-sub">Browse and rent authentic classical dance costumes and ornaments from your institution.</p>
+</div>
+
+<!-- My bookings shortcut -->
+<div class="bookings-strip">
+    <a href="/user/bookings/" class="strip-link">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <path d="M9 12h6M9 16h4"/>
+        </svg>
+        View My Bookings
+    </a>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+    <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" type="text" id="search-input"
+               placeholder="Search by name, category, dance form…"
+               oninput="applyFilters()">
+    </div>
+
+    <select class="filter-sel" id="dance-filter" onchange="applyFilters()">
+        <option value="">All Dance Forms</option>
+        {% for df in dance_forms %}
+            <option value="{{ df.course_name }}">{{ df.course_name }}</option>
+        {% endfor %}
+    </select>
+
+    <div class="ftabs">
+        <button class="ftab active" onclick="setCat('', this)">All</button>
+        <button class="ftab" onclick="setCat('Dress', this)">Dresses</button>
+        <button class="ftab" onclick="setCat('Ornament', this)">Ornaments</button>
+        <button class="ftab" onclick="setCat('Accessory', this)">Accessories</button>
+    </div>
+</div>
+
+<!-- Section divider -->
+<div class="section-divider">
+    <span class="sd-label">Available Items</span>
+    <div class="sd-line"></div>
+    <span class="sd-count" id="count-chip">{{ products|length }}</span>
+</div>
+
+<!-- Grid -->
+<div class="product-grid" id="product-grid">
+
+    {% if products %}
+        {% for p in products %}
+        <div class="product-card"
+             data-name="{{ p.product_name|lower }}"
+             data-cat="{{ p.category|lower|default:'' }}"
+             data-dance="{{ p.dance_form|lower|default:'' }}"
+             data-avail="{{ p.is_available|yesno:'1,0' }}">
+
+            <div class="card-img">
+                {% if p.product_image %}
+                    <img src="{{ p.product_image.url }}" alt="{{ p.product_name }}">
+                {% else %}
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='220'%3E%3Crect fill='%231a1610' width='400' height='220'/%3E%3Ctext fill='%237a6e5a' font-family='serif' font-size='14' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ENo Image%3C/text%3E%3C/svg%3E"
+                         alt="No image">
+                {% endif %}
+
+                <span class="avail-badge {% if p.is_available %}yes{% else %}no{% endif %}">
+                    {% if p.is_available %}Available{% else %}Rented Out{% endif %}
+                </span>
+
+                {% if p.dance_form %}
+                <span class="dance-tag">{{ p.dance_form }}</span>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <div class="product-name">{{ p.product_name }}</div>
+
+                <div class="chips">
+                    {% if p.category %}
+                    <span class="chip cat">{{ p.category }}</span>
+                    {% endif %}
+                    {% if p.color %}
+                    <span class="chip col">{{ p.color }}</span>
+                    {% endif %}
+                    {% if p.size %}
+                    <span class="chip">{{ p.size }}</span>
+                    {% endif %}
+                    {% if p.material %}
+                    <span class="chip">{{ p.material }}</span>
+                    {% endif %}
+                    <span class="chip" style="background: #2e2a09; color: #fff;">Available Quantity: {{p.quantity}}</span>
+                </div>
+
+                <div>
+                    <div class="price-row">
+                        <span class="price-num">₹{{ p.rental_price_per_day }}</span>
+                        <span class="price-unit">/ day</span>
+                    </div>
+                    {% if p.security_deposit %}
+                    <div class="deposit-note">+ <strong>₹{{ p.security_deposit }}</strong> refundable deposit</div>
+                    {% endif %}
+                </div>
+
+                {% if p.description %}
+                <div class="card-desc">{{ p.description }}</div>
+                {% endif %}
+            </div>
+
+            <div class="card-footer">
+                {% if p.is_available %}
+                <a href="/book-costume/{{ p.id }}/" class="btn-book">
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                        <rect x="9" y="3" width="6" height="4" rx="1"/>
+                    </svg>
+                    Book Now
+                </a>
+                {% else %}
+                <div class="btn-book-disabled">
+                    Currently Unavailable
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+    <div class="empty">
+        <div class="empty-icon">👗</div>
+        <h3>No Costumes Listed</h3>
+        <p>Your institution hasn't added any rental costumes yet.</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+    let activeCat = '';
+
+    function applyFilters() {
+        const q     = document.getElementById('search-input').value.toLowerCase().trim();
+        const dance = document.getElementById('dance-filter').value.toLowerCase();
+        const cards = document.querySelectorAll('#product-grid .product-card');
+        let visible = 0;
+
+        cards.forEach(card => {
+            const nameMatch  = !q || card.dataset.name.includes(q) || card.dataset.cat.includes(q) || card.dataset.dance.includes(q);
+            const catMatch   = !activeCat || card.dataset.cat === activeCat.toLowerCase();
+            const danceMatch = !dance || card.dataset.dance === dance;
+            const show = nameMatch && catMatch && danceMatch;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        document.getElementById('count-chip').textContent = visible;
+    }
+
+    function setCat(cat, btn) {
+        activeCat = cat;
+        document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilters();
+    }
+</script>
+
+</body>
+</html>

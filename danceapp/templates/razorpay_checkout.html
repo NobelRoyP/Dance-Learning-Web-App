@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | Nrityangana</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%); /* Nrityangana Dark Purple Theme */
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            text-align: center;
+        }
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ec4899; /* Pink accent */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader-container">
+        <div class="spinner"></div>
+        <h2>Initializing Secure Payment...</h2>
+        <p>Please do not refresh this page.</p>
+    </div>
+
+    <form id="razorpay-form" action="{% url 'payment_success' %}" method="POST" style="display: none;">
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+        <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+    </form>
+
+    <script>
+        var options = {
+            "key": "{{ api_key }}",
+            "amount": "{{ amount }}00", // Appends '00' to convert flat rupees (e.g. 499) to paise (49900)
+            "currency": "INR",
+            "name": "Nrityangana",
+            "description": "{{ course_name }} Premium Access",
+            "order_id": "{{ order_id }}",
+            
+            // ✅ SUCCESS HANDLER: Fills the hidden form and submits it
+            "handler": function (response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                
+                document.getElementById('razorpay-form').submit();
+            },
+            
+            "prefill": {
+                "name": "{{ user.name }}",
+                "email": "{{ user.email }}",
+                "contact": "{{ user.phone }}" // Assumes your user model has a phone field
+            },
+            
+            "theme": {
+                "color": "#8b5cf6" // Matches the primary purple of the app
+            },
+            
+            // ✅ CANCEL HANDLER: If they close the popup without paying
+            "modal": {
+                "ondismiss": function () {
+                    // Send them back to the trainers page safely
+                    window.location.href = "/usertrainers/";
+                }
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        
+        // Auto-open the Razorpay popup as soon as the page loads
+        window.onload = function() {
+            rzp1.open();
+        };
+    </script>
+</body>
+</html>

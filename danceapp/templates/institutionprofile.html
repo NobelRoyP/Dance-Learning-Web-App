@@ -1,0 +1,367 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Profile | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #f5f3ef;
+            --surface:      #ffffff;
+            --surface-2:    #faf9f6;
+            --border:       #e4ddd3;
+            --border-soft:  #ede8e0;
+            --green:        #1a6b42;
+            --green-mid:    #22894f;
+            --green-light:  #edf7f1;
+            --sidebar:      #13211a;
+            --gold:         #b8841f;
+            --text:         #18160f;
+            --text-mid:     #45403a;
+            --text-muted:   #9a9188;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image: radial-gradient(circle, rgba(0,0,0,.034) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: var(--sidebar);
+            height: 60px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 16px rgba(0,0,0,.22);
+        }
+        .tb-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: #fff; text-decoration: none;
+        }
+        .tb-brand em { font-style: italic; color: var(--gold); }
+        .tb-back {
+            display: flex; align-items: center; gap: 7px;
+            font-size: .78rem; font-weight: 500;
+            color: rgba(255,255,255,.52); text-decoration: none;
+            padding: 7px 14px;
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 8px;
+            transition: color .16s, border-color .16s, background .16s;
+        }
+        .tb-back:hover { color: #fff; border-color: rgba(255,255,255,.26); background: rgba(255,255,255,.06); }
+        .tb-back svg { width: 14px; height: 14px; }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 44px 20px 80px;
+        }
+
+        /* Eyebrow row */
+        .eyebrow {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 26px;
+        }
+        .eyebrow span {
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--text-muted); white-space: nowrap;
+        }
+        .eyebrow-line { flex: 1; height: 1px; background: var(--border); }
+
+        /* ── HERO CARD ── */
+        .hero-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            animation: rise .45s ease both;
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner */
+        .banner {
+            height: 96px;
+            background: linear-gradient(135deg, #0e1c15 0%, var(--green) 60%, var(--green-mid) 100%);
+            position: relative; overflow: hidden;
+        }
+        /* Shimmer bar */
+        .banner::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #7a5010, var(--gold), #e8c060, var(--gold), #7a5010);
+            background-size: 200% 100%;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+        /* Decorative circles */
+        .banner::after {
+            content: '';
+            position: absolute;
+            right: -50px; top: -50px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.07);
+            box-shadow: inset 0 0 0 40px rgba(255,255,255,.025);
+        }
+
+        /* Avatar */
+        .ava-wrap {
+            display: flex; justify-content: center;
+            margin-top: -52px; position: relative; z-index: 2;
+        }
+        .ava {
+            width: 104px; height: 104px; border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--surface);
+            box-shadow: 0 4px 18px rgba(0,0,0,.13);
+            background: var(--surface-2);
+            display: block;
+        }
+        .ava-fb {
+            width: 104px; height: 104px; border-radius: 50%;
+            background: linear-gradient(135deg, #0e1c15, var(--green));
+            border: 4px solid var(--surface);
+            box-shadow: 0 4px 18px rgba(0,0,0,.13);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem; font-weight: 700; color: #fff;
+        }
+
+        /* Name area */
+        .hero-body { text-align: center; padding: 14px 28px 26px; }
+        .inst-name {
+            font-size: 1.5rem; font-weight: 800;
+            color: var(--text); letter-spacing: -.04em; line-height: 1.2;
+        }
+        .inst-tag {
+            display: inline-flex; align-items: center; gap: 5px;
+            margin-top: 9px;
+            background: var(--green-light);
+            border: 1px solid rgba(26,107,66,.18);
+            color: var(--green);
+            font-size: .67rem; font-weight: 700;
+            letter-spacing: .1em; text-transform: uppercase;
+            padding: 4px 12px; border-radius: 99px;
+        }
+        .inst-tag::before { content: '●'; font-size: .38rem; }
+
+        /* ── INFO CARD ── */
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,.05);
+            margin-top: 14px;
+            animation: rise .45s .1s ease both;
+        }
+        .ic-head {
+            padding: 13px 22px;
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border-soft);
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .16em; text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .ic-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .ic-field {
+            padding: 15px 22px;
+            border-bottom: 1px solid var(--border-soft);
+            border-right: 1px solid var(--border-soft);
+        }
+        .ic-field:nth-child(even) { border-right: none; }
+        .ic-field.full { grid-column: 1/-1; border-right: none; }
+        .ic-field:last-child,
+        .ic-field:nth-last-child(2):not(.full) { border-bottom: none; }
+        .ic-field.full:last-child { border-bottom: none; }
+
+        .ic-label {
+            font-size: .6rem; font-weight: 700;
+            letter-spacing: .13em; text-transform: uppercase;
+            color: var(--text-muted); margin-bottom: 6px;
+        }
+        .ic-value {
+            display: flex; align-items: center; gap: 8px;
+            font-size: .88rem; font-weight: 500;
+            color: var(--text); line-height: 1.5;
+        }
+        .ic-value.empty { color: var(--text-muted); font-weight: 400; font-style: italic; }
+        .ic-ico {
+            width: 28px; height: 28px; border-radius: 7px;
+            background: var(--green-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .78rem; flex-shrink: 0;
+        }
+
+        /* ── ACTIONS ── */
+        .actions {
+            display: flex; gap: 12px;
+            margin-top: 14px;
+            animation: rise .45s .2s ease both;
+        }
+        .btn {
+            flex: 1;
+            display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+            padding: 13px 16px;
+            border-radius: 11px;
+            font-family: 'Inter', sans-serif;
+            font-size: .81rem; font-weight: 600;
+            text-decoration: none;
+            letter-spacing: -.01em;
+            border: none; cursor: pointer;
+            transition: transform .18s, box-shadow .18s, background .18s;
+        }
+        .btn:active { transform: scale(.97) !important; }
+        .btn svg { width: 14px; height: 14px; }
+
+        .btn-primary {
+            background: var(--green); color: #fff;
+            box-shadow: 0 4px 14px rgba(26,107,66,.24);
+        }
+        .btn-primary:hover {
+            background: var(--green-mid); color: #fff;
+            box-shadow: 0 8px 22px rgba(26,107,66,.3);
+            transform: translateY(-2px);
+        }
+        .btn-ghost {
+            background: var(--surface); color: var(--text-mid);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+        }
+        .btn-ghost:hover {
+            background: var(--surface-2); color: var(--text);
+            border-color: #bbb;
+            transform: translateY(-2px);
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 520px) {
+            .topbar { padding: 0 16px; }
+            .page { padding: 28px 14px 60px; }
+            .ic-grid { grid-template-columns: 1fr; }
+            .ic-field { border-right: none; }
+            .actions { flex-direction: column; }
+            .inst-name { font-size: 1.25rem; }
+            .hero-body { padding: 14px 20px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="topbar">
+    <a href="/institutiondashboard/" class="tb-brand">Nritya<em>ngana</em></a>
+    <a href="/institutiondashboard/" class="tb-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Dashboard
+    </a>
+</nav>
+
+<div class="page">
+
+    <div class="eyebrow">
+        <span>Institution Portal</span>
+        <div class="eyebrow-line"></div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero-card">
+        <div class="banner"></div>
+        <div class="ava-wrap">
+            {% if institution.logo %}
+                <img class="ava" src="{{ institution.logo.url }}" alt="{{ institution.name }}">
+            {% else %}
+                <div class="ava-fb">{{ institution.name|slice:":1"|upper }}</div>
+            {% endif %}
+        </div>
+        <div class="hero-body">
+            <div class="inst-name">{{ institution.name }}</div>
+            <span class="inst-tag">Verified Institution</span>
+        </div>
+    </div>
+
+    <!-- Info -->
+    <div class="info-card">
+        <div class="ic-head">Contact &amp; Details</div>
+        <div class="ic-grid">
+
+            <div class="ic-field">
+                <div class="ic-label">Email Address</div>
+                <div class="ic-value {% if not institution.email %}empty{% endif %}">
+                    <span class="ic-ico">✉️</span>
+                    {{ institution.email|default:"Not provided" }}
+                </div>
+            </div>
+
+            <div class="ic-field">
+                <div class="ic-label">Phone Number</div>
+                <div class="ic-value {% if not institution.phone %}empty{% endif %}">
+                    <span class="ic-ico">📞</span>
+                    {{ institution.phone|default:"Not provided" }}
+                </div>
+            </div>
+
+            <div class="ic-field">
+                <div class="ic-label">Location</div>
+                <div class="ic-value {% if not institution.location %}empty{% endif %}">
+                    <span class="ic-ico">📍</span>
+                    {{ institution.location|default:"Not provided" }}
+                </div>
+            </div>
+
+            <div class="ic-field">
+                <div class="ic-label">Established</div>
+                <div class="ic-value {% if not institution.established_year %}empty{% endif %}">
+                    <span class="ic-ico">🏛</span>
+                    {{ institution.established_year|default:"Not provided" }}
+                </div>
+            </div>
+
+            <div class="ic-field full">
+                <div class="ic-label">Full Address</div>
+                <div class="ic-value {% if not institution.address %}empty{% endif %}">
+                    <span class="ic-ico">🗺️</span>
+                    {{ institution.address|default:"Not yet provided" }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="actions">
+        <a href="{% url 'institutioneditprofile' %}" class="btn btn-primary">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit Profile
+        </a>
+        <a href="{% url 'institutiondashboard' %}" class="btn btn-ghost">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+</body>
+</html>

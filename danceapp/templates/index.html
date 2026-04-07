@@ -1,0 +1,1196 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Nrityangana — Classical Dance</title>
+    <meta name="description" content="Nrityangana — A vibrant platform for classical Indian dance forms, trainers, institutions and costumes.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/audioplayer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gijgo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* ═══════════════════════════════════════
+           GOOGLE FONTS
+        ═══════════════════════════════════════ */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+        /* ═══════════════════════════════════════
+           HEADER — DESKTOP
+        ═══════════════════════════════════════ */
+        .main-header-area {
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            transition: background 0.3s;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            height: 68px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Brand */
+        .brand-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: .04em;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .brand-logo span { color: #c9a84c; }
+
+        /* Desktop nav */
+        .desktop-nav ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2px;
+        }
+        .desktop-nav ul li { position: relative; }
+        .desktop-nav ul li > a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ccc !important;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14.5px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 7px;
+            transition: background .2s, color .2s;
+            white-space: nowrap;
+        }
+        .desktop-nav ul li > a:hover,
+        .desktop-nav ul li > a.active {
+            color: #fff !important;
+            background: rgba(255,255,255,.08);
+        }
+        .desktop-nav ul li > a.active { color: #c9a84c !important; }
+
+        /* Dropdown */
+        .desktop-nav ul li {
+            /* Extend the hover zone downward so the gap between
+               the nav link and the dropdown is still "inside" the li */
+            padding-bottom: 8px;
+            margin-bottom: -8px;
+        }
+        .desktop-nav .submenu {
+            position: absolute;
+            top: 100%;          /* flush — no gap, padding-bottom above creates the visual gap */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1612;
+            border: 1px solid rgba(201,168,76,.2);
+            border-radius: 10px;
+            padding: 6px;
+            /* 8px top padding acts as the visual breathing room */
+            padding-top: 14px;
+            min-width: 190px;
+            box-shadow: 0 16px 40px rgba(0,0,0,.6);
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            z-index: 1000;
+            /* Invisible bridge above the menu so mouse movement into
+               the gap doesn't fire a mouseleave on the li */
+        }
+        .desktop-nav .submenu::before {
+            content: '';
+            position: absolute;
+            top: -8px;          /* covers the gap */
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: transparent;
+        }
+        .desktop-nav ul li:hover > .submenu { display: flex; }
+        .desktop-nav .submenu li a {
+            display: block !important;
+            padding: 9px 14px !important;
+            border-radius: 7px !important;
+            font-size: 14px !important;
+            color: #ccc !important;
+        }
+        .desktop-nav .submenu li a:hover {
+            background: rgba(201,168,76,.12) !important;
+            color: #c9a84c !important;
+        }
+
+        /* CTA buttons in nav */
+        .nav-cta-register > a {
+            background: rgba(201,168,76,.15) !important;
+            border: 1px solid rgba(201,168,76,.35) !important;
+            color: #c9a84c !important;
+            border-radius: 8px !important;
+        }
+        .nav-cta-register > a:hover {
+            background: rgba(201,168,76,.28) !important;
+        }
+        .nav-cta-login > a {
+            background: #c9a84c !important;
+            color: #0d0b09 !important;
+            font-weight: 600 !important;
+            border-radius: 8px !important;
+        }
+        .nav-cta-login > a:hover {
+            background: #e0bf5e !important;
+        }
+
+        /* ═══════════════════════════════════════
+           HAMBURGER
+        ═══════════════════════════════════════ */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 9px;
+            cursor: pointer;
+            padding: 9px;
+            transition: background .2s;
+            flex-shrink: 0;
+        }
+        .hamburger:hover { background: rgba(255,255,255,.12); }
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s, width .3s;
+            transform-origin: center;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ═══════════════════════════════════════
+           MOBILE DRAWER
+        ═══════════════════════════════════════ */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.65);
+            backdrop-filter: blur(4px);
+            z-index: 1997;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        .mobile-overlay.visible { opacity: 1; }
+
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: min(310px, 88vw);
+            height: 100%;
+            background: #0f0d0a;
+            border-left: 1px solid rgba(201,168,76,.12);
+            z-index: 1998;
+            transition: right .32s cubic-bezier(.4,0,.2,1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: -12px 0 60px rgba(0,0,0,.7);
+        }
+        .mobile-drawer.open { right: 0; }
+
+        .drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            flex-shrink: 0;
+        }
+        .drawer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .drawer-brand span { color: #c9a84c; }
+        .drawer-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            line-height: 1;
+            transition: background .2s, color .2s;
+        }
+        .drawer-close:hover { background: rgba(255,255,255,.07); color: #fff; }
+
+        /* Section heading inside drawer */
+        .drawer-section-label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: .68rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.3);
+            padding: 14px 20px 6px;
+        }
+
+        .drawer-nav {
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+            flex: 1;
+        }
+        .drawer-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #ccc;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: background .18s, color .18s, border-color .18s;
+        }
+        .drawer-nav li a:hover {
+            background: rgba(255,255,255,.04);
+            color: #fff;
+            border-left-color: rgba(201,168,76,.5);
+        }
+        .drawer-nav li a.active {
+            color: #c9a84c;
+            background: rgba(201,168,76,.08);
+            border-left-color: #c9a84c;
+        }
+        .drawer-nav li a .ni { width: 20px; text-align: center; flex-shrink: 0; }
+
+        /* Sub-items (Register / Login children) */
+        .drawer-sub {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: rgba(255,255,255,.025);
+            border-left: 3px solid rgba(201,168,76,.18);
+            margin-left: 20px;
+            border-radius: 0 0 6px 6px;
+            display: none;
+        }
+        .drawer-sub.open { display: block; }
+        .drawer-sub li a {
+            padding: 10px 16px;
+            font-size: .86rem;
+            color: #aaa;
+            border-left: none !important;
+        }
+        .drawer-sub li a:hover { color: #c9a84c; background: rgba(201,168,76,.07); }
+
+        /* Accordion toggle */
+        .drawer-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #ccc;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: background .18s, color .18s;
+            user-select: none;
+        }
+        .drawer-toggle:hover { background: rgba(255,255,255,.04); color: #fff; }
+        .drawer-toggle .toggle-arrow {
+            margin-left: auto;
+            font-size: .75rem;
+            transition: transform .25s;
+            color: #666;
+        }
+        .drawer-toggle.expanded .toggle-arrow { transform: rotate(180deg); }
+
+        .drawer-divider {
+            height: 1px;
+            background: rgba(255,255,255,.05);
+            margin: 8px 20px;
+        }
+
+        /* Big CTA buttons in drawer */
+        .drawer-cta-row {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px 24px;
+        }
+        .drawer-cta-btn {
+            flex: 1;
+            padding: 11px 10px;
+            border-radius: 9px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: opacity .2s, transform .15s;
+        }
+        .drawer-cta-btn:active { transform: scale(.97); }
+        .btn-register { background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.3); color: #c9a84c; }
+        .btn-login    { background: #c9a84c; color: #0d0b09; }
+        .btn-register:hover { background: rgba(201,168,76,.25); color: #c9a84c; }
+        .btn-login:hover    { background: #e0bf5e; color: #0d0b09; }
+
+        /* ═══════════════════════════════════════
+           SLIDER
+        ═══════════════════════════════════════ */
+        .slider_bg_1 {
+            background-image: url("{% static 'img/banner/download.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Hero text improvements */
+        .slider_text h3 {
+            font-family: 'Cormorant Garamond', serif !important;
+            font-size: clamp(2.4rem, 7vw, 5rem) !important;
+            font-weight: 700 !important;
+            letter-spacing: .06em;
+            text-shadow: 0 4px 24px rgba(0,0,0,.5);
+        }
+
+        /* Hero badge */
+        .hero-badge {
+            display: inline-block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .75rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #c9a84c;
+            border: 1px solid rgba(201,168,76,.4);
+            padding: 6px 18px;
+            border-radius: 99px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,.25);
+        }
+
+        .hero-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(.9rem, 2vw, 1.1rem);
+            color: rgba(255,255,255,.75);
+            margin-top: 16px;
+            font-weight: 300;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform .2s, box-shadow .2s, opacity .2s;
+            letter-spacing: .03em;
+        }
+        .hero-btn:hover { transform: translateY(-2px); }
+        .hero-btn-primary {
+            background: #c9a84c;
+            color: #0d0b09;
+            box-shadow: 0 8px 24px rgba(201,168,76,.35);
+        }
+        .hero-btn-primary:hover {
+            background: #e0bf5e;
+            color: #0d0b09;
+            box-shadow: 0 12px 32px rgba(201,168,76,.45);
+        }
+        .hero-btn-ghost {
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.25);
+            color: #fff;
+            backdrop-filter: blur(8px);
+        }
+        .hero-btn-ghost:hover {
+            background: rgba(255,255,255,.18);
+            color: #fff;
+        }
+
+        @media (max-width: 767px) {
+            .slider_bg_1 { min-height: 70vh; }
+        }
+
+        /* ═══════════════════════════════════════
+           ABOUT
+        ═══════════════════════════════════════ */
+        .about_info h3 {
+            font-family: 'Cormorant Garamond', serif !important;
+        }
+        @media (max-width: 767px) {
+            .about_thumb { margin-bottom: 24px; }
+            .about_thumb img { height: auto !important; }
+        }
+
+        /* ═══════════════════════════════════════
+           STATS STRIP
+        ═══════════════════════════════════════ */
+        .stats-strip {
+            background: #0d0b09;
+            border-top: 1px solid rgba(201,168,76,.12);
+            border-bottom: 1px solid rgba(201,168,76,.12);
+            padding: 36px 0;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 8px 16px;
+        }
+        .stat-item .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #c9a84c;
+            line-height: 1;
+        }
+        .stat-item .stat-label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.45);
+            margin-top: 6px;
+        }
+        @media (max-width: 575px) {
+            .stats-strip .row > div { margin-bottom: 20px; }
+        }
+
+        /* ═══════════════════════════════════════
+           VIDEO SECTION
+        ═══════════════════════════════════════ */
+        .single_video .thumb img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+        @media (max-width: 767px) {
+            .single_video .thumb img { height: 220px; }
+        }
+
+        /* ═══════════════════════════════════════
+           GALLERY — POPUP FIX + LAYOUT
+        ═══════════════════════════════════════ */
+        .portfolio-img {
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .portfolio-img img {
+            width: 100%;
+            height: 300px !important;
+            object-fit: cover;
+            display: block;
+            transition: transform .45s ease;
+        }
+        .single-gallery:hover .portfolio-img img {
+            transform: scale(1.05);
+        }
+        .col-xl-5 .portfolio-img img,
+        .col-xl-7 .portfolio-img img {
+            height: 380px !important;
+        }
+        @media (max-width: 991px) {
+            .portfolio-img img,
+            .col-xl-5 .portfolio-img img,
+            .col-xl-7 .portfolio-img img {
+                height: 240px !important;
+            }
+        }
+        @media (max-width: 575px) {
+            .portfolio-img img,
+            .col-xl-5 .portfolio-img img,
+            .col-xl-7 .portfolio-img img {
+                height: 200px !important;
+            }
+        }
+
+        /* Gallery section title improvement */
+        .section_title h3 {
+            font-family: 'Cormorant Garamond', serif !important;
+        }
+
+        /* ═══════════════════════════════════════
+           DANCE FORMS SHOWCASE (NEW SECTION)
+        ═══════════════════════════════════════ */
+        .dance-forms-section {
+            background: #0d0b09;
+            padding: 80px 0;
+        }
+        .dance-forms-section .section_title { margin-bottom: 48px; }
+        .dance-card {
+            background: #1a1612;
+            border: 1px solid rgba(201,168,76,.12);
+            border-radius: 14px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: border-color .25s, transform .25s, box-shadow .25s;
+            height: 100%;
+        }
+        .dance-card:hover {
+            border-color: rgba(201,168,76,.45);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,0,0,.4);
+        }
+        .dance-card .dc-icon {
+            font-size: 2.4rem;
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+        .dance-card h5 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f0e8d8;
+            margin-bottom: 10px;
+        }
+        .dance-card p {
+            font-family: 'DM Sans', sans-serif;
+            font-size: .82rem;
+            color: rgba(255,255,255,.45);
+            line-height: 1.65;
+            margin: 0;
+        }
+        @media (max-width: 767px) {
+            .dance-card { margin-bottom: 16px; }
+        }
+
+        /* ═══════════════════════════════════════
+           MUSIC AREA
+        ═══════════════════════════════════════ */
+        .music_field .thumb img { max-width: 100%; height: auto; }
+
+        /* ═══════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════ */
+        @media (max-width: 767px) {
+            .footer_widget { margin-bottom: 32px; }
+            .copy_right { text-align: center; margin-bottom: 12px; }
+            .footer_links { text-align: center; }
+            .footer_links ul { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE — show hamburger
+        ═══════════════════════════════════════ */
+        @media (max-width: 991px) {
+            .hamburger { display: flex; }
+            .desktop-nav { display: none !important; }
+        }
+
+        @media (max-width: 575px) {
+            .container { padding-left: 16px; padding-right: 16px; }
+        }
+
+        /* ═══════════════════════════════════════
+           SCROLL-TO-TOP BUTTON
+        ═══════════════════════════════════════ */
+        #scroll-top {
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            background: #c9a84c;
+            color: #0d0b09;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(201,168,76,.4);
+            z-index: 500;
+            transition: opacity .25s, transform .25s;
+        }
+        #scroll-top:hover { transform: translateY(-3px); }
+        #scroll-top.visible { display: flex; }
+    </style>
+</head>
+
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header>
+    <div class="header-area">
+        <div id="sticky-header" class="main-header-area">
+            <div class="header-inner">
+
+                <!-- Brand -->
+                <a href="/" class="brand-logo">Nritya<span>ngana</span></a>
+
+                <!-- Desktop Nav -->
+                <nav class="desktop-nav d-none d-lg-flex">
+                    <ul>
+                        <li><a class="active" href="/">Home</a></li>
+
+                        <li class="nav-cta-register">
+                            <a href="#">Register <i class="ti-angle-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="/userregister/">Student</a></li>
+                                <li><a href="/trainerregister/">Trainer</a></li>
+                                <li><a href="/institutionregister/">Institution</a></li>
+                                
+                            </ul>
+                        </li>
+
+                        <li class="nav-cta-login">
+                            <a href="#">Login <i class="ti-angle-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="/userlogin/">Student</a></li>
+                                <li><a href="/trainerlogin/">Trainer</a></li>
+                                <li><a href="/institutionlogin/">Institution</a></li>
+                                <li><a href="/adminlogin/">Admin</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Hamburger (mobile only) -->
+                <button class="hamburger d-flex d-lg-none" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ════════════════ MOBILE DRAWER ════════════════ -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="drawer-head">
+        <span class="drawer-brand">Nritya<span>ngana</span></span>
+        <button class="drawer-close" id="drawerClose" aria-label="Close">&#x2715;</button>
+    </div>
+
+    <ul class="drawer-nav">
+        <li><a class="active" href="/"><span class="ni">🏠</span> Home</a></li>
+    </ul>
+
+    <div class="drawer-section-label">Register As</div>
+    <ul class="drawer-nav">
+        <li><a href="/userregister/"><span class="ni">🎓</span> Student</a></li>
+        <li><a href="/trainerregister/"><span class="ni">🏅</span> Trainer</a></li>
+        <li><a href="/institutionregister/"><span class="ni">🏛️</span> Institution</a></li>
+        <li><a href="/shopregister/"><span class="ni">👗</span> Costume Shop</a></li>
+    </ul>
+
+    <div class="drawer-divider"></div>
+    <div class="drawer-section-label">Login</div>
+    <ul class="drawer-nav">
+        <li><a href="/userlogin/"><span class="ni">👤</span> Student Login</a></li>
+        <li><a href="/trainerlogin/"><span class="ni">🎯</span> Trainer Login</a></li>
+        <li><a href="/institutionlogin/"><span class="ni">🏛️</span> Institution Login</a></li>
+        <li><a href="/shoplogin/"><span class="ni">🛍️</span> Shop Login</a></li>
+        <li><a href="/adminlogin/"><span class="ni">🔐</span> Admin Login</a></li>
+    </ul>
+
+    <div class="drawer-divider"></div>
+    <div class="drawer-cta-row">
+        <a href="/userregister/" class="drawer-cta-btn btn-register">Register</a>
+        <a href="/userlogin/"    class="drawer-cta-btn btn-login">Login</a>
+    </div>
+</div>
+<!-- ════════════════ END MOBILE DRAWER ════════════════ -->
+
+
+<!-- ════════════════ HERO / SLIDER ════════════════ -->
+<div class="slider_area">
+    <div class="single_slider d-flex align-items-center slider_bg_1 overlay2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="slider_text text-center">
+                        <div class="hero-badge"> Dance Platform</div>
+                        <h3>Nrityangana</h3>
+                        <p class="hero-sub">Discover the grace, discipline and devotion of dance — connect with trainers, join institutions, and explore your art.</p>
+                        <div class="hero-actions">
+                            <a href="/userregister/" class="hero-btn hero-btn-primary">
+                                <i class="fa fa-user-plus"></i> Get Started
+                            </a>
+                            <a href="/userlogin/" class="hero-btn hero-btn-ghost">
+                                <i class="fa fa-sign-in"></i> Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ════════════════ END HERO ════════════════ -->
+
+
+<!-- ════════════════ STATS STRIP ════════════════ -->
+<div class="stats-strip">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-num">{{ students.count }}+</div>
+                    <div class="stat-label">Students</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-num">{{ trainers.count }}+</div>
+                    <div class="stat-label">Expert Trainers</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-num">{{ institutions.count }}+</div>
+                    <div class="stat-label">Institutions</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-num">{{ dance_forms.count }}+</div>
+                    <div class="stat-label">Dance Forms</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ════════════════ END STATS ════════════════ -->
+
+
+
+
+
+<!-- ════════════════ ABOUT ════════════════ -->
+<div class="about_area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-xl-5 col-md-6 col-12">
+                <div class="about_thumb">
+                    <img class="img-fluid" src="{% static 'img/about/pic4.jpg' %}" alt="Classical Dance">
+                </div>
+            </div>
+            <div class="col-xl-7 col-md-6 col-12">
+                <div class="about_info">
+                    <h3>Beauty of Classical Dance</h3>
+                    <p>Bharatanatyam is a classical Indian dance form that beautifully blends grace, discipline, and deep expression. Its beauty lies in the perfect coordination of rhythmic footwork, sculptural body postures, and expressive hand gestures (mudras). The dancer's facial expressions, known as abhinaya, vividly convey emotions and stories from Indian mythology and devotion. Traditional costumes, elegant ornaments, and ankle bells enhance its visual charm, while the precise movements reflect inner balance and spiritual depth. Altogether, Bharatanatyam is not just a dance, but a graceful form of storytelling and devotion.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ════════════════ END ABOUT ════════════════ -->
+
+
+<!-- ════════════════ DANCE FORMS (NEW) ════════════════ -->
+<div class="dance-forms-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="section_title text-center mb-65">
+                    <h3>Dance Forms We Celebrate</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3">
+        {% for form in dance_forms|slice:":6" %}
+            <div class="col-lg-2 col-md-4 col-6">
+                <div class="dance-card">
+                    
+                    <h5>{{ form.course_name }}</h5>
+                    <p>{{ form.description|truncatewords:15 }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- ════════════════ END DANCE FORMS ════════════════ -->
+
+
+<!-- ════════════════ VIDEO SECTION ════════════════ -->
+<div class="youtube_video_area">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                <div class="single_video">
+                    <div class="thumb">
+                        <img src="{% static 'img/video/dance.jpg' %}" alt="Kuchipudi" style="object-position: 80% 20%;">
+                    </div>
+                    <div class="hover_elements">
+                        <div class="video">
+                            <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                <i class="fa fa-play"></i>
+                            </a>
+                        </div>
+                        <div class="hover_inner">
+                            <span>Kuchipudi</span>
+                            <h3><a href="#">Kalosavam</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                <div class="single_video">
+                    <div class="thumb">
+                        <img src="{% static 'img/video/kuchipudi.jpg' %}" alt="Classical Dance" style="object-position: 80% 20%;">
+                    </div>
+                    <div class="hover_elements">
+                        <div class="video">
+                            <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                <i class="fa fa-play"></i>
+                            </a>
+                        </div>
+                        <div class="hover_inner">
+                            <span>Classical Dance</span>
+                            <h3><a href="#">Stage Show</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                <div class="single_video">
+                    <div class="thumb">
+                        <img src="{% static 'img/video/Natyam _ thotanaveen.jpg' %}" alt="Bharatanatyam" style="object-position: 80% 20%;">
+                    </div>
+                    <div class="hover_elements">
+                        <div class="video">
+                            <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                <i class="fa fa-play"></i>
+                            </a>
+                        </div>
+                        <div class="hover_inner">
+                            <span>Bharatanatyam</span>
+                            <h3><a href="#">Kalosavam</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                <div class="single_video">
+                    <div class="thumb">
+                        <img src="{% static 'img/video/Shreya Wagholikar _ thotanaveen.jpg' %}" alt="Kuchipudi" style="object-position: 80% 20%;">
+                    </div>
+                    <div class="hover_elements">
+                        <div class="video">
+                            <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                <i class="fa fa-play"></i>
+                            </a>
+                        </div>
+                        <div class="hover_inner">
+                            <span>Kuchipudi</span>
+                            <h3><a href="#">Kalosavam</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ════════════════ END VIDEO ════════════════ -->
+
+
+<!-- ════════════════ GALLERY ════════════════ -->
+<!--
+    GALLERY POPUP FIX:
+    Every popup-image href now matches the thumbnail src exactly,
+    so clicking the + opens the SAME image you see in the card.
+-->
+<div class="gallery_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="section_title text-center mb-65">
+                    <h3>Image Galleries</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row grid">
+
+            <div class="col-xl-5 col-lg-5 col-md-6 col-12 grid-item cat1">
+                <div class="single-gallery mb-30">
+                    <div class="portfolio-img">
+                        <img src="{% static 'img/gallery/dance1.jpg' %}" alt="Gallery 1" style="object-position: 80% 20%;">
+                    </div>
+                    <div class="gallery_hover">
+                        <!-- href = same as the img src above -->
+                        <a class="popup-image hover_inner" href="{% static 'img/gallery/dance1.jpg' %}">
+                            <i class="ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-7 col-lg-7 col-md-6 col-12 grid-item cat3 cat4">
+                <div class="single-gallery mb-30">
+                    <div class="portfolio-img">
+                        <img src="{% static 'img/gallery/dance2.jpg' %}" alt="Gallery 2">
+                    </div>
+                    <div class="gallery_hover">
+                        <a class="popup-image hover_inner" href="{% static 'img/gallery/dance2.jpg' %}">
+                            <i class="ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6 col-12 grid-item cat4">
+                <div class="single-gallery mb-30">
+                    <div class="portfolio-img">
+                        <img src="{% static 'img/gallery/dance3.jpg' %}" alt="Gallery 3">
+                    </div>
+                    <div class="gallery_hover">
+                        <a class="popup-image hover_inner" href="{% static 'img/gallery/dance3.jpg' %}">
+                            <i class="ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6 col-12 grid-item cat2">
+                <div class="single-gallery mb-30">
+                    <div class="portfolio-img">
+                        <img src="{% static 'img/gallery/dance4.jpg' %}" alt="Gallery 4">
+                    </div>
+                    <div class="gallery_hover">
+                        <a class="popup-image hover_inner" href="{% static 'img/gallery/dance4.jpg' %}">
+                            <i class="ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6 col-12 grid-item cat2">
+                <div class="single-gallery mb-30">
+                    <div class="portfolio-img">
+                        <img src="{% static 'img/gallery/dance5.jpg' %}" alt="Gallery 5">
+                    </div>
+                    <div class="gallery_hover">
+                        <a class="popup-image hover_inner" href="{% static 'img/gallery/dance5.jpg' %}">
+                            <i class="ti-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ════════════════ END GALLERY ════════════════ -->
+
+
+
+
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer class="footer">
+    <div class="footer_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-md-6 col-12">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">Stay Connected</h3>
+                        <div class="subscribe-from">
+                            <form action="#">
+                                <input type="text" placeholder="Enter your email">
+                                <button type="submit">Subscribe</button>
+                            </form>
+                        </div>
+                        <p class="sub_text">Get updates on performances, workshops, and new courses.</p>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-md-5 col-12 offset-xl-1">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">Contact</h3>
+                        <ul>
+                            <li><a href="#">nrityangana@support.com</a></li>
+                            <li><a href="#">+91 98765 43210</a></li>
+                            <li><a href="#">Kerala, India</a></li>
+                        </ul>
+                        <div class="socail_links">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copy-right_text">
+        <div class="container">
+            <div class="footer_border"></div>
+            <div class="row">
+                <div class="col-xl-7 col-md-6 col-12">
+                    <p class="copy_right">
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        Nrityangana. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-xl-5 col-md-6 col-12">
+                    <div class="footer_links">
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/userlogin/">Login</a></li>
+                            <li><a href="/userregister/">Register</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- ════════════════ END FOOTER ════════════════ -->
+
+<!-- Scroll-to-top -->
+<button id="scroll-top" aria-label="Scroll to top">
+    <i class="fa fa-angle-up"></i>
+</button>
+
+<!-- JS — single jQuery only (removed duplicate CDN import) -->
+<script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+<script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'js/ajax-form.js' %}"></script>
+<script src="{% static 'js/waypoints.min.js' %}"></script>
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'js/audioplayer.js' %}"></script>
+<script src="{% static 'js/scrollIt.js' %}"></script>
+<script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="{% static 'js/nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/gijgo.min.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+<script src="{% static 'js/contact.js' %}"></script>
+<script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+<script src="{% static 'js/jquery.form.js' %}"></script>
+<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script src="{% static 'js/mail-script.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+    // Audio player
+    $(function () { $('audio').audioPlayer({}); });
+
+    // ══════════════════════════════════════
+    //  MOBILE DRAWER
+    // ══════════════════════════════════════
+    const hamburger     = document.getElementById('hamburger');
+    const mobileDrawer  = document.getElementById('mobileDrawer');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const drawerClose   = document.getElementById('drawerClose');
+
+    function openDrawer() {
+        mobileDrawer.classList.add('open');
+        mobileOverlay.style.display = 'block';
+        requestAnimationFrame(() => mobileOverlay.classList.add('visible'));
+        hamburger.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        mobileDrawer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        mobileDrawer.classList.remove('open');
+        mobileOverlay.classList.remove('visible');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileDrawer.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        setTimeout(() => { mobileOverlay.style.display = 'none'; }, 320);
+    }
+
+    hamburger.addEventListener('click', () =>
+        mobileDrawer.classList.contains('open') ? closeDrawer() : openDrawer()
+    );
+    drawerClose.addEventListener('click', closeDrawer);
+    mobileOverlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    // Close on link click
+    mobileDrawer.querySelectorAll('.drawer-nav a, .drawer-cta-btn').forEach(link => {
+        link.addEventListener('click', closeDrawer);
+    });
+
+    // ══════════════════════════════════════
+    //  SCROLL-TO-TOP
+    // ══════════════════════════════════════
+    const scrollBtn = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => {
+        scrollBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+
+</body>
+</html>

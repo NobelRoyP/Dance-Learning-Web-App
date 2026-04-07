@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Trainers | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:          #0c0a07;
+            --card:        #1a1610;
+            --card-2:      #201c12;
+            --border:      #302820;
+            --border-hi:   rgba(201,168,76,.4);
+            --gold:        #c9a84c;
+            --gold-dim:    #8a6f2e;
+            --gold-light:  rgba(201,168,76,.1);
+            --amber:       #d97a36;
+            --cream:       #f0e6ce;
+            --muted:       #7a6e5a;
+            --green:       #3a9e6e;
+            --green-light: rgba(58,158,110,.12);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg); color: var(--cream);
+            font-family: 'DM Sans', sans-serif; min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse 70% 40% at 10% 0%, rgba(42,26,8,.5) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 35% at 90% 100%, rgba(48,14,14,.3) 0%, transparent 55%);
+        }
+
+        /* NAV */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(12,10,7,.92); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            height: 62px; display: flex; align-items: center;
+            justify-content: space-between; padding: 0 28px;
+        }
+        .nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--gold); text-decoration: none; letter-spacing: .04em;
+        }
+        .nav-brand span { color: var(--cream); }
+        .nav-back {
+            display: flex; align-items: center; gap: 7px;
+            color: var(--muted); font-size: .86rem; text-decoration: none;
+            padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
+            transition: color .18s, border-color .18s, background .18s;
+        }
+        .nav-back:hover { color: var(--cream); border-color: var(--border-hi); background: var(--gold-light); }
+        .nav-back svg { width: 14px; height: 14px; }
+
+        /* HERO */
+        .hero { max-width: 1100px; margin: 0 auto; padding: 56px 24px 36px; }
+        .hero-eyebrow {
+            font-size: .68rem; letter-spacing: .24em;
+            text-transform: uppercase; color: var(--gold-dim); margin-bottom: 10px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700; line-height: 1.1; letter-spacing: .02em;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero-sub {
+            margin-top: 12px; font-size: .95rem;
+            color: var(--muted); font-weight: 300;
+            max-width: 460px; line-height: 1.7;
+        }
+
+        /* CONTROLS */
+        .controls {
+            max-width: 1100px; margin: 0 auto 26px; padding: 0 24px;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        }
+        .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
+        .search-wrap svg {
+            position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+            width: 15px; height: 15px; color: var(--muted); pointer-events: none;
+        }
+        .search-input {
+            width: 100%; background: var(--card);
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 10px 13px 10px 38px;
+            font-family: 'DM Sans', sans-serif; font-size: .86rem;
+            color: var(--cream); outline: none;
+            transition: border-color .18s, box-shadow .18s;
+        }
+        .search-input::placeholder { color: var(--muted); }
+        .search-input:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 3px rgba(201,168,76,.08); }
+
+        /* Divider */
+        .divider {
+            max-width: 1100px; margin: 0 auto 22px; padding: 0 24px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .div-label { font-size: .62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+        .div-line { flex: 1; height: 1px; background: var(--border); }
+        .div-count {
+            font-size: .65rem; font-weight: 700; color: var(--gold);
+            background: var(--gold-light); border: 1px solid rgba(201,168,76,.2);
+            padding: 2px 10px; border-radius: 99px;
+        }
+
+        /* GRID */
+        .trainer-grid {
+            max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
+        }
+
+        /* TRAINER CARD */
+        .trainer-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
+            transition: border-color .25s, transform .25s, box-shadow .25s;
+            animation: rise .45s ease both;
+        }
+        .trainer-card:hover {
+            border-color: var(--border-hi); transform: translateY(-5px);
+            box-shadow: 0 20px 56px rgba(0,0,0,.5);
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .trainer-card:nth-child(2) { animation-delay: .07s; }
+        .trainer-card:nth-child(3) { animation-delay: .14s; }
+        .trainer-card:nth-child(4) { animation-delay: .21s; }
+        .trainer-card:nth-child(5) { animation-delay: .28s; }
+        .trainer-card:nth-child(6) { animation-delay: .35s; }
+
+        /* Image */
+        .card-img-wrap { position: relative; height: 240px; overflow: hidden; flex-shrink: 0; }
+        .card-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform .5s ease, filter .3s;
+            filter: brightness(.85) saturate(.9);
+        }
+        .trainer-card:hover .card-img-wrap img { transform: scale(1.06); filter: brightness(1) saturate(1); }
+        /* gradient overlay */
+        .card-img-wrap::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(12,10,7,.8) 100%);
+        }
+
+        /* Course badge on image */
+        .course-badge {
+            position: absolute; top: 12px; right: 12px; z-index: 2;
+            background: rgba(12,10,7,.65); backdrop-filter: blur(8px);
+            color: var(--gold); font-size: .62rem; font-weight: 700;
+            letter-spacing: .08em; text-transform: uppercase;
+            padding: 4px 11px; border-radius: 8px;
+            border: 1px solid rgba(201,168,76,.25);
+        }
+
+        /* Exp badge bottom-left of image */
+        .exp-badge {
+            position: absolute; bottom: 12px; left: 12px; z-index: 2;
+            display: flex; align-items: center; gap: 5px;
+            background: rgba(12,10,7,.65); backdrop-filter: blur(8px);
+            color: var(--amber); font-size: .68rem; font-weight: 600;
+            padding: 4px 10px; border-radius: 8px;
+            border: 1px solid rgba(217,122,54,.25);
+        }
+        .exp-badge svg { width: 12px; height: 12px; }
+
+        /* Card body */
+        .card-body { padding: 18px 18px 0; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+        .trainer-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--cream); letter-spacing: .02em; line-height: 1.2;
+        }
+
+        /* Meta chips */
+        .meta-row { display: flex; flex-wrap: wrap; gap: 7px; }
+        .chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px; border-radius: 99px;
+            font-size: .66rem; font-weight: 500;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.03); color: var(--muted);
+        }
+        .chip svg { width: 10px; height: 10px; }
+
+        /* Contact links */
+        .contact-row { display: flex; flex-direction: column; gap: 7px; }
+        .contact-link {
+            display: flex; align-items: center; gap: 9px;
+            padding: 9px 12px; border-radius: 9px;
+            background: var(--card-2); border: 1px solid var(--border);
+            text-decoration: none; color: var(--muted); font-size: .8rem; font-weight: 500;
+            transition: background .16s, color .16s, border-color .16s;
+        }
+        .contact-link:hover { background: var(--gold-light); color: var(--cream); border-color: rgba(201,168,76,.22); }
+        .contact-link svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--gold-dim); }
+
+        /* Card footer */
+        .card-footer { padding: 14px 18px 18px; margin-top: auto; }
+        .btn-reels {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 11px;
+            background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+            color: #0c0a07;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem; font-weight: 700;
+            letter-spacing: .06em; text-transform: uppercase;
+            border-radius: 10px; text-decoration: none;
+            transition: opacity .18s, transform .15s, box-shadow .18s;
+            box-shadow: 0 4px 14px rgba(201,168,76,.22);
+        }
+        .btn-reels:hover {
+            opacity: .88; color: #0c0a07; transform: translateY(-1px);
+            box-shadow: 0 8px 22px rgba(201,168,76,.32);
+        }
+        .btn-reels svg { width: 14px; height: 14px; }
+
+        /* EMPTY */
+        .empty {
+            grid-column: 1/-1; text-align: center; padding: 80px 24px;
+        }
+        .empty-icon { font-size: 3.5rem; opacity: .15; margin-bottom: 20px; }
+        .empty h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem; margin-bottom: 10px;
+        }
+        .empty p { color: var(--muted); font-style: italic; font-size: .9rem; }
+
+        @media (max-width: 600px) {
+            nav { padding: 0 16px; }
+            .hero, .controls, .divider, .trainer-grid { padding-left: 16px; padding-right: 16px; }
+            .hero { padding-top: 36px; padding-bottom: 24px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .search-wrap { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/userhome/" class="nav-brand">🪷 Nritya<span>ngana</span></a>
+    <a href="/userhome/" class="nav-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Home
+    </a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+    <p class="hero-eyebrow">
+        {% if institution %}{{ institution.name }}{% else %}Your Institution{% endif %}
+    </p>
+    <h1>Meet Your <em>Trainers</em></h1>
+    <p class="hero-sub">The masters guiding your journey in classical dance.</p>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+    <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" type="text" id="search-input"
+               placeholder="Search by name or course…"
+               oninput="filterCards()">
+    </div>
+</div>
+
+<!-- Divider -->
+<div class="divider">
+    <span class="div-label">Your Trainers</span>
+    <div class="div-line"></div>
+    <span class="div-count" id="count-chip">{{ users|length }}</span>
+</div>
+
+<!-- Grid -->
+<div class="trainer-grid" id="trainer-grid">
+
+    {% for u in users %}
+    <div class="trainer-card"
+         data-search="{{ u.name|lower }} {{ u.course.course_name|lower|default:'' }}">
+
+        <div class="card-img-wrap">
+            {% if u.image %}
+                <img src="{{ u.image.url }}" alt="{{ u.name }}">
+            {% else %}
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240'%3E%3Crect fill='%231a1610' width='400' height='240'/%3E%3Ctext fill='%237a6e5a' font-family='serif' font-size='64' font-weight='700' x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle'%3E{{ u.name|slice:":1"|upper }}%3C/text%3E%3C/svg%3E"
+                     alt="{{ u.name }}">
+            {% endif %}
+
+            {% if u.course %}
+            <span class="course-badge">{{ u.course.course_name }}</span>
+            {% endif %}
+
+            {% if u.experiance %}
+            <div class="exp-badge">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/>
+                </svg>
+                {{ u.experiance }} yrs exp
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card-body">
+            <div class="trainer-name">{{ u.name }}</div>
+
+            <div class="meta-row">
+                {% if u.age %}
+                <span class="chip">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    {{ u.age }} yrs
+                </span>
+                {% endif %}
+                {% if u.Gender %}
+                <span class="chip">{{ u.Gender }}</span>
+                {% endif %}
+            </div>
+
+            <div class="contact-row">
+                {% if u.phone %}
+                <a href="tel:{{ u.phone }}" class="contact-link">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.08 5.18 2 2 0 0 1 5.09 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 23 18z"/>
+                    </svg>
+                    {{ u.phone }}
+                </a>
+                {% endif %}
+                {% if u.email %}
+                <a href="mailto:{{ u.email }}" class="contact-link">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    {{ u.email }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a href="/view_trainer_reels/{{ u.id }}/" class="btn-reels">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <polygon points="23 7 16 12 23 17 23 7"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2"/>
+                </svg>
+                Watch Video Classes
+            </a>
+        </div>
+
+    </div>
+    {% empty %}
+
+    <div class="empty">
+        <div class="empty-icon">🎓</div>
+        <h3>No Trainers Yet</h3>
+        <p>
+            {% if not institution %}
+                Join and get approved by an institution to see their trainers.
+            {% else %}
+                {{ institution.name }} hasn't added any trainers yet.
+            {% endif %}
+        </p>
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+    function filterCards() {
+        const q = document.getElementById('search-input').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('#trainer-grid .trainer-card');
+        let visible = 0;
+        cards.forEach(card => {
+            const show = !q || card.dataset.search.includes(q);
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+        document.getElementById('count-chip').textContent = visible;
+    }
+</script>
+
+</body>
+</html>

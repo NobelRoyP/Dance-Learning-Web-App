@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 🔥 Animated Background */
+        .bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1400&q=80");
+            background-size: cover;
+            background-position: center;
+            animation: zoom 12s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* 🔥 Main Container */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            width: 60%;
+            margin: 80px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            color: #0f3cc9;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        /* 🔥 Fields */
+        .info-box {
+            margin-bottom: 18px;
+            padding: 12px;
+            border-left: 4px solid #0f3cc9;
+            background: #f1f5ff;
+            border-radius: 6px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #222;
+        }
+
+        /* 🔥 Profile Image */
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0px 5px 18px rgba(0,0,0,0.3);
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        /* 🔥 Logout Button */
+        .logout-btn {
+            display: block;
+            width: 160px;
+            margin: 30px auto 0;
+            padding: 12px;
+            text-align: center;
+            background: #c62828;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #9b1d1d;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+
+    <div class="container">
+        <h2>Welcome, {{ user.name }}</h2>
+
+        
+
+        <!-- Logout Button -->
+        <a href="" class="logout-btn">Logout</a>
+
+    </div>
+
+</body>
+</html>

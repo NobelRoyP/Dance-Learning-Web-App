@@ -1,0 +1,411 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Institution Profile | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #f5f3ef;
+            --surface:      #ffffff;
+            --surface-2:    #faf9f6;
+            --border:       #e4ddd3;
+            --border-soft:  #ede8e0;
+            --border-focus: #1a6b42;
+            --green:        #1a6b42;
+            --green-mid:    #22894f;
+            --green-light:  #edf7f1;
+            --sidebar:      #13211a;
+            --gold:         #b8841f;
+            --text:         #18160f;
+            --text-mid:     #45403a;
+            --text-muted:   #9a9188;
+            --red:          #c0392b;
+            --red-light:    #fdf2f2;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image: radial-gradient(circle, rgba(0,0,0,.034) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: var(--sidebar);
+            height: 60px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 16px rgba(0,0,0,.22);
+        }
+        .tb-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: #fff; text-decoration: none;
+        }
+        .tb-brand em { font-style: italic; color: var(--gold); }
+        .tb-back {
+            display: flex; align-items: center; gap: 7px;
+            font-size: .78rem; font-weight: 500;
+            color: rgba(255,255,255,.52); text-decoration: none;
+            padding: 7px 14px;
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 8px;
+            transition: color .16s, border-color .16s, background .16s;
+        }
+        .tb-back:hover { color: #fff; border-color: rgba(255,255,255,.26); background: rgba(255,255,255,.06); }
+        .tb-back svg { width: 14px; height: 14px; }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 44px 20px 80px;
+        }
+
+        /* Eyebrow */
+        .eyebrow {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 26px;
+        }
+        .eyebrow span {
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .2em; text-transform: uppercase;
+            color: var(--text-muted); white-space: nowrap;
+        }
+        .eyebrow-line { flex: 1; height: 1px; background: var(--border); }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            animation: rise .45s ease both;
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner — same as profile */
+        .banner {
+            height: 72px;
+            background: linear-gradient(135deg, #0e1c15 0%, var(--green) 60%, var(--green-mid) 100%);
+            position: relative; overflow: hidden;
+        }
+        .banner::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #7a5010, var(--gold), #e8c060, var(--gold), #7a5010);
+            background-size: 200% 100%;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+        .banner::after {
+            content: '';
+            position: absolute; right: -50px; top: -50px;
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.07);
+        }
+
+        /* Card head */
+        .card-head {
+            padding: 20px 26px 0;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .head-icon {
+            width: 44px; height: 44px; border-radius: 11px;
+            background: var(--green-light);
+            border: 1px solid rgba(26,107,66,.18);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+        .head-text {}
+        .head-title {
+            font-size: 1.05rem; font-weight: 800;
+            color: var(--text); letter-spacing: -.03em;
+        }
+        .head-sub {
+            font-size: .72rem; color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Divider inside card */
+        .card-divider {
+            height: 1px; background: var(--border-soft);
+            margin: 18px 26px 0;
+        }
+
+        /* ── FORM FIELDS ── */
+        form { padding: 20px 26px 26px; }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+        .field-group:last-of-type { margin-bottom: 0; }
+
+        /* Two-column row */
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        .field-row .field-group { margin-bottom: 0; }
+
+        label {
+            display: block;
+            font-size: .68rem; font-weight: 700;
+            letter-spacing: .12em; text-transform: uppercase;
+            color: var(--text-muted); margin-bottom: 7px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: .88rem; font-weight: 500;
+            color: var(--text);
+            outline: none;
+            transition: border-color .18s, box-shadow .18s, background .18s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            border-color: var(--border-focus);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px rgba(26,107,66,.1);
+        }
+        input::placeholder, textarea::placeholder { color: var(--text-muted); font-weight: 400; }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        /* File input */
+        input[type="file"] {
+            padding: 9px 12px;
+            cursor: pointer;
+            font-weight: 400; color: var(--text-mid);
+        }
+        input[type="file"]::-webkit-file-upload-button {
+            background: var(--green-light);
+            border: 1px solid rgba(26,107,66,.22);
+            color: var(--green);
+            font-family: 'Inter', sans-serif;
+            font-size: .75rem; font-weight: 600;
+            padding: 5px 12px; border-radius: 6px;
+            cursor: pointer; margin-right: 10px;
+            transition: background .16s;
+        }
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background: #d5eee0;
+        }
+
+        /* Current logo preview */
+        .logo-preview {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .logo-preview img {
+            width: 52px; height: 52px;
+            border-radius: 10px; object-fit: cover;
+            border: 2px solid var(--border);
+        }
+        .logo-preview-text {
+            font-size: .78rem; color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .logo-preview-text strong { color: var(--text); font-weight: 600; }
+
+        /* Section label inside form */
+        .form-section {
+            font-size: .6rem; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 6px 0 14px;
+            border-top: 1px solid var(--border-soft);
+            margin-top: 20px;
+        }
+
+        /* ── ACTIONS ── */
+        .form-actions {
+            display: flex; gap: 12px;
+            margin-top: 22px;
+        }
+        .btn {
+            flex: 1;
+            display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+            padding: 13px 16px;
+            border-radius: 11px;
+            font-family: 'Inter', sans-serif;
+            font-size: .81rem; font-weight: 600;
+            text-decoration: none; letter-spacing: -.01em;
+            cursor: pointer;
+            transition: transform .18s, box-shadow .18s, background .18s;
+            border: none;
+        }
+        .btn:active { transform: scale(.97) !important; }
+        .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        .btn-primary {
+            background: var(--green); color: #fff;
+            box-shadow: 0 4px 14px rgba(26,107,66,.24);
+        }
+        .btn-primary:hover {
+            background: var(--green-mid); color: #fff;
+            box-shadow: 0 8px 22px rgba(26,107,66,.3);
+            transform: translateY(-2px);
+        }
+        .btn-ghost {
+            background: var(--surface); color: var(--text-mid);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            background: var(--surface-2); color: var(--text);
+            border-color: #bbb; transform: translateY(-2px);
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 520px) {
+            .topbar { padding: 0 16px; }
+            .page { padding: 28px 14px 60px; }
+            form { padding: 18px 18px 22px; }
+            .card-head { padding: 18px 18px 0; }
+            .card-divider { margin: 16px 18px 0; }
+            .field-row { grid-template-columns: 1fr; gap: 18px; }
+            .form-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="topbar">
+    <a href="/institutionhome/" class="tb-brand">Nritya<em>ngana</em></a>
+    <a href="/institutionprofile/" class="tb-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Profile
+    </a>
+</nav>
+
+<div class="page">
+
+    <div class="eyebrow">
+        <span>Institution Portal</span>
+        <div class="eyebrow-line"></div>
+    </div>
+
+    <div class="form-card">
+        <div class="banner"></div>
+
+        <div class="card-head">
+            <div class="head-icon">✏️</div>
+            <div class="head-text">
+                <div class="head-title">Edit Profile</div>
+                <div class="head-sub">Update your institution's information</div>
+            </div>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Basic info -->
+            <div class="field-group">
+                <label for="name">Institution Name</label>
+                <input type="text" id="name" name="name"
+                       value="{{ institution.name }}" placeholder="e.g. Nritya Academy" required>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone"
+                           value="{{ institution.phone }}" placeholder="+91 98765 43210" required>
+                </div>
+                <div class="field-group">
+                    <label for="established_year">Established Year</label>
+                    <input type="number" id="established_year" name="established_year"
+                           value="{{ institution.established_year }}" placeholder="e.g. 2005"
+                           min="1800" max="2099">
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location"
+                       value="{{ institution.location }}" placeholder="City, State">
+            </div>
+
+            <div class="field-group">
+                <label for="address">Full Address</label>
+                <textarea id="address" name="address"
+                          placeholder="Street, Area, City, PIN">{{ institution.address }}</textarea>
+            </div>
+
+            <!-- Logo section -->
+            <div class="form-section">Logo</div>
+
+            <div class="field-group">
+                <label for="logo">Upload New Logo</label>
+                <input type="file" id="logo" name="logo" accept="image/*">
+            </div>
+
+            {% if institution.logo %}
+            <div class="logo-preview">
+                <img src="{{ institution.logo.url }}" alt="Current Logo">
+                <div class="logo-preview-text">
+                    <strong>Current logo</strong><br>
+                    Upload a new image above to replace it.
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Save Changes
+                </button>
+                <a href="/institutionprofile/" class="btn btn-ghost">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 5l-7 7 7 7"/>
+                    </svg>
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

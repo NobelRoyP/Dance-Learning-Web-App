@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Reel | Nrityangana</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --primary-purple: #8b5cf6;
+            --secondary-pink: #ec4899;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            background-image: radial-gradient(circle at top right, rgba(236, 72, 153, 0.08), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.08), transparent 40%);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Form Container */
+        .upload-card {
+            background: var(--card-bg);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-text h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-text p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Form Inputs */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary-purple);
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Video Upload Area */
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 25px;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--secondary-pink);
+            background: rgba(236, 72, 153, 0.02);
+        }
+
+        .file-upload-wrapper i {
+            font-size: 48px;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-wrapper p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Hides the default ugly file input but keeps it clickable */
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        #file-name {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--secondary-pink);
+            font-weight: 600;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Back link */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-purple);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="upload-card">
+        <div class="header-text">
+            <h2>Edit Reel</h2>
+            <p>Update your dance routine details</p>
+        </div>
+
+        <form action="{% url 'edit_reel' reel.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label for="title">Reel Title</label>
+                <input type="text" id="title" name="title" value="{{ reel.title }}" placeholder="e.g., Advanced Bharatanatyam Steps" required>
+            </div>
+
+            <div class="input-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Tell your students about this routine..." required>{{ reel.description }}</textarea>
+            </div>
+
+            <div class="file-upload-wrapper">
+                <i class='bx bx-cloud-upload'></i>
+                <p>Click or drag a video file here. Only select another file if you want to replace the current one.</p>
+                <span id="file-name">No file chosen</span>
+                
+                <input type="file" id="video" name="video" accept="video/*" >
+            </div>
+
+            <button type="submit" class="btn-submit">Save Reel</button>
+        </form>
+
+        <a href="/reel_list/" class="back-link"><i class='bx bx-arrow-back'></i> Back to List</a>
+    </div>
+
+    <script>
+        const videoInput = document.getElementById('video');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        videoInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                // Get the name of the file
+                fileNameDisplay.textContent = "Selected: " + this.files[0].name;
+                fileNameDisplay.style.color = "var(--primary-purple)";
+            } else {
+                fileNameDisplay.textContent = "No file chosen";
+                fileNameDisplay.style.color = "var(--secondary-pink)";
+            }
+        });
+    </script>
+
+</body>
+</html>

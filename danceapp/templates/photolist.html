@@ -1,0 +1,94 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Makeup Reference Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        .gallery-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .badge-category {
+            font-size: 13px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand">💃 Artist Panel</span>
+    <a href="/artistdashboard/" class="text-white text-decoration-none">Dashboard</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="container mt-5">
+    <h3 class="mb-4">Makeup Reference Gallery</h3>
+
+    <div class="row">
+        {% for p in photos %}
+        <div class="col-md-4 mb-4">
+            <div class="card gallery-card shadow-sm">
+
+                {% if p.makeup_Reference_image %}
+                    <img src="{{ p.makeup_Reference_image.url }}" class="gallery-img">
+                {% else %}
+                    <img src="{% static 'img/no-image.png' %}" class="gallery-img">
+                {% endif %}
+
+                <div class="card-body text-center">
+                    <span class="badge bg-primary badge-category mb-2">
+                        {{ p.dance_category }}
+                    </span>
+
+                    {% if p.makeup_notes %}
+                        <p class="mt-2 text-muted">{{ p.makeup_notes }}</p>
+                    {% else %}
+                        <p class="mt-2 text-muted">No notes added</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No makeup references found</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html> -->
+

@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pay for Booking</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<script>
+    var options = {
+        "key":         "{{ api_key }}",
+        "amount":      "{{ amount }}00",   // paise — amount * 100
+        "currency":    "INR",
+        "name":        "Nrityangana",
+        "description": "Costume Rental — {{ product.product_name }}",
+        "order_id":    "{{ order_id }}",
+        "callback_url": "/booking/payment/success/",
+        "prefill": {
+            "name":  "{{ user.name }}",
+            "email": "{{ user.email }}",
+        },
+        "theme": { "color": "#c9a84c" },
+        "modal": {
+            "ondismiss": function() {
+                // User closed or cancelled the payment modal
+                window.location.href = "/product_list_user/";
+            }
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();   // auto-open on page load
+</script>
+
+</body>
+</html>

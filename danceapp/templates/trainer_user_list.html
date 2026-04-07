@@ -1,0 +1,649 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Students | Nrityangana</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:        #090c0f;
+            --surface:   #0f1318;
+            --card:      #131820;
+            --card-h:    #181f2a;
+            --border:    rgba(82,160,220,.12);
+            --border-hi: rgba(82,160,220,.38);
+            --blue:      #4a90c8;
+            --blue-dim:  #2d5c8a;
+            --blue-glow: rgba(74,144,200,.18);
+            --teal:      #3ab8b0;
+            --cream:     #dde8f0;
+            --muted:     #5a6e80;
+            --gold:      #c9a84c;
+            --green:     #3fa876;
+            --red:       #c05a5a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'Crimson Pro', Georgia, serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse 70% 40% at 15% 0%, rgba(30,60,100,.25) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 35% at 85% 100%, rgba(20,60,80,.2) 0%, transparent 60%);
+        }
+
+        /* ── NAV ── */
+        .site-nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(9,12,15,.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            height: 64px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+        .nav-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--blue); text-decoration: none;
+            letter-spacing: .08em;
+        }
+        .nav-brand span { color: var(--cream); }
+        .nav-back {
+            display: flex; align-items: center; gap: 8px;
+            color: var(--muted); font-size: .9rem;
+            text-decoration: none;
+            padding: 7px 16px;
+            border: 1px solid var(--border); border-radius: 8px;
+            transition: color .2s, border-color .2s, background .2s;
+        }
+        .nav-back:hover { color: var(--cream); border-color: var(--border-hi); background: var(--blue-glow); }
+        .nav-back svg { width: 14px; height: 14px; }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 64px 32px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .hero-left {}
+        .hero-eyebrow {
+            font-size: .72rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--blue-dim);
+            margin-bottom: 10px;
+            font-family: 'Cinzel', serif;
+        }
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: .04em;
+            line-height: 1.1;
+            color: var(--cream);
+        }
+        .hero h1 em {
+            font-style: italic;
+            font-family: 'Crimson Pro', serif;
+            color: var(--teal);
+            font-size: 1.12em;
+            font-weight: 300;
+        }
+        .hero-meta {
+            margin-top: 14px;
+            display: flex; align-items: center; gap: 16px;
+            flex-wrap: wrap;
+        }
+        .hero-pill {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 5px 14px;
+            background: rgba(74,144,200,.08);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            font-size: .8rem;
+            color: var(--muted);
+            font-family: 'Cinzel', serif;
+            letter-spacing: .05em;
+        }
+        .hero-pill .dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 6px var(--teal);
+        }
+        .hero-pill strong { color: var(--cream); }
+
+        /* ── CONTROLS ── */
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto 28px;
+            padding: 0 32px;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 220px;
+            max-width: 380px;
+        }
+        .search-wrap svg {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted); width: 16px; height: 16px;
+            pointer-events: none;
+        }
+        .search-input {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 14px 11px 42px;
+            color: var(--cream);
+            font-family: 'Crimson Pro', serif;
+            font-size: .95rem;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .search-input::placeholder { color: var(--muted); }
+        .search-input:focus {
+            border-color: var(--blue-dim);
+            box-shadow: 0 0 0 3px rgba(74,144,200,.08);
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex; gap: 6px;
+        }
+        .ftab {
+            padding: 9px 16px;
+            border-radius: 9px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--muted);
+            font-family: 'Cinzel', serif;
+            font-size: .7rem;
+            letter-spacing: .08em;
+            cursor: pointer;
+            transition: background .18s, color .18s, border-color .18s;
+            white-space: nowrap;
+        }
+        .ftab:hover { background: var(--blue-glow); color: var(--cream); border-color: var(--border-hi); }
+        .ftab.active { background: var(--blue); color: #090c0f; border-color: var(--blue); font-weight: 600; }
+
+        /* ── DIVIDER LABEL ── */
+        .section-label {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 0 32px;
+            display: flex; align-items: center; gap: 14px;
+            font-family: 'Cinzel', serif;
+            font-size: .68rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .section-label::after {
+            content: ''; flex: 1; height: 1px; background: var(--border);
+        }
+        .section-label .sl-count {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            padding: 2px 10px;
+            color: var(--blue);
+            font-size: .65rem;
+        }
+
+        /* ── STUDENT CARDS ── */
+        .student-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .student-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color .25s, transform .25s, box-shadow .25s;
+            animation: rise .45s ease both;
+            position: relative;
+        }
+        .student-card:hover {
+            border-color: var(--border-hi);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 56px rgba(0,0,0,.45);
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .student-card:nth-child(2) { animation-delay: .06s; }
+        .student-card:nth-child(3) { animation-delay: .12s; }
+        .student-card:nth-child(4) { animation-delay: .18s; }
+        .student-card:nth-child(5) { animation-delay: .24s; }
+        .student-card:nth-child(6) { animation-delay: .30s; }
+
+        /* Card top banner — subtle gradient */
+        .card-banner {
+            height: 6px;
+            background: linear-gradient(90deg, var(--blue-dim), var(--teal));
+            flex-shrink: 0;
+        }
+
+        /* Card header row */
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 18px 0;
+        }
+        .avatar-wrap { position: relative; flex-shrink: 0; }
+        .avatar {
+            width: 54px; height: 54px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            display: block;
+        }
+        .avatar-fallback {
+            width: 54px; height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue-dim), #1a3a5c);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--cream);
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+        }
+        /* Paid badge on avatar */
+        .paid-badge {
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 18px; height: 18px;
+            background: var(--green);
+            border-radius: 50%;
+            border: 2px solid var(--card);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .6rem;
+        }
+        .unpaid-badge {
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 18px; height: 18px;
+            background: var(--muted);
+            border-radius: 50%;
+            border: 2px solid var(--card);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .6rem;
+        }
+
+        .card-head-info { flex: 1; min-width: 0; }
+        .s-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem; font-weight: 600;
+            color: var(--cream);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .s-email {
+            font-size: .78rem;
+            color: var(--muted);
+            font-style: italic;
+            margin-top: 2px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        /* Card body */
+        .card-body {
+            padding: 16px 18px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+
+        /* Info chips row */
+        .info-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 11px;
+            border-radius: 99px;
+            font-size: .72rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: .05em;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: rgba(255,255,255,.02);
+        }
+        .chip.teal  { border-color: rgba(58,184,176,.25); color: var(--teal); background: rgba(58,184,176,.05); }
+        .chip.gold  { border-color: rgba(201,168,76,.25);  color: var(--gold);  background: rgba(201,168,76,.05); }
+        .chip.green { border-color: rgba(63,168,118,.25);  color: var(--green); background: rgba(63,168,118,.05); }
+        .chip.red   { border-color: rgba(192,90,90,.25);   color: var(--red);   background: rgba(192,90,90,.05); }
+        .chip svg { width: 10px; height: 10px; }
+
+        /* Progress bar — attendance feel */
+        .presence-row {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .presence-label {
+            font-size: .7rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+        .presence-bar {
+            flex: 1; height: 4px;
+            background: rgba(255,255,255,.06);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .presence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue-dim), var(--teal));
+            border-radius: 4px;
+            transition: width .6s ease;
+        }
+
+        /* Action buttons */
+        .card-actions {
+            display: flex; gap: 8px;
+            padding-top: 4px;
+        }
+        .btn-action {
+            flex: 1;
+            display: flex; align-items: center; justify-content: center;
+            gap: 7px;
+            padding: 9px 12px;
+            border-radius: 9px;
+            font-family: 'Cinzel', serif;
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: opacity .18s, transform .15s, background .18s;
+        }
+        .btn-action:active { transform: scale(.96); }
+        .btn-action svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+        .btn-chat {
+            background: linear-gradient(135deg, var(--blue-dim), var(--blue));
+            color: #090c0f;
+            border-color: var(--blue);
+            box-shadow: 0 4px 14px rgba(74,144,200,.22);
+        }
+        .btn-chat:hover { opacity: .88; color: #090c0f; }
+
+        .btn-attend {
+            background: rgba(58,184,176,.1);
+            border-color: rgba(58,184,176,.3);
+            color: var(--teal);
+        }
+        .btn-attend:hover { background: rgba(58,184,176,.2); color: var(--teal); }
+
+        /* ── EMPTY ── */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 24px;
+        }
+        .empty-icon { font-size: 3.5rem; opacity: .2; margin-bottom: 20px; }
+        .empty-state h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem; margin-bottom: 10px;
+        }
+        .empty-state p { color: var(--muted); font-style: italic; }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            padding: 24px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: .65rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 600px) {
+            .site-nav { padding: 0 16px; }
+            .hero, .controls, .section-label, .student-grid { padding-left: 16px; padding-right: 16px; }
+            .hero { padding-top: 40px; padding-bottom: 32px; }
+            .filter-tabs { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="site-nav">
+    <a href="/trainerhome/" class="nav-brand">Nritya<span>ngana</span></a>
+    <a href="/trainerhome/" class="nav-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Dashboard
+    </a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+    <div class="hero-left">
+        <p class="hero-eyebrow">Student Roster</p>
+        <h1>Your <em>Students</em></h1>
+        <div class="hero-meta">
+            {% if institution %}
+            <span class="hero-pill">
+                <span class="dot"></span>
+                <strong>{{ institution.name }}</strong>
+            </span>
+            {% endif %}
+            {% if trainer.course %}
+            <span class="hero-pill">
+                Course: <strong>{{ trainer.course.course_name }}</strong>
+            </span>
+            {% endif %}
+            <span class="hero-pill">
+                <strong id="hero-count">{{ students|length }}</strong>&nbsp;students
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- ── CONTROLS ── -->
+<div class="controls">
+    <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+            class="search-input"
+            type="text"
+            id="search-input"
+            placeholder="Search by name, email or batch…"
+            oninput="filterCards()"
+        />
+    </div>
+
+    <div class="filter-tabs">
+        <button class="ftab active" onclick="setFilter('all', this)">All</button>
+        <button class="ftab" onclick="setFilter('paid', this)">Paid</button>
+        <button class="ftab" onclick="setFilter('unpaid', this)">Unpaid</button>
+    </div>
+</div>
+
+<!-- ── SECTION LABEL ── -->
+<div class="section-label">
+    Enrolled Students <span class="sl-count" id="visible-count">{{ students|length }}</span>
+</div>
+
+<!-- ── STUDENT GRID ── -->
+<div class="student-grid" id="student-grid">
+
+    {% for student in students %}
+    <div class="student-card"
+         data-name="{{ student.name|lower }}"
+         data-email="{{ student.email|lower }}"
+         data-batch="{{ student.batch_time|lower|default:'' }}"
+         data-paid="{{ student.has_paid|yesno:'paid,unpaid' }}">
+
+        <div class="card-banner"></div>
+
+        <div class="card-head">
+            <div class="avatar-wrap">
+                {% if student.image %}
+                    <img class="avatar" src="{{ student.image.url }}" alt="{{ student.name }}">
+                {% else %}
+                    <div class="avatar-fallback">{{ student.name|slice:":1"|upper }}</div>
+                {% endif %}
+                {% if student.has_paid %}
+                    <div class="paid-badge" title="Fee paid">✓</div>
+                {% else %}
+                    <div class="unpaid-badge" title="Fee unpaid">·</div>
+                {% endif %}
+            </div>
+            <div class="card-head-info">
+                <div class="s-name">{{ student.name }}</div>
+                <div class="s-email">{{ student.email }}</div>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Info chips -->
+            <div class="info-chips">
+                {% if student.batch_time %}
+                <span class="chip teal">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    {{ student.batch_time }}
+                </span>
+                {% endif %}
+
+                {% if student.age %}
+                <span class="chip">
+                    Age {{ student.age }}
+                </span>
+                {% endif %}
+
+                {% if student.Gender %}
+                <span class="chip">{{ student.Gender }}</span>
+                {% endif %}
+
+                {% if student.has_paid %}
+                <span class="chip green">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Fee Paid
+                </span>
+                {% else %}
+                <span class="chip red">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    Fee Pending
+                </span>
+                {% endif %}
+            </div>
+
+            <!-- Action buttons -->
+            <div class="card-actions">
+                <a href="/chat/trainer/room/{{ student.id }}/" class="btn-action btn-chat">
+                    <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Chat
+                </a>
+                
+            </div>
+
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+        <div class="empty-icon">🎓</div>
+        <h3>No Students Yet</h3>
+        <p>Students enrolled in your course and institution will appear here.</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+    &copy; <script>document.write(new Date().getFullYear())</script> Nrityangana
+</footer>
+
+<script>
+    let activeFilter = 'all';
+
+    function applyFilters() {
+        const q = document.getElementById('search-input').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('#student-grid .student-card');
+        let visible = 0;
+
+        cards.forEach(card => {
+            const nameMatch  = !q || card.dataset.name.includes(q)
+                                  || card.dataset.email.includes(q)
+                                  || card.dataset.batch.includes(q);
+            const filterMatch = activeFilter === 'all' || card.dataset.paid === activeFilter;
+
+            const show = nameMatch && filterMatch;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        document.getElementById('visible-count').textContent = visible;
+        document.getElementById('hero-count').textContent = visible;
+    }
+
+    function filterCards() { applyFilters(); }
+
+    function setFilter(f, btn) {
+        activeFilter = f;
+        document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilters();
+    }
+</script>
+
+</body>
+</html>

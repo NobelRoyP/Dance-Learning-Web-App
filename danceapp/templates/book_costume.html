@@ -1,0 +1,539 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Costume | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:          #0c0a07;
+            --surface:     #141109;
+            --card:        #1a1610;
+            --card-2:      #201c12;
+            --border:      #302820;
+            --border-hi:   rgba(201,168,76,.4);
+            --gold:        #c9a84c;
+            --gold-dim:    #8a6f2e;
+            --gold-light:  rgba(201,168,76,.1);
+            --cream:       #f0e6ce;
+            --muted:       #7a6e5a;
+            --green:       #3a9e6e;
+            --green-light: rgba(58,158,110,.12);
+            --red:         #c05a5a;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse 60% 40% at 10% 0%, rgba(42,26,8,.5) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 35% at 90% 100%, rgba(48,14,14,.3) 0%, transparent 55%);
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(12,10,7,.92); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            height: 62px; display: flex; align-items: center;
+            justify-content: space-between; padding: 0 28px;
+        }
+        .nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--gold); text-decoration: none; letter-spacing: .04em;
+        }
+        .nav-brand span { color: var(--cream); }
+        .nav-back {
+            display: flex; align-items: center; gap: 7px;
+            color: var(--muted); font-size: .86rem; text-decoration: none;
+            padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
+            transition: color .18s, border-color .18s, background .18s;
+        }
+        .nav-back:hover { color: var(--cream); border-color: var(--border-hi); background: var(--gold-light); }
+        .nav-back svg { width: 14px; height: 14px; }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 900px; margin: 0 auto;
+            padding: 48px 24px 80px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px; align-items: start;
+        }
+
+        /* Eyebrow */
+        .eyebrow {
+            font-size: .65rem; letter-spacing: .22em;
+            text-transform: uppercase; color: var(--gold-dim);
+            margin-bottom: 8px;
+        }
+
+        /* ── PRODUCT PANEL (left) ── */
+        .product-panel {}
+        .product-panel h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 700; line-height: 1.15; letter-spacing: .02em;
+            margin-bottom: 20px;
+        }
+        .product-panel h1 em { font-style: italic; color: var(--gold); }
+
+        /* Product image card */
+        .product-img-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+            margin-bottom: 20px;
+            animation: rise .45s ease both;
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .product-img-card img {
+            width: 100%; height: 280px; object-fit: cover; display: block;
+            filter: brightness(.88) saturate(.9);
+        }
+        .product-img-body { padding: 18px 20px; }
+        .p-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem; font-weight: 700; color: var(--cream);
+        }
+        .p-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+        .chip {
+            display: inline-flex; align-items: center;
+            padding: 3px 10px; border-radius: 99px;
+            font-size: .64rem; font-weight: 500;
+            border: 1px solid var(--border); background: rgba(255,255,255,.03); color: var(--muted);
+        }
+        .chip.gold { border-color: rgba(201,168,76,.22); color: var(--gold); background: var(--gold-light); }
+
+        /* Description */
+        .p-desc {
+            font-size: .84rem; color: var(--muted); line-height: 1.7;
+            margin-top: 12px; padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Pricing breakdown */
+        .pricing-card {
+            background: var(--card);
+            border: 1px solid var(--border); border-radius: 14px;
+            padding: 18px 20px;
+            animation: rise .45s .1s ease both;
+        }
+        .pc-title {
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 14px;
+        }
+        .pc-row {
+            display: flex; justify-content: space-between;
+            align-items: baseline; padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: .86rem;
+        }
+        .pc-row:last-child { border-bottom: none; }
+        .pc-row .pc-label { color: var(--muted); }
+        .pc-row .pc-val { font-weight: 600; color: var(--cream); }
+        .pc-row.total .pc-label {
+            font-weight: 700; color: var(--cream); font-size: .9rem;
+        }
+        .pc-row.total .pc-val {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; font-weight: 700; color: var(--gold);
+        }
+        .pc-note {
+            font-size: .7rem; color: var(--muted);
+            margin-top: 10px; font-style: italic; line-height: 1.5;
+        }
+
+        /* ── BOOKING FORM (right) ── */
+        .booking-form-wrap {
+            position: sticky; top: 82px;
+            animation: rise .45s .15s ease both;
+        }
+        .booking-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+        }
+
+        /* Banner */
+        .booking-banner {
+            height: 5px;
+            background: linear-gradient(90deg, var(--gold-dim), var(--gold), #e8c060, var(--gold), var(--gold-dim));
+            background-size: 200% 100%;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        .booking-head {
+            padding: 18px 20px 0;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .b-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: var(--gold-light); border: 1px solid rgba(201,168,76,.22);
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+        }
+        .b-title { font-size: .95rem; font-weight: 700; color: var(--cream); }
+        .b-sub { font-size: .7rem; color: var(--muted); margin-top: 2px; }
+        .b-rule { height: 1px; background: var(--border); margin: 16px 20px 0; }
+
+        form { padding: 18px 20px 20px; }
+
+        label {
+            display: block;
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .14em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 7px;
+        }
+
+        input[type="date"],
+        textarea {
+            width: 100%;
+            background: var(--card-2);
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 11px 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem; font-weight: 500;
+            color: var(--cream); outline: none;
+            transition: border-color .18s, box-shadow .18s;
+            appearance: none; -webkit-appearance: none;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(.6) sepia(1) hue-rotate(10deg) saturate(.8);
+            cursor: pointer;
+        }
+        input[type="date"]:focus, textarea:focus {
+            border-color: var(--gold-dim);
+            box-shadow: 0 0 0 3px rgba(201,168,76,.08);
+        }
+        textarea { height: 80px; resize: vertical; line-height: 1.6; margin-bottom: 0; }
+
+        .field-group { margin-bottom: 16px; }
+        .field-group:last-of-type { margin-bottom: 0; }
+
+        /* Date row */
+        .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .date-row .field-group { margin-bottom: 0; }
+
+        /* Live cost preview inside form */
+        .cost-preview {
+            background: var(--card-2);
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 12px 14px; margin-bottom: 16px;
+            display: none;
+        }
+        .cost-preview.show { display: block; }
+        .cp-row {
+            display: flex; justify-content: space-between;
+            font-size: .78rem; padding: 4px 0;
+        }
+        .cp-row .cpl { color: var(--muted); }
+        .cp-row .cpv { color: var(--cream); font-weight: 600; }
+        .cp-total {
+            display: flex; justify-content: space-between;
+            padding-top: 8px; margin-top: 4px;
+            border-top: 1px solid var(--border);
+        }
+        .cp-total .cpl { color: var(--cream); font-weight: 600; font-size: .82rem; }
+        .cp-total .cpv {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 700; color: var(--gold);
+        }
+
+        /* Submit btn */
+        .btn-submit {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+            color: #0c0a07;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .82rem; font-weight: 700;
+            letter-spacing: .06em; text-transform: uppercase;
+            border-radius: 11px; border: none; cursor: pointer;
+            transition: opacity .18s, transform .15s, box-shadow .18s;
+            box-shadow: 0 4px 16px rgba(201,168,76,.24);
+            margin-top: 18px;
+        }
+        .btn-submit:hover {
+            opacity: .88; transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201,168,76,.32);
+        }
+        .btn-submit svg { width: 14px; height: 14px; }
+
+        /* Cancel link */
+        .cancel-link {
+            display: block; text-align: center; margin-top: 10px;
+            font-size: .74rem; color: var(--muted); text-decoration: none;
+            transition: color .16s;
+        }
+        .cancel-link:hover { color: var(--cream); }
+
+        /* ── QUANTITY STEPPER ── */
+        .qty-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: var(--card-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .qty-btn {
+            width: 44px; height: 44px;
+            background: none; border: none;
+            color: var(--muted); font-size: 1.2rem;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: background .15s, color .15s;
+            flex-shrink: 0;
+        }
+        .qty-btn:hover { background: rgba(201,168,76,.1); color: var(--gold); }
+        .qty-btn:disabled { opacity: .3; cursor: not-allowed; }
+        .qty-btn:disabled:hover { background: none; color: var(--muted); }
+
+        .qty-display {
+            flex: 1; text-align: center;
+            font-size: 1rem; font-weight: 700;
+            color: var(--cream);
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            padding: 10px 0;
+            line-height: 1;
+        }
+
+        .qty-stock {
+            font-size: .68rem; color: var(--muted);
+            text-align: center; margin-top: 6px;
+            font-style: italic;
+        }
+        .qty-stock strong { color: var(--green); }
+
+        /* ── MOBILE ── */
+        @media (max-width: 720px) {
+            nav { padding: 0 16px; }
+            .page { grid-template-columns: 1fr; padding: 28px 16px 60px; }
+            .booking-form-wrap { position: static; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/userhome/" class="nav-brand">🪷 Nritya<span>ngana</span></a>
+    <a href="/product_list_user/" class="nav-back">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Back to Costumes
+    </a>
+</nav>
+
+<div class="page">
+
+    <!-- LEFT — Product details -->
+    <div class="product-panel">
+        <p class="eyebrow">Costume Rental</p>
+        <h1>Book Your <em>Costume</em></h1>
+
+        <div class="product-img-card">
+            {% if product.product_image %}
+                <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
+            {% else %}
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='280'%3E%3Crect fill='%231a1610' width='600' height='280'/%3E%3Ctext fill='%237a6e5a' font-family='serif' font-size='16' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ENo Image%3C/text%3E%3C/svg%3E"
+                     alt="No image">
+            {% endif %}
+            <div class="product-img-body">
+                <div class="p-name">{{ product.product_name }}</div>
+                <div class="p-chips">
+                    {% if product.category %}<span class="chip gold">{{ product.category }}</span>{% endif %}
+                    {% if product.dance_form %}<span class="chip gold">{{ product.dance_form }}</span>{% endif %}
+                    {% if product.color %}<span class="chip">{{ product.color }}</span>{% endif %}
+                    {% if product.size %}<span class="chip">{{ product.size }}</span>{% endif %}
+                    {% if product.material %}<span class="chip">{{ product.material }}</span>{% endif %}
+                </div>
+                {% if product.description %}
+                <div class="p-desc">{{ product.description }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Static pricing reference -->
+        <div class="pricing-card">
+            <div class="pc-title">Pricing Breakdown</div>
+            <div class="pc-row">
+                <span class="pc-label">Rental rate</span>
+                <span class="pc-val">₹{{ product.rental_price_per_day }} / day / unit</span>
+            </div>
+            <div class="pc-row">
+                <span class="pc-label">Stock available</span>
+                <span class="pc-val">{{ product.quantity }} unit{{ product.quantity|pluralize }}</span>
+            </div>
+            <div class="pc-row total">
+                <span class="pc-label">Estimated total</span>
+                <span class="pc-val" id="static-total">Select dates →</span>
+            </div>
+            <p class="pc-note">Total updates live as you pick dates and quantity.</p>
+        </div>
+    </div>
+
+    <!-- RIGHT — Booking form -->
+    <div class="booking-form-wrap">
+        <div class="booking-card">
+            <div class="booking-banner"></div>
+            <div class="booking-head">
+                <div class="b-icon">📋</div>
+                <div>
+                    <div class="b-title">Booking Request</div>
+                    <div class="b-sub">Confirm dates and submit</div>
+                </div>
+            </div>
+            <div class="b-rule"></div>
+
+            <form method="POST" action="/book-costume/{{ product.id }}/">
+                {% csrf_token %}
+
+                <!-- Date picker -->
+                <div class="date-row">
+                    <div class="field-group">
+                        <label for="from_date">Pickup Date</label>
+                        <input type="date" id="from_date" name="from_date" required
+                               min="{{ today|date:'Y-m-d' }}">
+                    </div>
+                    <div class="field-group">
+                        <label for="to_date">Return Date</label>
+                        <input type="date" id="to_date" name="to_date" required
+                               min="{{ today|date:'Y-m-d' }}">
+                    </div>
+                </div>
+
+                <!-- Quantity stepper -->
+                <div class="field-group">
+                    <label>Quantity</label>
+                    <div class="qty-wrap">
+                        <button type="button" class="qty-btn" id="qty-dec" onclick="changeQty(-1)" disabled>−</button>
+                        <div class="qty-display" id="qty-display">1</div>
+                        <button type="button" class="qty-btn" id="qty-inc" onclick="changeQty(1)">+</button>
+                    </div>
+                    <div class="qty-stock">
+                        <strong>{{ product.quantity }}</strong> unit{{ product.quantity|pluralize }} in stock
+                    </div>
+                    <!-- hidden input carries quantity to POST -->
+                    <input type="hidden" name="quantity" id="qty-input" value="1">
+                </div>
+
+                <!-- Live cost preview -->
+                <div class="cost-preview" id="cost-preview">
+                    <div class="cp-row">
+                        <span class="cpl" id="days-label">— days × — qty × ₹{{ product.rental_price_per_day }}</span>
+                        <span class="cpv" id="rental-val">₹0</span>
+                    </div>
+                    <div class="cp-total">
+                        <span class="cpl">Grand Total</span>
+                        <span class="cpv" id="grand-total">₹0</span>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="notes">Special Notes <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <textarea id="notes" name="notes" placeholder="Any special requests, measurements, or instructions…"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    Book Now
+                </button>
+
+                <a href="/usershop/" class="cancel-link">Cancel — back to costumes</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const pricePerDay = parseFloat("{{ product.rental_price_per_day|default:0 }}") || 0;
+    const maxQty      = parseInt("{{ product.quantity|default:1 }}")                || 1;
+
+    const fromInput   = document.getElementById('from_date');
+    const toInput     = document.getElementById('to_date');
+    const preview     = document.getElementById('cost-preview');
+    const daysLabel   = document.getElementById('days-label');
+    const rentalVal   = document.getElementById('rental-val');
+    const grandTotal  = document.getElementById('grand-total');
+    const staticTotal = document.getElementById('static-total');
+    const qtyDisplay  = document.getElementById('qty-display');
+    const qtyInput    = document.getElementById('qty-input');
+    const qtyDec      = document.getElementById('qty-dec');
+    const qtyInc      = document.getElementById('qty-inc');
+
+    let qty = 1;
+
+    // ── Quantity stepper ──────────────────────────────────
+    function changeQty(delta) {
+        qty = Math.min(maxQty, Math.max(1, qty + delta));
+        qtyDisplay.textContent = qty;
+        qtyInput.value         = qty;
+
+        // Update button states
+        qtyDec.disabled = qty <= 1;
+        qtyInc.disabled = qty >= maxQty;
+
+        // Animate the display
+        qtyDisplay.style.transform = 'scale(1.25)';
+        qtyDisplay.style.color     = 'var(--gold)';
+        setTimeout(() => {
+            qtyDisplay.style.transform = 'scale(1)';
+            qtyDisplay.style.color     = 'var(--cream)';
+        }, 180);
+
+        updateCost();
+    }
+
+    // ── Live cost calculator ──────────────────────────────
+    function updateCost() {
+        const from = new Date(fromInput.value);
+        const to   = new Date(toInput.value);
+
+        if (!fromInput.value || !toInput.value || to <= from) {
+            preview.classList.remove('show');
+            staticTotal.textContent = 'Select dates →';
+            return;
+        }
+
+        const days   = Math.round((to - from) / (1000 * 60 * 60 * 24));
+        const rental = days * qty * pricePerDay;
+
+        daysLabel.textContent  = `${days} day${days !== 1 ? 's' : ''} × ${qty} unit${qty !== 1 ? 's' : ''} × ₹${pricePerDay}`;
+        rentalVal.textContent  = `₹${rental.toFixed(2)}`;
+        grandTotal.textContent = `₹${rental.toFixed(2)}`;
+        staticTotal.textContent = `₹${rental.toFixed(2)}`;
+
+        preview.classList.add('show');
+        toInput.min = fromInput.value;
+    }
+
+    fromInput.addEventListener('change', () => {
+        if (toInput.value && toInput.value <= fromInput.value) toInput.value = '';
+        toInput.min = fromInput.value;
+        updateCost();
+    });
+    toInput.addEventListener('change', updateCost);
+
+    // Smooth qty transition
+    qtyDisplay.style.transition = 'transform .18s ease, color .18s ease';
+</script>
+
+</body>
+</html>

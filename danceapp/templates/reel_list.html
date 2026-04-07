@@ -1,0 +1,429 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:        #090c0f;
+            --surface:   #0f1318;
+            --card:      #131820;
+            --border:    rgba(74,144,200,.14);
+            --border-hi: rgba(74,144,200,.42);
+            --blue:      #4a90c8;
+            --blue-dim:  #2d5c8a;
+            --teal:      #3ab8b0;
+            --cream:     #dde8f0;
+            --muted:     #4a5e70;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'Crimson Pro', Georgia, serif;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(9,12,15,.94);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            height: 62px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+        }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-back {
+            display: flex; align-items: center; gap: 7px;
+            color: var(--muted); font-size: .88rem;
+            text-decoration: none;
+            padding: 6px 14px;
+            border: 1px solid var(--border); border-radius: 8px;
+            transition: color .2s, border-color .2s, background .2s;
+        }
+        .nav-back:hover { color: var(--cream); border-color: var(--border-hi); background: rgba(74,144,200,.06); }
+        .nav-back svg { width: 14px; height: 14px; }
+
+        .nav-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem; font-weight: 600;
+            color: var(--cream); letter-spacing: .06em;
+        }
+        .nav-title span { color: var(--blue); }
+
+        .btn-add {
+            display: flex; align-items: center; gap: 7px;
+            padding: 8px 18px;
+            background: var(--blue);
+            color: #090c0f;
+            font-family: 'Cinzel', serif;
+            font-size: .7rem; font-weight: 700;
+            letter-spacing: .1em; text-transform: uppercase;
+            border-radius: 9px; text-decoration: none;
+            transition: background .2s, box-shadow .2s, transform .15s;
+            box-shadow: 0 4px 16px rgba(74,144,200,.22);
+        }
+        .btn-add:hover {
+            background: #5fa8e0; color: #090c0f;
+            box-shadow: 0 8px 24px rgba(74,144,200,.35);
+            transform: translateY(-1px);
+        }
+        .btn-add svg { width: 14px; height: 14px; }
+
+        /* ── PAGE HEAD ── */
+        .page-head {
+            max-width: 960px;
+            margin: 44px auto 32px;
+            padding: 0 24px;
+            display: flex; align-items: flex-end;
+            justify-content: space-between; gap: 16px;
+            flex-wrap: wrap;
+        }
+        .page-eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: .68rem; letter-spacing: .22em;
+            text-transform: uppercase; color: var(--blue-dim);
+            margin-bottom: 8px;
+        }
+        .page-head h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 700; letter-spacing: .04em;
+            color: var(--cream); line-height: 1.1;
+        }
+        .page-head h1 em {
+            font-style: italic;
+            font-family: 'Crimson Pro', serif;
+            color: var(--teal); font-size: 1.1em; font-weight: 300;
+        }
+        .reel-count {
+            font-family: 'Cinzel', serif;
+            font-size: .68rem; letter-spacing: .12em;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            padding: 5px 14px;
+            white-space: nowrap;
+        }
+        .reel-count strong { color: var(--blue); }
+
+        /* ── DIVIDER ── */
+        .divider {
+            max-width: 960px; margin: 0 auto 24px; padding: 0 24px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .divider-label {
+            font-family: 'Cinzel', serif;
+            font-size: .64rem; letter-spacing: .18em;
+            text-transform: uppercase; color: var(--muted); white-space: nowrap;
+        }
+
+        /* ── GRID ── */
+        .reel-grid {
+            max-width: 960px; margin: 0 auto; padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 16px;
+        }
+
+        /* ── REEL CARD ── */
+        .reel-card {
+            position: relative;
+            aspect-ratio: 9 / 16;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color .25s, transform .25s, box-shadow .25s;
+            animation: rise .45s ease both;
+        }
+        .reel-card:hover {
+            border-color: var(--border-hi);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0,0,0,.5);
+        }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .reel-card:nth-child(2) { animation-delay: .06s; }
+        .reel-card:nth-child(3) { animation-delay: .12s; }
+        .reel-card:nth-child(4) { animation-delay: .18s; }
+        .reel-card:nth-child(5) { animation-delay: .24s; }
+        .reel-card:nth-child(6) { animation-delay: .30s; }
+
+        /* Top accent line on hover */
+        .reel-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue-dim), var(--teal));
+            z-index: 2; opacity: 0;
+            transition: opacity .25s;
+        }
+        .reel-card:hover::before { opacity: 1; }
+
+        .reel-card video {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            transition: opacity .3s, transform .45s;
+        }
+        .reel-card:hover video { opacity: .5; transform: scale(1.04); }
+
+        /* Play icon */
+        .play-icon {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(.8);
+            width: 48px; height: 48px;
+            background: rgba(74,144,200,.85);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0;
+            transition: opacity .25s, transform .25s;
+            pointer-events: none; z-index: 3;
+        }
+        .play-icon svg { width: 20px; height: 20px; color: #fff; margin-left: 2px; }
+        .reel-card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        /* Bottom info */
+        .reel-info {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 32px 12px 12px;
+            background: linear-gradient(transparent, rgba(9,12,15,.92));
+            z-index: 3; pointer-events: none;
+        }
+        .reel-title {
+            font-family: 'Cinzel', serif;
+            font-size: .74rem; font-weight: 600; letter-spacing: .04em;
+            color: var(--cream);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .reel-desc {
+            font-size: .71rem; font-style: italic;
+            color: rgba(221,232,240,.45);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        /* Action buttons */
+        .reel-actions {
+            position: absolute; top: 10px; right: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+            opacity: 0; transition: opacity .25s; z-index: 4;
+        }
+        .reel-card:hover .reel-actions { opacity: 1; }
+        @media (hover: none) { .reel-actions { opacity: 1; } }
+
+        .act-btn {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,.15);
+            transition: background .18s, transform .15s;
+        }
+        .act-btn:active { transform: scale(.92); }
+        .act-btn svg { width: 14px; height: 14px; }
+
+        .act-edit { background: rgba(74,144,200,.25); color: var(--blue); }
+        .act-edit:hover { background: var(--blue); color: #090c0f; border-color: var(--blue); }
+
+        .act-delete { background: rgba(192,90,90,.2); color: #e08080; }
+        .act-delete:hover { background: #c05a5a; color: #fff; border-color: #c05a5a; }
+
+        /* ── EMPTY ── */
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center; padding: 70px 24px;
+        }
+        .empty-icon { font-size: 3rem; opacity: .15; margin-bottom: 20px; }
+        .empty h3 { font-family: 'Cinzel', serif; font-size: 1.2rem; margin-bottom: 10px; }
+        .empty p { color: var(--muted); font-style: italic; font-size: .95rem; }
+
+        /* ── MODAL ── */
+        .modal-backdrop {
+            display: none; position: fixed; inset: 0; z-index: 999;
+            background: rgba(0,0,0,.88);
+            backdrop-filter: blur(14px);
+            justify-content: center; align-items: center;
+        }
+        .modal-backdrop.open { display: flex; animation: fadeIn .25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-inner {
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            max-width: 96vw; max-height: 92vh;
+        }
+        .modal-inner video {
+            max-height: 88vh; max-width: 92vw;
+            border-radius: 14px;
+            border: 1px solid var(--border-hi);
+            box-shadow: 0 24px 80px rgba(0,0,0,.7);
+            outline: none; display: block;
+        }
+        .modal-close {
+            position: fixed; top: 20px; right: 24px;
+            width: 38px; height: 38px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--cream);
+            transition: background .2s, transform .2s; z-index: 1000;
+        }
+        .modal-close:hover { background: rgba(192,90,90,.35); transform: scale(1.08); }
+        .modal-close svg { width: 16px; height: 16px; }
+
+        /* ── MOBILE ── */
+        @media (max-width: 540px) {
+            nav { padding: 0 16px; }
+            .page-head, .divider, .reel-grid { padding-left: 16px; padding-right: 16px; }
+            .reel-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+    <div class="nav-left">
+        <a href="/trainerhome/" class="nav-back">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
+            Dashboard
+        </a>
+        <span class="nav-title">Manage <span>Reels</span></span>
+    </div>
+    <a href="{% url 'add_reel' %}" class="btn-add">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add New
+    </a>
+</nav>
+
+<!-- ── PAGE HEAD ── -->
+<div class="page-head">
+    <div>
+        <p class="page-eyebrow">Your Content</p>
+        <h1>Dance <em>Reels</em></h1>
+    </div>
+    <div class="reel-count">
+        <strong>{{ reels|length }}</strong> reel{{ reels|length|pluralize }} uploaded
+    </div>
+</div>
+
+<!-- ── DIVIDER ── -->
+<div class="divider">
+    <span class="divider-label">All Reels</span>
+</div>
+
+<!-- ── GRID ── -->
+<div class="reel-grid">
+
+    {% for reel in reels %}
+    <div class="reel-card" onclick="openModal('{{ reel.video.url }}')">
+
+        <video preload="metadata" tabindex="-1">
+            <source src="{{ reel.video.url }}#t=0.1" type="video/mp4">
+        </video>
+
+        <div class="play-icon">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+
+        <div class="reel-info">
+            <div class="reel-title">{{ reel.title }}</div>
+            {% if reel.description %}
+            <div class="reel-desc">{{ reel.description }}</div>
+            {% endif %}
+        </div>
+
+        <div class="reel-actions">
+            <a href="/edit_reel/{{ reel.id }}/" class="act-btn act-edit" title="Edit"
+               onclick="event.stopPropagation()">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+            </a>
+            <a href="/delete_reel/{{ reel.id }}/" class="act-btn act-delete" title="Delete"
+               onclick="event.stopPropagation(); return confirm('Delete this reel permanently?');">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6M14 11v6"/>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty">
+        <div class="empty-icon">🎬</div>
+        <h3>No Reels Yet</h3>
+        <p>Upload your first reel to share your dance routines with students.</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-backdrop" id="modal" onclick="handleBackdropClick(event)">
+    <div class="modal-inner">
+        <video id="modal-player" controls playsinline>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+    <div class="modal-close" onclick="closeModal()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+    </div>
+</div>
+
+<script>
+    const modal  = document.getElementById('modal');
+    const player = document.getElementById('modal-player');
+
+    function openModal(url) {
+        player.src = url.split('#')[0];
+        modal.classList.add('open');
+        player.play();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.classList.remove('open');
+        player.pause();
+        player.src = '';
+        document.body.style.overflow = '';
+    }
+
+    function handleBackdropClick(e) {
+        if (e.target === modal) closeModal();
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
+
+</body>
+</html>

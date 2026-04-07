@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Artist Profile</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+            background: #f3f3f3;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .profile-card {
+            width: 420px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .profile-card h2 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .profile-card img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ffaad4;
+            display: block;
+            margin: 0 auto 15px auto;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 15px;
+            margin-bottom: 15px;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #ff6fa8;
+            box-shadow: 0 0 5px rgba(255,111,168,0.4);
+        }
+
+        textarea {
+            resize: none;
+            height: 70px;
+        }
+
+        .btn-save {
+            width: 100%;
+            background: #ff6fa8;
+            color: white;
+            padding: 12px 0;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-save:hover {
+            background: #ff3d87;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="profile-card">
+
+        <h2>Edit Profile</h2>
+
+        <!-- Current Photo -->
+        <img src="{{ artist.profile_photo.url }}" alt="Profile Photo">
+
+        <!-- Edit Form -->
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Full Name</label>
+            <input type="text" name="name" value="{{ artist.name }}" required>
+
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ artist.phone }}" required>
+
+            <label>Gender</label>
+            <select name="gender">
+                <option value="M" {% if artist.gender == 'M' %}selected{% endif %}>Male</option>
+                <option value="F" {% if artist.gender == 'F' %}selected{% endif %}>Female</option>
+                <option value="O" {% if artist.gender == 'O' %}selected{% endif %}>Other</option>
+            </select>
+
+            <label>Age</label>
+            <input type="number" name="age" value="{{ artist.age }}">
+
+            <label>Experience (years)</label>
+            <input type="number" name="experience_years" value="{{ artist.experience_years }}">
+
+            <label>Specialization</label>
+            <input type="text" name="specialization" value="{{ artist.specialization }}">
+
+            <label>Location</label>
+            <input type="text" name="location" value="{{ artist.location }}">
+
+            <button type="submit" class="btn-save">Save Changes</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

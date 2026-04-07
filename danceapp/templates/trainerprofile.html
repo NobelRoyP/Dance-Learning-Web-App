@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Profile | {{ trainer.name }}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --trainer-teal: #0d9488;
+            --trainer-indigo: #4338ca;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-body: #f8fafc;
+            --card-white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(#1e293b,var(--trainer-teal));
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Hero/Cover Section */
+        .cover-photo {
+            height: 220px;
+            background: transparent;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Main Profile Container */
+        .profile-container {
+            max-width: 850px;
+            margin: -100px auto 50px; /* Pulls card up into the cover */
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--card-white);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        /* Header Layout */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .profile-header img.avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid var(--card-white);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            background-color: #f1f5f9; /* Fallback color */
+        }
+
+        .profile-header h2 {
+            margin: 0;
+            font-size: 30px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .badge-category {
+            background: #ccfbf1;
+            color: var(--trainer-teal);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 12px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .info-item i {
+            font-size: 24px;
+            color: var(--trainer-indigo);
+            background: #eef2ff;
+            padding: 12px;
+            border-radius: 14px;
+        }
+
+        .info-content p {
+            margin: 0;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        .info-content span {
+            font-weight: 500;
+            font-size: 16px;
+            display: block;
+            color: var(--text-main);
+        }
+
+        /* Certificate Styling */
+        .certificate-section {
+            margin-top: 40px;
+            background: #fdfdfd;
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px dashed #e2e8f0;
+            text-align: center;
+        }
+
+        .certificate-section h3 {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .cert-img-container {
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .cert-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 250px;
+            display: block;
+            transition: transform 0.4s ease;
+            cursor: pointer;
+        }
+
+        .cert-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Buttons Section */
+        .action-btns {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-edit {
+            background: var(--trainer-teal);
+            color: white;
+            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn-edit:hover {
+            background: #0b7a70;
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .cover-photo { height: 160px; }
+            .profile-container { margin-top: -60px; }
+            .profile-card { padding: 30px 20px; }
+            .profile-header h2 { font-size: 24px; }
+            .details-grid { grid-template-columns: 1fr; }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cover-photo"></div>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            
+            <div class="profile-header">
+                {% if trainer.image %}
+                    <img src="{{ trainer.image.url }}" alt="{{ trainer.name }}" class="avatar">
+                {% else %}
+                    <img src="https://via.placeholder.com/150" alt="No Image Available" class="avatar">
+                {% endif %}
+
+                <h2>{{ trainer.name }}</h2>
+                <span class="badge-category">{{ trainer.course.course_name }}</span>
+            </div>
+
+            <div class="details-grid">
+                <div class="info-item">
+                    <i class='bx bx-envelope'></i>
+                    <div class="info-content">
+                        <p>Email Address</p>
+                        <span>{{ trainer.email }}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class='bx bx-phone'></i>
+                    <div class="info-content">
+                        <p>Contact Number</p>
+                        <span>{{ trainer.phone }}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class='bx bx-user'></i>
+                    <div class="info-content">
+                        <p>Age & Gender</p>
+                        <span>{{ trainer.age }} Years • {{ trainer.Gender }}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class='bx bx-award'></i>
+                    <div class="info-content">
+                        <p>Work Experience</p>
+                        <span>{{ trainer.experiance }} Years Professionally</span>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="action-btns">
+                <a href="/trainereditprofile/{{ trainer.id }}/" class="btn btn-edit">
+                    <i class='bx bx-edit-alt'></i> Edit Profile
+                </a>
+                <a href="/trainerhome/" class="btn btn-back">
+                    <i class='bx bx-left-arrow-alt'></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

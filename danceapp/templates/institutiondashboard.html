@@ -1,0 +1,698 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Dashboard | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── TOKENS ── */
+        :root {
+            --bg:          #faf8f4;
+            --surface:     #ffffff;
+            --sidebar-bg:  #162820;
+            --sidebar-mid: #1e3a2e;
+            --sidebar-hi:  #2a4f3e;
+            --border:      #e8e2d8;
+            --border-soft: #f0ece4;
+            --green:       #1e7a4a;
+            --green-light: #e8f5ee;
+            --copper:      #b5622a;
+            --copper-light:#fdf0e8;
+            --indigo:      #3d5a9e;
+            --indigo-light:#edf0fa;
+            --text:        #1a1814;
+            --text-mid:    #4a4540;
+            --text-muted:  #8a8278;
+            --gold:        #c9922a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: 100%; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ══════════════════════════════════════
+           SIDEBAR
+        ══════════════════════════════════════ */
+        .sidebar {
+            width: 240px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Decorative top band */
+        .sidebar-top-band {
+            height: 4px;
+            background: linear-gradient(90deg, #c9922a, #e8b84a, #c9922a);
+        }
+
+        /* Brand */
+        .sidebar-brand {
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+        .brand-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .03em;
+            line-height: 1.2;
+        }
+        .brand-name span { color: var(--gold); }
+        .brand-sub {
+            font-size: .72rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.35);
+            margin-top: 4px;
+        }
+
+        /* Institution identity in sidebar */
+        .sidebar-identity {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            background: var(--sidebar-mid);
+        }
+        .sidebar-logo {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,.12);
+            background: var(--sidebar-hi);
+            flex-shrink: 0;
+        }
+        .sidebar-logo-fallback {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: var(--sidebar-hi);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+        .sidebar-inst-name {
+            font-size: .82rem;
+            font-weight: 700;
+            color: rgba(255,255,255,.9);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar-inst-loc {
+            font-size: .7rem;
+            color: rgba(255,255,255,.38);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Nav */
+        .sidebar-nav {
+            padding: 16px 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .nav-label {
+            font-size: .62rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.22);
+            padding: 10px 12px 4px;
+            margin-top: 6px;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: .85rem;
+            font-weight: 400;
+            color: rgba(255,255,255,.6);
+            text-decoration: none;
+            transition: background .18s, color .18s;
+            position: relative;
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,.06);
+            color: rgba(255,255,255,.9);
+        }
+        .nav-link.active {
+            background: rgba(201,146,42,.14);
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 20%; bottom: 20%;
+            width: 3px;
+            background: var(--gold);
+            border-radius: 0 3px 3px 0;
+        }
+        .nav-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+        .nav-link.danger { color: rgba(220,100,80,.7); }
+        .nav-link.danger:hover { background: rgba(220,100,80,.1); color: #e07060; }
+
+        /* Sidebar footer */
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255,255,255,.07);
+            font-size: .7rem;
+            color: rgba(255,255,255,.2);
+            text-align: center;
+            letter-spacing: .06em;
+        }
+
+        /* ══════════════════════════════════════
+           MAIN CONTENT
+        ══════════════════════════════════════ */
+        .main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top bar */
+        .topbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 36px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .topbar-left {}
+        .topbar-greeting {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -.01em;
+        }
+        .topbar-greeting span { color: var(--green); font-weight: 700; }
+        .topbar-date {
+            font-size: .75rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .topbar-logo {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+        }
+        .topbar-logo-fallback {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: var(--green-light);
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem; font-weight: 700;
+            color: var(--green);
+        }
+
+        /* Content area */
+        .content {
+            padding: 36px;
+            flex: 1;
+        }
+
+        /* ── SECTION HEADING ── */
+        .section-heading {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .section-heading h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -.02em;
+        }
+        .section-heading h2 em {
+            font-style: normal;
+            color: var(--green);
+            font-weight: 800;
+        }
+        .section-rule {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .section-label {
+            font-size: .68rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ── STAT CARDS ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 36px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px 24px 20px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow .25s, transform .25s;
+            animation: fadeUp .5s ease both;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 36px rgba(0,0,0,.08);
+        }
+        .stat-card:nth-child(2) { animation-delay: .08s; }
+        .stat-card:nth-child(3) { animation-delay: .16s; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Left accent border */
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 16%; bottom: 16%;
+            width: 4px;
+            border-radius: 0 4px 4px 0;
+        }
+        .stat-card.green::before  { background: var(--green); }
+        .stat-card.copper::before { background: var(--copper); }
+        .stat-card.indigo::before { background: var(--indigo); }
+
+        /* Subtle corner decoration */
+        .stat-card::after {
+            content: attr(data-icon);
+            position: absolute;
+            top: 12px; right: 16px;
+            font-size: 1.8rem;
+            opacity: .1;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .stat-label {
+            font-size: .72rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .stat-number {
+            font-family: 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -.04em;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat-card.green  .stat-number { color: var(--green); }
+        .stat-card.copper .stat-number { color: var(--copper); }
+        .stat-card.indigo .stat-number { color: var(--indigo); }
+
+        .stat-sub {
+            font-size: .78rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 300;
+        }
+
+        /* ── DETAIL CARD ── */
+        .detail-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            animation: fadeUp .5s ease .24s both;
+        }
+        .detail-card-head {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border-soft);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .detail-card-head h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .detail-card-head h3 em {
+            font-style: normal;
+            color: var(--green);
+            font-weight: 700;
+        }
+        .edit-link {
+            font-size: .78rem;
+            color: var(--green);
+            text-decoration: none;
+            border: 1px solid rgba(30,122,74,.25);
+            padding: 5px 14px;
+            border-radius: 7px;
+            transition: background .18s, color .18s;
+        }
+        .edit-link:hover { background: var(--green-light); }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .detail-field {
+            padding: 18px 28px;
+            border-bottom: 1px solid var(--border-soft);
+            border-right: 1px solid var(--border-soft);
+        }
+        .detail-field:nth-child(even) { border-right: none; }
+        .detail-field.full {
+            grid-column: 1 / -1;
+            border-right: none;
+        }
+        .detail-field:last-child,
+        .detail-field:nth-last-child(2):not(.full) { border-bottom: none; }
+        .detail-field.full:last-child { border-bottom: none; }
+
+        .field-label {
+            font-size: .68rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .field-value {
+            font-size: .95rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+        .field-value.empty { color: var(--text-muted); font-style: italic; }
+
+        /* ── QUICK ACTIONS ── */
+        .actions-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            animation: fadeUp .5s ease .32s both;
+        }
+        .action-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: border-color .2s, transform .2s, box-shadow .2s;
+        }
+        .action-card:hover {
+            border-color: var(--green);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(30,122,74,.1);
+        }
+        .action-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+        .action-title {
+            font-family: 'Inter', sans-serif;
+            font-size: .95rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .action-desc {
+            font-size: .72rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+        .action-arrow {
+            font-size: .8rem;
+            color: var(--green);
+            margin-top: auto;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .topbar { padding: 0 20px; }
+            .content { padding: 20px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .detail-field { border-right: none; }
+        }
+        @media (max-width: 540px) {
+            .stats-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar">
+    <div class="sidebar-top-band"></div>
+
+    <div class="sidebar-brand">
+        <div class="brand-name">Nritya<span>ngana</span></div>
+        <div class="brand-sub">Institution Portal</div>
+    </div>
+
+    <div class="sidebar-identity">
+        {% if institution.logo %}
+            <img class="sidebar-logo" src="{{ institution.logo.url }}" alt="{{ institution.name }}">
+        {% else %}
+            <div class="sidebar-logo-fallback">{{ institution.name|slice:":1"|upper }}</div>
+        {% endif %}
+        <div>
+            <div class="sidebar-inst-name">{{ institution.name }}</div>
+            <div class="sidebar-inst-loc">{{ institution.location|default:"—" }}</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-label">Main</div>
+        <a href="#" class="nav-link active">
+            <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a href="/institutionprofile/" class="nav-link">
+            <span class="nav-icon">🏫</span> Profile
+        </a>
+
+        <div class="nav-label">Manage</div>
+        <a href="/trainerlist_institution/" class="nav-link">
+            <span class="nav-icon">👨‍🏫</span> Staff
+        </a>
+        <a href="/userlist_institution/" class="nav-link">
+            <span class="nav-icon">🎓</span> Students
+        </a>
+        <a href="/productlist/" class="nav-link">
+            <span class="nav-icon">👗</span> Costumes
+        </a>
+        <a href="/institution/bookings/" class="nav-link">
+            <span class="nav-icon">📋</span> Bookings
+        </a>
+
+        <div class="nav-label">Account</div>
+        <a href="/logout/"
+           class="nav-link danger"
+           onclick="return confirm('Are you sure you want to logout?');">
+            <span class="nav-icon">🚪</span> Logout
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        &copy; <script>document.write(new Date().getFullYear())</script> Nrityangana
+    </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-greeting">
+                Welcome back, <span>{{ institution.name }}</span>
+            </div>
+            <div class="topbar-date" id="live-date"></div>
+        </div>
+        <div class="topbar-right">
+            {% if institution.logo %}
+                <img class="topbar-logo" src="{{ institution.logo.url }}" alt="{{ institution.name }}">
+            {% else %}
+                <div class="topbar-logo-fallback">{{ institution.name|slice:":1"|upper }}</div>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- ── STATS ── -->
+        <div class="section-heading">
+            <h2>At a <em>Glance</em></h2>
+            <div class="section-rule"></div>
+            <span class="section-label">Overview</span>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card green" data-icon="👨‍🏫">
+                <div class="stat-label">Total Staff</div>
+                <div class="stat-number">{{ total_trainers }}</div>
+                <div class="stat-sub">Trainers linked to this institution</div>
+            </div>
+            <div class="stat-card copper" data-icon="🎓">
+                <div class="stat-label">Total Students</div>
+                <div class="stat-number">{{ total_students }}</div>
+                <div class="stat-sub">Approved & enrolled students</div>
+            </div>
+            <div class="stat-card indigo" data-icon="📅">
+                <div class="stat-label">Established</div>
+                <div class="stat-number">{{ institution.established_year|default:"—" }}</div>
+                <div class="stat-sub">Year of founding</div>
+            </div>
+        </div>
+
+        <!-- ── INSTITUTION DETAILS ── -->
+        <div class="section-heading">
+            <h2>Institution <em>Details</em></h2>
+            <div class="section-rule"></div>
+            <span class="section-label">Info</span>
+        </div>
+
+        <div class="detail-card">
+            <div class="detail-card-head">
+                <h3>About the <em>Institution</em></h3>
+                <a href="/institutionprofile/" class="edit-link">Edit Profile →</a>
+            </div>
+            <div class="detail-grid">
+                <div class="detail-field">
+                    <div class="field-label">Institution Name</div>
+                    <div class="field-value">{{ institution.name|default:"—" }}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">Email</div>
+                    <div class="field-value">{{ institution.email|default:"—" }}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">Phone</div>
+                    <div class="field-value">{{ institution.phone|default:"—" }}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">Location</div>
+                    <div class="field-value">{{ institution.location|default:"—" }}</div>
+                </div>
+                <div class="detail-field full">
+                    <div class="field-label">Full Address</div>
+                    <div class="field-value {% if not institution.address %}empty{% endif %}">
+                        {{ institution.address|default:"Not provided" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── QUICK ACTIONS ── -->
+        <div class="section-heading">
+            <h2>Quick <em>Actions</em></h2>
+            <div class="section-rule"></div>
+            <span class="section-label">Shortcuts</span>
+        </div>
+
+        <div class="actions-row">
+            <a href="/userlist_institution/" class="action-card">
+                <div class="action-icon">🎓</div>
+                <div class="action-title">Manage Students</div>
+                <div class="action-desc">Approve, reject or remove student applications.</div>
+                <div class="action-arrow">View all →</div>
+            </a>
+            <a href="/trainerlist_institution/" class="action-card">
+                <div class="action-icon">👨‍🏫</div>
+                <div class="action-title">Manage Staff</div>
+                <div class="action-desc">View trainers linked to your institution.</div>
+                <div class="action-arrow">View all →</div>
+            </a>
+            <a href="/productlist/" class="action-card">
+                <div class="action-icon">👗</div>
+                <div class="action-title">Costumes</div>
+                <div class="action-desc">Add and manage rental costumes for students.</div>
+                <div class="action-arrow">Manage →</div>
+            </a>
+            <a href="/institution/bookings/" class="action-card">
+                <div class="action-icon">📋</div>
+                <div class="action-title">Booking Requests</div>
+                <div class="action-desc">Review and approve costume booking requests.</div>
+                <div class="action-arrow">Review →</div>
+            </a>
+            <a href="/institutionprofile/" class="action-card">
+                <div class="action-icon">⚙️</div>
+                <div class="action-title">Edit Profile</div>
+                <div class="action-desc">Update your institution's details and logo.</div>
+                <div class="action-arrow">Edit →</div>
+            </a>
+        </div>
+
+    </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+    // Live date in topbar
+    const dateEl = document.getElementById('live-date');
+    function updateDate() {
+        const now = new Date();
+        dateEl.textContent = now.toLocaleDateString('en-IN', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+    }
+    updateDate();
+</script>
+
+</body>
+</html>

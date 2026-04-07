@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:        #0c0a07;
+            --card:      #1a1610;
+            --card-2:    #201c12;
+            --border:    #302820;
+            --border-hi: rgba(201,168,76,.4);
+            --gold:      #c9a84c;
+            --gold-dim:  #8a6f2e;
+            --gold-light:rgba(201,168,76,.1);
+            --cream:     #f0e6ce;
+            --muted:     #7a6e5a;
+            --green:     #3a9e6e;
+            --green-dim: rgba(58,158,110,.12);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 24px;
+            background-image:
+                radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 35% at 10% 100%, rgba(42,26,8,.5) 0%, transparent 55%);
+        }
+
+        /* ── CONFETTI CANVAS ── */
+        #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+        /* ── CARD ── */
+        .success-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            max-width: 520px; width: 100%;
+            position: relative; z-index: 1;
+            box-shadow: 0 32px 80px rgba(0,0,0,.6);
+            animation: cardPop .6s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        @keyframes cardPop {
+            from { opacity: 0; transform: scale(.88) translateY(24px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Top shimmer band */
+        .shimmer-band {
+            height: 4px;
+            background: linear-gradient(90deg, #7a5010, var(--gold), #e8c060, var(--gold), #7a5010);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        /* ── CHECK ICON ── */
+        .icon-wrap {
+            display: flex; justify-content: center;
+            padding: 40px 24px 0;
+        }
+        .check-circle {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: var(--green-dim);
+            border: 2px solid rgba(58,158,110,.3);
+            display: flex; align-items: center; justify-content: center;
+            animation: popIn .5s .3s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(.5); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .check-circle svg {
+            width: 38px; height: 38px;
+            color: var(--green);
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawCheck .5s .7s ease forwards;
+        }
+        @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+        /* ── TITLE ── */
+        .card-body { padding: 24px 32px 32px; text-align: center; }
+        .success-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem; font-weight: 700;
+            color: var(--cream); letter-spacing: .02em;
+            margin-bottom: 8px;
+            animation: fadeUp .5s .5s ease both;
+        }
+        .success-title em { font-style: italic; color: var(--gold); }
+        .success-sub {
+            font-size: .88rem; color: var(--muted);
+            line-height: 1.6; margin-bottom: 28px;
+            animation: fadeUp .5s .6s ease both;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── BOOKING SUMMARY ── */
+        .summary-card {
+            background: var(--card-2);
+            border: 1px solid var(--border);
+            border-radius: 14px; overflow: hidden;
+            margin-bottom: 24px; text-align: left;
+            animation: fadeUp .5s .7s ease both;
+        }
+        .summary-head {
+            padding: 11px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: .6rem; font-weight: 700;
+            letter-spacing: .18em; text-transform: uppercase;
+            color: var(--muted);
+        }
+        .summary-row {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 11px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: .84rem;
+        }
+        .summary-row:last-child { border-bottom: none; }
+        .sr-label { color: var(--muted); }
+        .sr-val { font-weight: 600; color: var(--cream); }
+        .sr-val.gold {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem; font-weight: 700; color: var(--gold);
+        }
+        .sr-val.green {
+            display: inline-flex; align-items: center; gap: 5px;
+            color: #5de8a8; font-size: .78rem; font-weight: 700;
+            letter-spacing: .06em; text-transform: uppercase;
+        }
+        .sr-val.green::before { content: '●'; font-size: .36rem; }
+
+        /* Payment ID chip */
+        .payment-id {
+            font-family: 'DM Sans', monospace;
+            font-size: .72rem; color: var(--muted);
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--border);
+            padding: 3px 10px; border-radius: 6px;
+            letter-spacing: .04em;
+        }
+
+        /* ── BUTTONS ── */
+        .btn-row {
+            display: flex; gap: 10px;
+            animation: fadeUp .5s .85s ease both;
+        }
+        .btn {
+            flex: 1; display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+            padding: 13px 16px; border-radius: 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .8rem; font-weight: 700;
+            letter-spacing: .04em; text-transform: uppercase;
+            text-decoration: none; border: none; cursor: pointer;
+            transition: opacity .18s, transform .15s;
+        }
+        .btn:active { transform: scale(.97); }
+        .btn svg { width: 14px; height: 14px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+            color: #0c0a07;
+            box-shadow: 0 4px 16px rgba(201,168,76,.25);
+        }
+        .btn-primary:hover { opacity: .88; color: #0c0a07; transform: translateY(-2px); }
+
+        .btn-ghost {
+            background: rgba(255,255,255,.04);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.07); color: var(--cream); }
+
+        @media (max-width: 480px) {
+            .card-body { padding: 20px 20px 24px; }
+            .btn-row { flex-direction: column; }
+            .success-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="success-card">
+    <div class="shimmer-band"></div>
+
+    <div class="icon-wrap">
+        <div class="check-circle">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h1 class="success-title">Payment <em>Confirmed!</em></h1>
+        <p class="success-sub">
+            Your costume rental has been booked and confirmed.
+            Collect it from your institution on the pickup date.
+        </p>
+
+        <!-- Summary -->
+        <div class="summary-card">
+            <div class="summary-head">Booking Summary</div>
+
+            <div class="summary-row">
+                <span class="sr-label">Costume</span>
+                <span class="sr-val">{{ booking.product.product_name }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="sr-label">Pickup Date</span>
+                <span class="sr-val">{{ booking.from_date|date:"d M Y" }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="sr-label">Return Date</span>
+                <span class="sr-val">{{ booking.to_date|date:"d M Y" }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="sr-label">Duration</span>
+                <span class="sr-val">{{ booking.total_days }} day{{ booking.total_days|pluralize }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="sr-label">Amount Paid</span>
+                <span class="sr-val gold">₹{{ payment.amount }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="sr-label">Status</span>
+                <span class="sr-val green">Confirmed</span>
+            </div>
+
+            <div class="summary-row">
+                <span class="sr-label">Payment ID</span>
+                <span class="payment-id">{{ payment.razorpay_payment_id }}</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="btn-row">
+            <a href="/user/bookings/" class="btn btn-primary">
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                    <rect x="9" y="3" width="6" height="4" rx="1"/>
+                </svg>
+                My Bookings
+            </a>
+            <a href="/userhome/" class="btn btn-ghost">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Confetti -->
+<script>
+    const canvas = document.getElementById('confetti');
+    const ctx    = canvas.getContext('2d');
+
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const COLORS = ['#c9a84c', '#e8c060', '#f0e6ce', '#3a9e6e', '#d97a36', '#8a6f2e'];
+
+    const pieces = Array.from({ length: 120 }, () => ({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height - canvas.height,
+        w:     6 + Math.random() * 8,
+        h:     10 + Math.random() * 6,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        rot:   Math.random() * Math.PI * 2,
+        vx:    (Math.random() - .5) * 2,
+        vy:    2 + Math.random() * 3,
+        vr:    (Math.random() - .5) * .12,
+        alpha: .8 + Math.random() * .2,
+    }));
+
+    let frame = 0;
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        pieces.forEach(p => {
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+
+            p.x  += p.vx;
+            p.y  += p.vy;
+            p.rot+= p.vr;
+
+            // fade out after halfway
+            if (p.y > canvas.height * .6) p.alpha -= .012;
+
+            // reset if off screen
+            if (p.y > canvas.height || p.alpha <= 0) {
+                p.y     = -20;
+                p.x     = Math.random() * canvas.width;
+                p.alpha = .8 + Math.random() * .2;
+            }
+        });
+
+        frame++;
+        // Stop after ~4 seconds (240 frames)
+        if (frame < 240) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Small delay so card animation finishes first
+    setTimeout(draw, 400);
+
+    window.addEventListener('resize', () => {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+
+</body>
+</html>

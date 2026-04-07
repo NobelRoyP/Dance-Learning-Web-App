@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Portal | Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --primary-teal: #0d9488;
+            --primary-indigo: #4338ca;
+            --error-red: #ef4444;
+            --valid-green: #22c55e;
+            --bg-glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-indigo) 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--bg-glass);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1e293b;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary-teal);
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
+
+        textarea { resize: none; }
+
+        .error-msg {
+            color: var(--error-red);
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary-teal), var(--primary-indigo));
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(67, 56, 202, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Register Institution</h2>
+
+    <form id="regForm" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <label>Institution Name</label>
+            <input type="text" id="name" name="name" placeholder="Full legal name" required>
+        </div>
+
+        <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="email" name="email" placeholder="contact@institution.com" required>
+            <small class="error-msg" id="emailError">Please enter a valid email format.</small>
+        </div>
+
+        <div class="input-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="10-digit mobile number" required>
+            <small class="error-msg" id="phoneError">Must be exactly 10 digits.</small>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required >
+            <small class="error-msg" id="passwordError">Password must have at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 6 characters long.</small>
+        </div>
+
+        <div class="input-group">
+            <label>Institution Logo</label>
+            <input type="file" id="logo" name="logo" accept="image/*">
+        </div>
+
+        <div class="input-group">
+            <label>Physical Address</label>
+            <textarea id="address" name="address" rows="3" placeholder="Full office address" required></textarea>
+        </div>
+
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="input-group">
+                <label>Established Year</label>
+                <input type="number" id="est_year" name="established_year" placeholder="YYYY" required>
+                <small class="error-msg" id="yearError">Enter a valid year.</small>
+            </div>
+            <div class="input-group">
+                <label>Location</label>
+                <input type="text" id="location" name="location" placeholder="City, Country" required>
+            </div>
+        </div>
+
+        <button type="submit">Complete Registration</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('regForm');
+    const email = document.getElementById('email');
+    const phone = document.getElementById('phone');
+    const year = document.getElementById('est_year');
+    const password = document.getElementById('password');
+
+    // Real-time Validation Helper
+    const validate = (input, errorId, condition) => {
+        const error = document.getElementById(errorId);
+        if (condition || input.value === "") {
+            error.style.display = 'none';
+            input.style.borderColor = '#e2e8f0';
+            return true;
+        } else {
+            error.style.display = 'block';
+            input.style.borderColor = 'var(--error-red)';
+            return false;
+        }
+    };
+
+    email.addEventListener('input', () => 
+        validate(email, 'emailError', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)));
+
+    phone.addEventListener('input', () => 
+        validate(phone, 'phoneError', /^\d{10}$/.test(phone.value)));
+
+    year.addEventListener('input', () => {
+        const currentYear = new Date().getFullYear();
+        validate(year, 'yearError', year.value > 1800 && year.value <= currentYear);
+    });
+    password.addEventListener('input', () => {
+    // Regex: 1 Uppercase, 1 Lowercase, 1 Number, 1 Special Char, Min 6 chars
+    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/;
+    validate(password, 'passwordError', passRegex.test(password.value));
+    });
+
+    form.addEventListener('submit', (e) => {
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+        const isPhoneValid = /^\d{10}$/.test(phone.value);
+        const isYearValid = year.value > 1800 && year.value <= new Date().getFullYear();
+        const isPasswordValid = password.value.length >= 6;
+
+        if (!isEmailValid || !isPhoneValid || !isYearValid || !isPasswordValid) {
+            e.preventDefault();
+            alert("Please fix the errors in the form before submitting.");
+        }
+    });
+</script>
+
+</body>
+</html>

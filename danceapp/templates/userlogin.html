@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Login | Nrityangana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold:        #c9a84c;
+            --gold-dim:    #8a6f2e;
+            --gold-light:  rgba(201,168,76,.12);
+            --border:      #302820;
+            --border-focus:#c9a84c;
+            --card:        #1a1610;
+            --card-2:      #201c12;
+            --cream:       #f0e6ce;
+            --muted:       #7a6e5a;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: #0c0a07;
+            background-image:
+                radial-gradient(ellipse 70% 45% at 15% 0%, rgba(42,26,8,.55) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 35% at 85% 100%, rgba(48,14,14,.3) 0%, transparent 55%);
+            background-attachment: fixed;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card);
+            padding: 45px 35px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 50px rgba(0,0,0,.5), 0 0 0 1px rgba(201,168,76,.06);
+            animation: fadeIn 0.6s ease-out;
+            margin: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 30px;
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            letter-spacing: .03em;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--card-2);
+            color: var(--cream);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        input::placeholder { color: var(--muted); }
+
+        input:focus {
+            border-color: var(--border-focus);
+            background: #241e14;
+            box-shadow: 0 0 0 3px rgba(201,168,76,.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 15px;
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+            color: #0c0a07;
+            border: none;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(201,168,76,.25);
+            margin-top: 10px;
+            letter-spacing: .04em;
+        }
+
+        button:hover {
+            opacity: .88;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201,168,76,.35);
+        }
+
+        button:active { transform: translateY(0); }
+
+        p {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Welcome Back</h2>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <label>Email Address</label>
+            <input 
+                type="email" 
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+            <input 
+                type="password" 
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit">Log In</button>
+
+            <p>
+                Don't have an account? 
+                <a href="/userregister/">Register here</a>
+            </p>
+        </form>
+    </div>
+
+</body>
+</html>

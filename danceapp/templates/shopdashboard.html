@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Sidebar + Main Wrapper -->
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold text-blue-600">Shop</h2>
+                <p class="text-gray-500">Dashboard</p>
+            </div>
+
+            <nav class="mt-6 space-y-3 px-4">
+
+                <a href="#" class="flex items-center text-blue-600 font-semibold bg-blue-50 px-4 py-2 rounded-md">
+                    🏪 Dashboard
+                </a>
+
+                <a href="/shopprofile/" class="block text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md">
+                    👤 Shop Profile
+                </a>
+
+                <a href="/addproduct/" class="block text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md">
+                    📦 Add Products
+                </a>
+
+                <a href="/productlist/" class="block text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md">
+                    📦 Products
+                </a>
+
+
+                <a href="/logout/" onclick="return confirm('Are you sure?');"
+                   class="block text-red-500 hover:bg-red-100 px-4 py-2 rounded-md">
+                    🚪 Logout
+                </a>
+
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Welcome, {{ shop.sname }}!</h1>
+
+                <img src="{{ shop.shop_logo.url }}" alt="Shop Logo"
+                     class="w-14 h-14 rounded-full shadow-md border">
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+                <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+                    <h2 class="text-gray-500">Total Products</h2>
+                    <p class="text-3xl font-bold text-blue-600">120</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+                    <h2 class="text-gray-500">New Orders</h2>
+                    <p class="text-3xl font-bold text-green-600">15</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+                    <h2 class="text-gray-500">Total Customers</h2>
+                    <p class="text-3xl font-bold text-purple-600">340</p>
+                </div>
+
+            </div>
+
+            <!-- Shop Details -->
+            <div class="bg-white rounded-lg shadow p-6">
+
+                <h2 class="text-2xl font-bold mb-4 text-gray-700">Shop Details</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+                        <p class="font-semibold text-gray-600">Shop Name:</p>
+                        <p class="text-gray-800">{{ shop.sname }}</p>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-gray-600">Email:</p>
+                        <p class="text-gray-800">{{ shop.email }}</p>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-gray-600">Phone:</p>
+                        <p class="text-gray-800">{{ shop.phone }}</p>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-gray-600">Address:</p>
+                        <p class="text-gray-800">{{ shop.address }}</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

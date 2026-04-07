@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Profile</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+            background: #f3f3f3;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .profile-card {
+            width: 380px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .profile-card img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ffaad4;
+            margin-bottom: 15px;
+        }
+
+        .name {
+            font-size: 26px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .email {
+            color: #777;
+            margin-top: -5px;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            font-size: 18px;
+            color: #444;
+            border-left: 4px solid #ff6fa8;
+            padding-left: 8px;
+            margin-bottom: 10px;
+        }
+
+        .info-row {
+            margin: 8px 0;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .info-row span {
+            font-weight: 600;
+            color: #222;
+        }
+
+        .btn-edit {
+            margin-top: 20px;
+            display: inline-block;
+            background: #ff6fa8;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-edit:hover {
+            background: #ff3d87;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="profile-card">
+
+        <!-- Profile Photo -->
+        <img src="{{ artist.profile_photo.url }}" alt="Profile Photo">
+
+        <!-- Name + Email -->
+        <div class="name">{{ artist.name }}</div>
+        <div class="email">{{ artist.email }}</div>
+
+        <!-- Information Section -->
+        <div class="info-box">
+            <h3>Artist Details</h3>
+
+            <div class="info-row"><span>Phone:</span> {{ artist.phone }}</div>
+            <div class="info-row"><span>Gender:</span> {{ artist.get_gender_display }}</div>
+            <div class="info-row"><span>Age:</span> {{ artist.age }}</div>
+            <div class="info-row"><span>Experience:</span> {{ artist.experience_years }} years</div>
+            <div class="info-row"><span>Specialization:</span> {{ artist.specialization }}</div>
+            <div class="info-row"><span>Location:</span> {{ artist.location }}</div>
+        </div>
+
+        <!-- Edit Button -->
+        <a href="/artisteditprofile/" class="btn-edit">Edit Profile</a>
+         <a href="{% url 'artistdeleteprofile' artist.id %} "><button class="btn-edit">Delete profile</button>
+        
+    </div>
+</div>
+
+</body>
+</html>

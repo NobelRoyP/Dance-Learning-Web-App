@@ -1,0 +1,908 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Nrityangana — Dance App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/audioplayer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gijgo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           HEADER — DESKTOP
+        ═══════════════════════════════════════════ */
+        .main-header-area {
+            background: #000;
+            padding: 0;
+            position: relative;
+            z-index: 999;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            height: 64px;
+        }
+
+        .brand-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .04em;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .brand-logo span { color: #4a90e2; }
+
+        /* Desktop nav */
+        #navigation {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 4px;
+        }
+        #navigation li a {
+            color: #ccc !important;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background .2s, color .2s;
+            display: block;
+            white-space: nowrap;
+        }
+        #navigation li a:hover,
+        #navigation li a.active {
+            color: #fff !important;
+            background: rgba(74, 144, 226, .18);
+        }
+        #navigation li a.active { color: #4a90e2 !important; }
+
+        /* Logout styled differently */
+        #navigation li a.nav-logout {
+            color: #ff6b6b !important;
+        }
+        #navigation li a.nav-logout:hover {
+            background: rgba(255,107,107,.15);
+            color: #ff6b6b !important;
+        }
+
+        /* ═══════════════════════════════════════════
+           HAMBURGER BUTTON
+        ═══════════════════════════════════════════ */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 8px;
+            transition: background .2s;
+            flex-shrink: 0;
+        }
+        .hamburger:hover { background: rgba(255,255,255,.15); }
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .3s, opacity .3s;
+            transform-origin: center;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ═══════════════════════════════════════════
+           MOBILE DRAWER
+        ═══════════════════════════════════════════ */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            backdrop-filter: blur(4px);
+            z-index: 1998;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        .mobile-nav-overlay.visible {
+            opacity: 1;
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: min(300px, 85vw);
+            height: 100%;
+            background: #111;
+            z-index: 1999;
+            transition: right .32s cubic-bezier(.4,0,.2,1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -8px 0 40px rgba(0,0,0,.6);
+            overflow-y: auto;
+        }
+        .mobile-drawer.open { right: 0; }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            flex-shrink: 0;
+        }
+        .drawer-brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .drawer-brand span { color: #4a90e2; }
+        .drawer-close {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background .2s, color .2s;
+        }
+        .drawer-close:hover { background: rgba(255,255,255,.08); color: #fff; }
+
+        /* User info strip in drawer */
+        .drawer-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            background: rgba(74,144,226,.07);
+            flex-shrink: 0;
+        }
+        .drawer-avatar {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(74,144,226,.4);
+            background: #222;
+            flex-shrink: 0;
+        }
+        .drawer-avatar-fallback {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a90e2, #8b3a8b);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .drawer-user-info .d-name {
+            font-size: .9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .drawer-user-info .d-role {
+            font-size: .72rem;
+            color: #4a90e2;
+            margin-top: 1px;
+        }
+
+        /* Drawer nav links */
+        .drawer-nav {
+            list-style: none;
+            padding: 12px 0;
+            margin: 0;
+            flex: 1;
+        }
+        .drawer-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 20px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: .95rem;
+            font-weight: 500;
+            transition: background .2s, color .2s;
+            border-left: 3px solid transparent;
+        }
+        .drawer-nav li a:hover {
+            background: rgba(255,255,255,.05);
+            color: #fff;
+            border-left-color: #4a90e2;
+        }
+        .drawer-nav li a.active {
+            color: #4a90e2;
+            background: rgba(74,144,226,.1);
+            border-left-color: #4a90e2;
+        }
+        .drawer-nav li a .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .drawer-nav li.nav-divider {
+            height: 1px;
+            background: rgba(255,255,255,.06);
+            margin: 8px 20px;
+        }
+        .drawer-nav li a.logout-link {
+            color: #ff6b6b;
+        }
+        .drawer-nav li a.logout-link:hover {
+            background: rgba(255,107,107,.08);
+            border-left-color: #ff6b6b;
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE BREAKPOINT
+        ═══════════════════════════════════════════ */
+        @media (max-width: 991px) {
+            .hamburger { display: flex; }
+            .desktop-nav { display: none !important; }
+        }
+
+        /* ═══════════════════════════════════════════
+           SLIDER
+        ═══════════════════════════════════════════ */
+        .slider_bg_1 {
+            background-image: url("{% static 'img/banner/dance10.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 767px) {
+            .slider_bg_1 { min-height: 60vh; }
+            .slider_text h3 { font-size: 2rem !important; }
+        }
+
+        /* ═══════════════════════════════════════════
+           ABOUT SECTION — mobile stack fix
+        ═══════════════════════════════════════════ */
+        @media (max-width: 767px) {
+            .about_thumb { margin-bottom: 24px; }
+            .about_thumb img { height: auto !important; }
+            .about_info h3 { font-size: 1.5rem; }
+        }
+
+        /* ═══════════════════════════════════════════
+           VIDEO GRID — fix fixed heights on mobile
+        ═══════════════════════════════════════════ */
+        .single_video .thumb img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+        }
+        @media (max-width: 767px) {
+            .single_video .thumb img { height: 200px; }
+        }
+
+        /* ═══════════════════════════════════════════
+           GALLERY — fix overflow on small screens
+        ═══════════════════════════════════════════ */
+        .portfolio-img img {
+            width: 100%;
+            height: 280px !important;
+            object-fit: cover;
+            display: block;
+        }
+        @media (max-width: 767px) {
+            .portfolio-img img { height: 200px !important; }
+            .single-gallery { margin-bottom: 16px; }
+        }
+
+        /* ═══════════════════════════════════════════
+           MUSIC SECTION
+        ═══════════════════════════════════════════ */
+        .music_field .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ═══════════════════════════════════════════
+           FOOTER — mobile fix
+        ═══════════════════════════════════════════ */
+        @media (max-width: 767px) {
+            .footer_widget { margin-bottom: 32px; }
+            .footer_links ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 0;
+            }
+            .copy_right { text-align: center; margin-bottom: 12px; }
+            .footer_links { text-align: center; }
+        }
+
+        /* ═══════════════════════════════════════════
+           ATTENDANCE MODAL — mobile safe
+        ═══════════════════════════════════════════ */
+        .attendance-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.5s ease;
+            padding: 20px;
+        }
+        .attendance-card {
+            background: #fff;
+            padding: 36px 28px;
+            border-radius: 24px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 25px 50px rgba(0,0,0,.3);
+            animation: slideDown 0.5s ease;
+        }
+        .icon-pulse {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 34px;
+            animation: pulse 2s infinite;
+        }
+        .attendance-card h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.4rem; }
+        .attendance-card p { color: #64748b; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+        .btn-mark {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-mark:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+        @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { transform: translateY(-40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse {
+            0%   { transform: scale(.95); box-shadow: 0 0 0 0 rgba(236,72,153,.4); }
+            70%  { transform: scale(1);   box-shadow: 0 0 0 14px rgba(236,72,153,0); }
+            100% { transform: scale(.95); box-shadow: 0 0 0 0 rgba(236,72,153,0); }
+        }
+
+        /* ═══════════════════════════════════════════
+           GENERAL MOBILE POLISH
+        ═══════════════════════════════════════════ */
+        @media (max-width: 575px) {
+            .container { padding-left: 16px; padding-right: 16px; }
+            .section_title h3 { font-size: 1.6rem; }
+            .contact_rsvp .text h3 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════════════ HEADER ══════════════ -->
+    <header>
+        <div class="header-area">
+            <div id="sticky-header" class="main-header-area">
+                <div class="header-inner">
+
+                    <!-- Brand -->
+                    <a href="/userhome/" class="brand-logo">Nritya<span>ngana</span></a>
+
+                    <!-- Desktop Nav -->
+                    <nav class="desktop-nav d-none d-lg-flex">
+                        <ul id="navigation">
+                            <li><a class="active" href="/userhome/">Home</a></li>
+                            <li><a href="/userprofile/">Profile</a></li>
+                            <li><a href="/usertrainers/">Trainers</a></li>
+                            <li><a href="/userinstitution/">Institutions</a></li>
+                            <li><a href="/product_list_user/">Costumes</a></li>
+                            <li><a href="/add_feedback/">Feedback</a></li>
+                            <li><a href="/chat/user/list/">Chat</a></li>
+                            <li><a href="/logout/" class="nav-logout" onclick="return confirmLogout()">Logout</a></li>
+                        </ul>
+                    </nav>
+
+                    <!-- Hamburger (mobile) -->
+                    <button class="hamburger d-flex d-lg-none" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══════════════ MOBILE DRAWER ══════════════ -->
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <div class="drawer-header">
+            <span class="drawer-brand">Nritya<span>ngana</span></span>
+            <button class="drawer-close" id="drawerClose" aria-label="Close menu">&#x2715;</button>
+        </div>
+
+        <!-- User info strip -->
+        {% if user %}
+        <div class="drawer-user">
+            {% if user.image %}
+                <img class="drawer-avatar" src="{{ user.image.url }}" alt="{{ user.name }}"/>
+            {% else %}
+                <div class="drawer-avatar-fallback">{{ user.name|slice:":1"|upper }}</div>
+            {% endif %}
+            <div class="drawer-user-info">
+                <div class="d-name">{{ user.name }}</div>
+                <div class="d-role">Student · {{ user.course.course_name|default:"Dance" }}</div>
+            </div>
+        </div>
+        {% endif %}
+
+        <ul class="drawer-nav">
+            <li><a class="active" href="/userhome/">
+                <span class="nav-icon">🏠</span> Home
+            </a></li>
+            <li><a href="/userprofile/">
+                <span class="nav-icon">👤</span> Profile
+            </a></li>
+            <li><a href="/usertrainers/">
+                <span class="nav-icon">🎓</span> Trainers
+            </a></li>
+            <li><a href="/userinstitution/">
+                <span class="nav-icon">🏛️</span> Institutions
+            </a></li>
+            <li><a href="/usershop/">
+                <span class="nav-icon">🛍️</span> Shop
+            </a></li>
+            <li><a href="/add_feedback/">
+                <span class="nav-icon">⭐</span> Feedback
+            </a></li>
+            <li><a href="/chat/user/list/">
+                <span class="nav-icon">💬</span> Chat
+            </a></li>
+            <li class="nav-divider"></li>
+            <li><a href="/logout/" class="logout-link" onclick="return confirmLogout()">
+                <span class="nav-icon">🚪</span> Logout
+            </a></li>
+        </ul>
+    </div>
+    <!-- ══════════════ END MOBILE DRAWER ══════════════ -->
+
+    <!-- slider_area_start -->
+    <div class="slider_area">
+        <div class="single_slider d-flex align-items-center slider_bg_1 overlay2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider_text text-center">
+                            <h3>Nrityangana</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider_area_end -->
+
+    <!-- music_area -->
+    <div class="music_area">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-xl-10">
+                    <div class="row align-items-center">
+                        <div class="col-xl-9 col-md-9 col-12">
+                            <div class="music_field">
+                                <div class="thumb">
+                                    <img src="{% static 'img/download.JPG' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- music_area end -->
+
+    <!-- about_area -->
+    <div class="about_area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-5 col-md-6 col-12">
+                    <div class="about_thumb">
+                        <img class="img-fluid" src="{% static 'img/about/picture1.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-xl-7 col-md-6 col-12">
+                    <div class="about_info">
+                        <h3>Step Into the Rhythm of Grace &amp; Expression</h3>
+                        <p>Our dance website is a vibrant space dedicated to celebrating the beauty and diversity of classical and contemporary dance forms. It provides detailed information about different dance styles, their history, costumes, ornaments, and expressive techniques. The website also features performances, learning resources, event updates, and galleries, making it a complete platform for students, artists, and dance lovers to explore, learn, and stay connected with the world of dance. Dance is a powerful form of expression that blends rhythm, movement, and emotion to tell stories beyond words. It reflects culture, tradition, and creativity, allowing individuals to connect with music and express feelings such as joy, passion, and energy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- about_area end -->
+
+    <!-- youtube_video_area -->
+    <div class="youtube_video_area">
+        <div class="container-fluid p-0">
+            <div class="row no-gutters">
+                <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                    <div class="single_video">
+                        <div class="thumb">
+                            <img src="{% static 'img/video/grace.jpg' %}" alt="Bharatanatyam" style="object-position: 80% 40%;">
+                        </div>
+                        <div class="hover_elements">
+                            <div class="video">
+                                <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                    <i class="fa fa-play"></i>
+                                </a>
+                            </div>
+                            <div class="hover_inner">
+                                <span>Bharatanatyam</span>
+                                <h3><a href="#">Kalosavam</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                    <div class="single_video">
+                        <div class="thumb">
+                            <img src="{% static 'img/video/Classical Dance Photoshoot At Foto Zone.jpg' %}" alt="Classical Dance" style="object-position: 50% 30%;">
+                        </div>
+                        <div class="hover_elements">
+                            <div class="video">
+                                <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                    <i class="fa fa-play"></i>
+                                </a>
+                            </div>
+                            <div class="hover_inner">
+                                <span>Bharatanatyam</span>
+                                <h3><a href="#">Kalosavam</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                    <div class="single_video">
+                        <div class="thumb">
+                            <img src="{% static 'img/video/download (20).jpg' %}" alt="Stage Show" style="object-position: 80% 0%;">
+                        </div>
+                        <div class="hover_elements">
+                            <div class="video">
+                                <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                    <i class="fa fa-play"></i>
+                                </a>
+                            </div>
+                            <div class="hover_inner">
+                                <span>Classical Dance</span>
+                                <h3><a href="#">Stage Show</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-12">
+                    <div class="single_video">
+                        <div class="thumb">
+                            <img src="{% static 'img/video/Mohiniyattam_Artist_ Anagha.jpg' %}" alt="Mohiniyattam">
+                        </div>
+                        <div class="hover_elements">
+                            <div class="video">
+                                <a class="popup-video" href="https://www.youtube.com/watch?v=Hzmp3z6deF8">
+                                    <i class="fa fa-play"></i>
+                                </a>
+                            </div>
+                            <div class="hover_inner">
+                                <span>Mohiniyattam</span>
+                                <h3><a href="#">Kalosavam</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- youtube_video_area end -->
+
+    <!-- gallery -->
+    <div class="gallery_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="section_title text-center mb-65">
+                        <h3>Image Galleries</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row grid">
+                <div class="col-xl-5 col-lg-5 col-md-6 col-12 grid-item cat1">
+                    <div class="single-gallery mb-30">
+                        <div class="portfolio-img">
+                            <img src="{% static 'img/gallery/dance10.jpg' %}" alt="">
+                        </div>
+                        <div class="gallery_hover">
+                            <a class="popup-image hover_inner" href="{% static 'img/gallery/dance10.jpg' %}">
+                                <i class="ti-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-6 col-12 grid-item cat3 cat4">
+                    <div class="single-gallery mb-30">
+                        <div class="portfolio-img">
+                            <img src="{% static 'img/gallery/dance11.jpg' %}" alt="">
+                        </div>
+                        <div class="gallery_hover">
+                            <a class="popup-image hover_inner" href="{% static 'img/gallery/dance11.jpg' %}">
+                                <i class="ti-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6 col-12 grid-item cat4">
+                    <div class="single-gallery mb-30">
+                        <div class="portfolio-img">
+                            <img src="{% static 'img/gallery/dance12.jpg' %}" alt="">
+                        </div>
+                        <div class="gallery_hover">
+                            <a class="popup-image hover_inner" href="{% static 'img/gallery/dance12.jpg' %}">
+                                <i class="ti-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6 col-12 grid-item cat2">
+                    <div class="single-gallery mb-30">
+                        <div class="portfolio-img">
+                            <img src="{% static 'img/gallery/dance13.jpg' %}" alt="">
+                        </div>
+                        <div class="gallery_hover">
+                            <a class="popup-image hover_inner" href="{% static 'img/gallery/dance13.jpg' %}">
+                                <i class="ti-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6 col-12 grid-item cat2">
+                    <div class="single-gallery mb-30">
+                        <div class="portfolio-img">
+                            <img src="{% static 'img/gallery/dance14.jpg' %}" alt="">
+                        </div>
+                        <div class="gallery_hover">
+                            <a class="popup-image hover_inner" href="{% static 'img/gallery/dance14.jpg' %}">
+                                <i class="ti-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- gallery end -->
+
+
+    <!-- footer start -->
+    <footer class="footer">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-md-6 col-12">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">Services</h3>
+                            <div class="subscribe-from">
+                                <form action="#">
+                                    <input type="text" placeholder="Enter your mail">
+                                    <button type="submit">Subscribe</button>
+                                </form>
+                            </div>
+                            <p class="sub_text">Stay connected with the world of classical dance.</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-md-5 col-12 offset-xl-1">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">Contact Me</h3>
+                            <ul>
+                                <li><a href="#">conbusi@support.com</a></li>
+                                <li><a href="#">+10 873 672 6782</a></li>
+                                <li><a href="#">600/D, Green Road, Kings Garden, New York</a></li>
+                            </ul>
+                            <div class="socail_links">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right_text">
+            <div class="container">
+                <div class="footer_border"></div>
+                <div class="row">
+                    <div class="col-xl-7 col-md-6 col-12">
+                        <p class="copy_right">
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                            All rights reserved | Template by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                    </div>
+                    <div class="col-xl-5 col-md-6 col-12">
+                        <div class="footer_links">
+                            <ul>
+                                <li><a href="/userhome/">Home</a></li>
+                                <li><a href="/userprofile/">Profile</a></li>
+                                <li><a href="/userlogin/">Login</a></li>
+                                <li><a href="/userregister/">Register</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer end -->
+
+    <!-- ══════════════ ATTENDANCE MODAL ══════════════ -->
+    {% if needs_attendance %}
+    <div id="attendanceModal" class="attendance-overlay">
+        <div class="attendance-card">
+            <div class="icon-pulse">
+                <i class="fa fa-calendar-check-o"></i>
+            </div>
+            <h2>Daily Attendance</h2>
+            <p>Welcome back, <strong>{{ user.name }}</strong>! Please mark your attendance for today.</p>
+            <form action="{% url 'mark_attendance' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-mark">
+                    ✅ &nbsp; I am Present
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- JS -->
+    <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/ajax-form.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/audioplayer.js' %}"></script>
+    <script src="{% static 'js/scrollIt.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/nice-select.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <script src="{% static 'js/gijgo.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/contact.js' %}"></script>
+    <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'js/mail-script.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        $(function () {
+            $('audio').audioPlayer({});
+        });
+
+        // ── Logout confirm
+        function confirmLogout() {
+            return confirm("Are you sure you want to logout?");
+        }
+
+        // ══════════════════════════════════════════
+        //  MOBILE DRAWER
+        // ══════════════════════════════════════════
+        const hamburger    = document.getElementById('hamburger');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const drawerClose  = document.getElementById('drawerClose');
+
+        function openDrawer() {
+            mobileDrawer.classList.add('open');
+            mobileOverlay.style.display = 'block';
+            // Trigger reflow so transition fires
+            requestAnimationFrame(() => mobileOverlay.classList.add('visible'));
+            hamburger.classList.add('open');
+            hamburger.setAttribute('aria-expanded', 'true');
+            mobileDrawer.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            mobileDrawer.classList.remove('open');
+            mobileOverlay.classList.remove('visible');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileDrawer.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // Hide overlay after transition
+            setTimeout(() => { mobileOverlay.style.display = 'none'; }, 320);
+        }
+
+        hamburger.addEventListener('click', () => {
+            mobileDrawer.classList.contains('open') ? closeDrawer() : openDrawer();
+        });
+
+        drawerClose.addEventListener('click', closeDrawer);
+        mobileOverlay.addEventListener('click', closeDrawer);
+
+        // Close drawer on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDrawer();
+        });
+
+        // Close drawer when a nav link is tapped (smooth UX)
+        mobileDrawer.querySelectorAll('.drawer-nav a:not(.logout-link)').forEach(link => {
+            link.addEventListener('click', closeDrawer);
+        });
+    </script>
+</body>
+</html>

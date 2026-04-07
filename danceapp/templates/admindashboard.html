@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard</title>
+
+<style>
+
+:root{
+--bg:#0f1724;
+--card:#111827;
+--accent:#7c3aed;
+--accent2:#ec4899;
+--text:#e5e7eb;
+--muted:#9ca3af;
+--radius:12px;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Inter,system-ui;
+background:var(--bg);
+color:var(--text);
+display:flex;
+justify-content:center;
+padding:25px;
+}
+
+.container{
+width:100%;
+max-width:1200px;
+display:grid;
+grid-template-columns:240px 1fr;
+gap:20px;
+}
+
+.sidebar{
+background:var(--card);
+padding:20px;
+border-radius:var(--radius);
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+.sidebar a{
+text-decoration:none;
+}
+
+.logo{
+font-weight:700;
+font-size:18px;
+}
+
+.nav-item{
+padding:10px;
+border-radius:8px;
+cursor:pointer;
+color:var(--muted);
+text-decoration: none;
+}
+
+.nav-item:hover{
+background:#1f2937;
+color:white;
+}
+
+.nav-item.active{
+background:var(--accent);
+color:white;
+}
+
+.profile{
+margin-top:auto;
+border-top:1px solid #222;
+padding-top:15px;
+}
+
+.main{
+background:var(--card);
+border-radius:var(--radius);
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.card{
+background:#0b1220;
+padding:15px;
+border-radius:10px;
+}
+
+.card h3{
+margin:0;
+font-size:13px;
+color:var(--muted);
+}
+
+.metric{
+font-size:26px;
+font-weight:700;
+margin-top:6px;
+}
+
+select{
+width:100%;
+margin-top:10px;
+padding:7px;
+border-radius:6px;
+background:#1f2937;
+border:none;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #1f2937;
+font-size:13px;
+}
+
+th{
+color:var(--muted);
+text-align:left;
+}
+
+.btn{
+padding:6px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+color:white;
+font-size:12px;
+}
+
+.approve{background:#22c55e;}
+.reject{background:#ef4444;}
+
+.actions{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.action-btn{
+padding:10px 14px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+color:white;
+}
+
+.invite{background:var(--accent)}
+.export{background:var(--accent2)}
+.settings{background:#374151}
+
+@media(max-width:900px){
+.container{grid-template-columns:1fr}
+.grid{grid-template-columns:repeat(2,1fr)}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo">Admin Panel</div>
+
+<div class="nav-item active">Dashboard</div>
+
+<a href="/userlist"><div class="nav-item">Users</div></a>
+<a href="/trainerlist/"><div class="nav-item">Trainers</div></a>
+<a href="/institutionlist/"><div class="nav-item">Institutions</div></a>
+<a href="/feedback_list/"><div class="nav-item">Feedbacks</div></a>
+<a href="/course_list/"><div class="nav-item">Courses</div></a>
+
+
+<a href="/logout">
+<div class="nav-item">Logout</div>
+</a>
+
+<div class="profile">
+<strong>Dance App</strong><br>
+<span style="font-size:12px;color:gray">Administrator</span>
+</div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+<h2>Dashboard Overview</h2>
+
+<!-- METRICS -->
+
+<div class="grid">
+
+<div class="card">
+<h3>Users</h3>
+<div class="metric">{{users.count}}</div>
+</div>
+
+<div class="card">
+<h3>Trainers</h3>
+<div class="metric">{{trainers.count}}</div>
+</div>
+
+<div class="card">
+<h3>Institutions</h3>
+<div class="metric">{{institutions.count}}</div>
+</div>
+
+<div class="card">
+<h3>Sessions</h3>
+
+<select id="batchSelect" onchange="filterAttendance()" style="padding: 8px; border-radius: 8px; border: 1px solid #d1d5db;">
+    <option value="">All Batches</option>
+    <option value="6am-7am">6:00 AM - 7:00 AM</option>
+    <option value="8am-9am">8:00 AM - 9:00 AM</option>
+    <option value="4pm-5pm">4:00 PM - 5:00 PM</option>
+    <option value="6pm-7pm">6:00 PM - 7:00 PM</option>
+</select>
+
+<div style="margin-top:10px; font-size:14px; color:#6b7280; font-weight: 500;">
+    <span style="color: #10b981;">Present : <span id="presentCount">{{ no_of_students_present }}</span></span> <br>
+    <span style="color: #ef4444;">Absent : <span id="absentCount">{{ no_of_students_absent }}</span></span>
+</div>
+
+</div>
+
+</div>
+
+<!-- STUDENT TABLE -->
+
+<div class="card">
+
+<h3>Recently Registered Students</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>ID</th>
+<th>Email</th>
+<th>Age</th>
+<th>Batch Time</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for student in recent_students %}
+<tr>
+<td>{{ student.name }}</td>
+<td>{{ student.id }}</td>
+<td>{{ student.email }}</td>
+<td>{{ student.age }}</td>
+<td>{{ student.batch_time }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="5">No students found.</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- APPROVAL SECTION -->
+
+<div class="card">
+
+<h3>Institution Pending Approvals</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Email</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for institution in pending_institutions %}
+<tr>
+<td>{{ institution.name }}</td>
+<td>Institution</td>
+<td>{{ institution.email }}</td>
+<td>
+{% if institution.is_approved %}
+<button class="btn reject" onclick="location.href='{% url 'rejectinstitution' institution.id %}'">Reject</button>
+{% elif institution.is_rejected %}
+<button class="btn approve" onclick="location.href='{% url 'approveinstitution' institution.id %}'">Approve</button>
+{% else %}
+<button class="btn approve" onclick="location.href='{% url 'approveinstitution' institution.id %}'">Approve</button>
+<button class="btn reject" onclick="location.href='{% url 'rejectinstitution' institution.id %}'">Reject</button>
+{% endif %}
+
+</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="4">No pending approvals.</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+</main>
+
+</div>
+<script>
+    function filterAttendance() {
+        // Get the selected batch value
+        const selectedBatch = document.getElementById('batchSelect').value;
+        
+        // Fetch the new data from our Django URL
+        fetch(`/get_batch_attendance/?batch=${encodeURIComponent(selectedBatch)}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the numbers on the screen smoothly
+                document.getElementById('presentCount').innerText = data.present;
+                document.getElementById('absentCount').innerText = data.absent;
+            })
+            .catch(error => {
+                console.error("Error fetching attendance data:", error);
+            });
+    }
+</script>
+</body>
+</html>

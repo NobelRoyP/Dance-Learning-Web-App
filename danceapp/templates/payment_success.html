@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Nrityangana</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --primary-purple: #8b5cf6;
+            --secondary-pink: #ec4899;
+            --success-green: #10b981;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            background-image: radial-gradient(circle at top right, rgba(236, 72, 153, 0.05), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.05), transparent 40%);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .success-card {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 450px;
+            width: 100%;
+            padding: 50px 40px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        /* Animated Checkmark */
+        .icon-wrapper {
+            width: 90px;
+            height: 90px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .icon-wrapper i {
+            font-size: 50px;
+            color: var(--success-green);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: var(--text-main);
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .receipt-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .receipt-box span {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .receipt-box strong {
+            color: var(--primary-purple);
+            font-size: 16px;
+        }
+
+        .btn-continue {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink));
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-wrapper">
+            <i class='bx bx-check'></i>
+        </div>
+
+        <h1>Payment Successful!</h1>
+        <p>Welcome. You have successfully unlocked unlimited access to all expert dance reels and freedom to chat with trainers on Nrityangana.</p>
+
+        <div class="receipt-box">
+            <span>Status</span>
+            <strong><i class='bx bx-check-shield'></i> Verified</strong>
+        </div>
+
+        <a href="{% url 'userhome' %}" class="btn-continue">
+            Start Accessing <i class='bx bx-right-arrow-alt'></i>
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        window.onload = function() {
+            // Trigger a quick burst of confetti when the page loads
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#8b5cf6', '#ec4899']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#8b5cf6', '#ec4899']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        };
+    </script>
+</body>
+</html>

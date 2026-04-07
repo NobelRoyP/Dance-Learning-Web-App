@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin | Shop Cart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        .cart-card {
+            border-radius: 15px;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .cart-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .shop-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .shop-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .shop-info li {
+            font-size: 14px;
+            padding: 4px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .shop-info li:last-child {
+            border-bottom: none;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand">💃 Dance Admin Panel</span>
+    <a href="/admindashboard/" class="text-white text-decoration-none">Dashboard</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="container mt-5">
+    <h3 class="mb-4">Shop Cart</h3>
+
+    <div class="row">
+        {% for s in users %}
+        <div class="col-md-4 mb-4">
+            <div class="card cart-card shadow-sm">
+
+                <!-- Shop Logo -->
+                {% if s.shop_logo %}
+                    <img src="{{ s.shop_logo.url }}" class="shop-img">
+                {% else %}
+                    <img src="{% static 'img/default-shop.png' %}" class="shop-img">
+                {% endif %}
+
+                <!-- Body -->
+                <div class="card-body text-center">
+                    <div class="shop-title">{{ s.sname }}</div>
+
+                    <ul class="list-unstyled shop-info mt-3 text-start">
+                        <li><strong>📧 Email:</strong> {{ s.email }}</li>
+                        <li><strong>📞 Phone:</strong> {{ s.phone }}</li>
+                        <li><strong>📍 Address:</strong> {{ s.address }}</li>
+                    </ul>
+                </div>
+<div class="card-footer bg-white text-center">
+                    <a href="/ViewProducts/{{s.id}}/"
+                       class="btn btn-danger btn-sm w-75">
+                        View Products
+                    </a>
+                </div>
+                <!-- Footer -->
+                <div class="card-footer bg-white text-center">
+                    <a href="{% url 'deleteshop' s.id %}"
+                       class="btn btn-danger btn-sm w-75"
+                       onclick="return confirm('Remove this shop from list?');">
+                        🗑 Delete Shop
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No shops available</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>
