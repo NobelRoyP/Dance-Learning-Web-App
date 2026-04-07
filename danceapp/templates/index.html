@@ -5,6 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="manifest" href="{% static 'danceapp/manifest.json' %}">
+    <meta name="theme-color" content="#000000">
+
     <title>Nrityangana — Classical Dance</title>
     <meta name="description" content="Nrityangana — A vibrant platform for classical Indian dance forms, trainers, institutions and costumes.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -1190,6 +1193,15 @@
         scrollBtn.classList.toggle('visible', window.scrollY > 400);
     });
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("{% static 'danceapp/sw.js' %}")
+    .then(function() {
+        console.log("Service Worker Registered");
+    });
+}
 </script>
 
 </body>
