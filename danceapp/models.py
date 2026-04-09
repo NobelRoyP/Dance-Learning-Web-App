@@ -39,7 +39,7 @@ class Trainer(models.Model):
     ]
     Gender = models.CharField(max_length=10, null=True, blank=True)
 
-    phone = models.IntegerField(null=True, blank=True)
+    phone = models.CharField(null=True, blank=True)
     experiance = models.IntegerField(null=True, blank=True)
     course = models.ForeignKey('Courses', on_delete=models.SET_NULL, null=True, blank=True)
 
