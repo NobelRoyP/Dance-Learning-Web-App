@@ -6,6 +6,8 @@ from .import models
 
 # Create your views here.
 def index(request):
+    if 'email' in request.session:
+        return redirect('userhome')
     students = models.User.objects.all()
     trainers = models.Trainer.objects.all()
     institutions = models.Institution.objects.all()
